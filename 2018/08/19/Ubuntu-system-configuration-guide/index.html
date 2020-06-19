@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="快速配置Ubuntu系统，所有配置都在Ubuntu-16.04LTS下完成。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu系统配置指南">
+<meta property="og:url" content="http://yoursite.com/2018/08/19/Ubuntu-system-configuration-guide/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="快速配置Ubuntu系统，所有配置都在Ubuntu-16.04LTS下完成。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-1256870184.cos.ap-beijing.myqcloud.com/2019-04-29-02.png">
+<meta property="og:image" content="https://blog-1256870184.cos.ap-beijing.myqcloud.com/2019-04-24-006tNbRwly1fukkpneae1j31gs0jngo3.jpg">
+<meta property="og:image" content="https://blog-1256870184.cos.ap-beijing.myqcloud.com/2019-04-24-006tNbRwly1fukm3dy89nj31kw0abdgc.jpg">
+<meta property="article:published_time" content="2018-08-19T08:26:46.000Z">
+<meta property="article:modified_time" content="2020-06-19T08:27:56.367Z">
+<meta property="article:author" content="d4rk30">
+<meta property="article:tag" content="系统配置">
+<meta property="article:tag" content="Ubuntu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-1256870184.cos.ap-beijing.myqcloud.com/2019-04-29-02.png">
+
+<link rel="canonical" href="http://yoursite.com/2018/08/19/Ubuntu-system-configuration-guide/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Ubuntu系统配置指南 | 黑客与产品</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">黑客与产品</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩膀上</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section">首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section">归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/19/Ubuntu-system-configuration-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+      <meta itemprop="description" content="站在巨人的肩膀上">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ubuntu系统配置指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-08-19 01:26:46" itemprop="dateCreated datePublished" datetime="2018-08-19T01:26:46-07:00">2018-08-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-19 01:27:56" itemprop="dateModified" datetime="2020-06-19T01:27:56-07:00">2020-06-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://blog-1256870184.cos.ap-beijing.myqcloud.com/2019-04-29-02.png" alt=""></p>
+<blockquote>
+<p>快速配置Ubuntu系统，所有配置都在Ubuntu-16.04LTS下完成。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="0x00-配置root登录"><a href="#0x00-配置root登录" class="headerlink" title="0x00 配置root登录"></a>0x00 配置root登录</h1><h2 id="1-修改root密码"><a href="#1-修改root密码" class="headerlink" title="1.修改root密码"></a>1.修改root密码</h2><p>root用户默认是没有密码的，因此也就无法使用。想用root的话，就得给root用户设置一个密码。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo passwd root</span><br></pre></td></tr></table></figure>
+<p>输入密码即可。</p>
+<h2 id="2-修改ssh配置"><a href="#2-修改ssh配置" class="headerlink" title="2.修改ssh配置"></a>2.修改ssh配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+<p>将<code>PermitRootLogin</code>这项的值将其改为<code>yes</code>，然后保存退出并重启ssh服务既可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo service ssh restart</span><br></pre></td></tr></table></figure>
+<p>最后验证root权限是否可以远程登录。</p>
+<h1 id="0x01-配置Git"><a href="#0x01-配置Git" class="headerlink" title="0x01 配置Git"></a>0x01 配置Git</h1><p>从配置Git开始，以下均在root用户下进行。</p>
+<h2 id="1-设置全局的用户名和邮箱"><a href="#1-设置全局的用户名和邮箱" class="headerlink" title="1.设置全局的用户名和邮箱"></a>1.设置全局的用户名和邮箱</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ git config --global user.name <span class="string">"Your Name"</span></span><br><span class="line">$ git config --global user.email <span class="string">"email@example.com"</span></span><br></pre></td></tr></table></figure>
+<p>备注：实测不添加用户名和邮箱也可以正常使用，可以略过此步。</p>
+<h2 id="2-设置SSH-KEY"><a href="#2-设置SSH-KEY" class="headerlink" title="2.设置SSH-KEY"></a>2.设置SSH-KEY</h2><p>网上给出方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"email@example.com"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>-t 指名密钥类型</li>
+<li>-C 提供一个注释</li>
+</ul>
+<p>实测用以下方式也可以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen</span><br></pre></td></tr></table></figure>
+<p>直接输入命令，然后一直回车就行。</p>
+<h2 id="3-给Github添加SSH-Key"><a href="#3-给Github添加SSH-Key" class="headerlink" title="3.给Github添加SSH-Key"></a>3.给Github添加SSH-Key</h2><p>先点击Settings，然后在点SSH and GPC keys，就可以添加了。<br><img src="https://blog-1256870184.cos.ap-beijing.myqcloud.com/2019-04-24-006tNbRwly1fukkpneae1j31gs0jngo3.jpg" alt=""></p>
+<h1 id="0x02-安装PHP及环境配置"><a href="#0x02-安装PHP及环境配置" class="headerlink" title="0x02 安装PHP及环境配置"></a>0x02 安装PHP及环境配置</h1><h2 id="1-安装PHP"><a href="#1-安装PHP" class="headerlink" title="1.安装PHP"></a>1.安装PHP</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt install php</span><br></pre></td></tr></table></figure>
+<h2 id="2-设置fpm日志"><a href="#2-设置fpm日志" class="headerlink" title="2.设置fpm日志"></a>2.设置fpm日志</h2><p>一般在安装php时候已经会自动安装fpm，如果没有安装，先去安装fpm。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt install php7.0-fpm</span><br></pre></td></tr></table></figure>
+<p>fpm日志路径：<code>/etc/php/7.0/fpm/pool.d/www.conf</code><br>备注：根据不同php版本，有可能不是7.0，需要按照实际情况进行查看。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/php/7.0/fpm/pool.d/www.conf</span><br></pre></td></tr></table></figure>
+<p>找到<code>;access.log = log/$pool.access.log</code>改成<code>access.log = /var/log/php.access.log</code>，然后重启服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ service php7.0-fpm restart</span><br></pre></td></tr></table></figure>
+<h2 id="3-其他关键配置"><a href="#3-其他关键配置" class="headerlink" title="3.其他关键配置"></a>3.其他关键配置</h2><p><code>user = www-data</code><br><code>group = www-data</code><br><code>listen = /run/php/php7.0-fpm.sock</code></p>
+<h1 id="0x03-安装Nginx及环境配置"><a href="#0x03-安装Nginx及环境配置" class="headerlink" title="0x03 安装Nginx及环境配置"></a>0x03 安装Nginx及环境配置</h1><h2 id="1-安装Nginx"><a href="#1-安装Nginx" class="headerlink" title="1.安装Nginx"></a>1.安装Nginx</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt install nginx</span><br></pre></td></tr></table></figure>
+<p>访问远程地址或者本地127.0.0.1,如果出现以下页面表示成功。<br><img src="https://blog-1256870184.cos.ap-beijing.myqcloud.com/2019-04-24-006tNbRwly1fukm3dy89nj31kw0abdgc.jpg" alt=""></p>
+<h2 id="2-建立Nginx和fpm通信"><a href="#2-建立Nginx和fpm通信" class="headerlink" title="2.建立Nginx和fpm通信"></a>2.建立Nginx和fpm通信</h2><p>Nginx配置文件路径：<code>/etc/nginx/nginx.conf</code><br>打开Nginx的配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>可以看到下面两条配置：<br><code>include /etc/nginx/conf.d/*.conf;</code><br><code>include /etc/nginx/sites-enabled/*;</code><br>实际上Nginx的server配置在/etc/nginx/sites-enabled/*;下,打开该目录下的配置文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/nginx/sites-enabled/default</span><br></pre></td></tr></table></figure>
+<p>看到站点根目录的位置：<code>root /var/www/html;</code><br>然后给index配置加上：<code>index.php</code><br>接下来再添加如下配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location ~* \.php$ &#123;</span><br><span class="line">	fastcgi_index   index.php;</span><br><span class="line">	fastcgi_pass    unix:&#x2F;run&#x2F;php&#x2F;php7.0-fpm.sock;</span><br><span class="line">	include         fastcgi_params;</span><br><span class="line">	fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;</span><br><span class="line">	fastcgi_param   SCRIPT_NAME        $fastcgi_script_name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-验证Nginx配置"><a href="#3-验证Nginx配置" class="headerlink" title="3.验证Nginx配置"></a>3.验证Nginx配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ nginx -t</span><br></pre></td></tr></table></figure>
+<p>如果提示成功，重启Nginx服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ service nginx restart</span><br></pre></td></tr></table></figure>
+<h1 id="0x04-安装MySQL及环境配置"><a href="#0x04-安装MySQL及环境配置" class="headerlink" title="0x04 安装MySQL及环境配置"></a>0x04 安装MySQL及环境配置</h1><h2 id="1-安装MySQL服务端"><a href="#1-安装MySQL服务端" class="headerlink" title="1.安装MySQL服务端"></a>1.安装MySQL服务端</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt install mysql-server</span><br></pre></td></tr></table></figure>
+<p>安装过程设置MySQL的root密码。</p>
+<h2 id="2-安装MySQL用户端"><a href="#2-安装MySQL用户端" class="headerlink" title="2.安装MySQL用户端"></a>2.安装MySQL用户端</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt isntall mysql-client</span><br></pre></td></tr></table></figure>
+<h2 id="3-安装php-mysql"><a href="#3-安装php-mysql" class="headerlink" title="3.安装php-mysql"></a>3.安装php-mysql</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt install php-mysql</span><br></pre></td></tr></table></figure>
+<h2 id="4-安装php-gd"><a href="#4-安装php-gd" class="headerlink" title="4.安装php-gd"></a>4.安装php-gd</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ apt install php-gd</span><br></pre></td></tr></table></figure>
+<h1 id="0x05-安装Pycharm及环境配置"><a href="#0x05-安装Pycharm及环境配置" class="headerlink" title="0x05 安装Pycharm及环境配置"></a>0x05 安装Pycharm及环境配置</h1><p>首先安装Python3和Pip3：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install python3</span><br><span class="line">$ sudo apt install pip3</span><br></pre></td></tr></table></figure>
+<p>然后下载Pycharm并解压，在bin目录下执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./pycharm.sh</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE/" rel="tag"># 系统配置</a>
+              <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2018/08/19/Add-an-SSL-certificate-to-the-website/" rel="next" title="给网站加上SSL证书">
+      给网站加上SSL证书 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00-配置root登录"><span class="nav-text">0x00 配置root登录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-修改root密码"><span class="nav-text">1.修改root密码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-修改ssh配置"><span class="nav-text">2.修改ssh配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01-配置Git"><span class="nav-text">0x01 配置Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-设置全局的用户名和邮箱"><span class="nav-text">1.设置全局的用户名和邮箱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-设置SSH-KEY"><span class="nav-text">2.设置SSH-KEY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-给Github添加SSH-Key"><span class="nav-text">3.给Github添加SSH-Key</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02-安装PHP及环境配置"><span class="nav-text">0x02 安装PHP及环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装PHP"><span class="nav-text">1.安装PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-设置fpm日志"><span class="nav-text">2.设置fpm日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-其他关键配置"><span class="nav-text">3.其他关键配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03-安装Nginx及环境配置"><span class="nav-text">0x03 安装Nginx及环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装Nginx"><span class="nav-text">1.安装Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-建立Nginx和fpm通信"><span class="nav-text">2.建立Nginx和fpm通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-验证Nginx配置"><span class="nav-text">3.验证Nginx配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x04-安装MySQL及环境配置"><span class="nav-text">0x04 安装MySQL及环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-安装MySQL服务端"><span class="nav-text">1.安装MySQL服务端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-安装MySQL用户端"><span class="nav-text">2.安装MySQL用户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-安装php-mysql"><span class="nav-text">3.安装php-mysql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-安装php-gd"><span class="nav-text">4.安装php-gd</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x05-安装Pycharm及环境配置"><span class="nav-text">0x05 安装Pycharm及环境配置</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩膀上</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">d4rk30</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
