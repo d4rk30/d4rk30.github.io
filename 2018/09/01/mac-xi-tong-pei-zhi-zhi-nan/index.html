@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="强迫症好累啊">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac 系统配置指南（2023年8月更新）">
+<meta property="og:url" content="https://www.nohacker.me/2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="强迫症好累啊">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-02-4ee82f4547eb2c211ccf32e0b7e71a9a1c730b29.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-08-31-%E6%88%AA%E5%B1%8F2023-08-31_15_50_00.png">
+<meta property="article:published_time" content="2018-09-01T07:35:25.000Z">
+<meta property="article:modified_time" content="2023-08-31T08:10:04.000Z">
+<meta property="article:author" content="d4rk30">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-02-4ee82f4547eb2c211ccf32e0b7e71a9a1c730b29.png">
+
+
+<link rel="canonical" href="https://www.nohacker.me/2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/","path":"2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/","title":"Mac 系统配置指南（2023年8月更新）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Mac 系统配置指南（2023年8月更新） | 黑客与产品</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">黑客与产品</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩上思考🤔️</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E5%AE%89%E8%A3%85%E7%B3%BB%E7%BB%9F"><span class="nav-text">0x00 安装系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E4%BF%AE%E6%94%B9-Mac-%E9%85%8D%E7%BD%AE"><span class="nav-text">0x01 修改 Mac 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%AE%BE%E7%BD%AE%E4%B8%89%E6%8C%87%E6%8B%96%E5%8A%A8"><span class="nav-text">1.设置三指拖动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AE%BE%E7%BD%AE-DNS%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="nav-text">2.设置 DNS（可选）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%AE%BE%E7%BD%AE%E8%BE%93%E5%85%A5%E6%B3%95%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-text">3.设置输入法快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AE%BE%E7%BD%AE%E8%AE%BF%E8%BE%BE"><span class="nav-text">4.设置访达</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%AE%89%E8%A3%85-Xcode-command-line-tools"><span class="nav-text">0x02 安装 Xcode command line tools</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%AE%89%E8%A3%85-ClashX-Pro"><span class="nav-text">0x03 安装 ClashX Pro</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E8%AE%BE%E7%BD%AEGit"><span class="nav-text">0x04 设置Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E5%AE%89%E8%A3%85-Homebrew"><span class="nav-text">0x05 安装 Homebrew</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-iTerm-%E5%92%8C-oh-my-zsh"><span class="nav-text">0x06 iTerm 和 oh-my-zsh</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85iTerm"><span class="nav-text">1.安装iTerm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85oh-my-zsh"><span class="nav-text">2.安装oh-my-zsh</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E4%B8%80%E4%BA%9B%E6%8E%A8%E8%8D%90%E7%9A%84%E8%BD%AF%E4%BB%B6"><span class="nav-text">0x07 一些推荐的软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BE%85%E5%8A%A9%E5%A2%9E%E5%BC%BA"><span class="nav-text">1.辅助增强</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%94%9F%E4%BA%A7%E5%8A%9B"><span class="nav-text">2.生产力</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%A4%87%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="nav-text">3.备用工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-%E6%9B%B4%E6%96%B0%E8%AE%B0%E5%BD%95"><span class="nav-text">0x08 更新记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2023%E5%B9%B48%E6%9C%8831%E6%97%A5"><span class="nav-text">2023年8月31日</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2019%E5%B9%B47%E6%9C%8822%E6%97%A5"><span class="nav-text">2019年7月22日</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2019%E5%B9%B47%E6%9C%8818%E6%97%A5"><span class="nav-text">2019年7月18日</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2019%E5%B9%B47%E6%9C%881%E6%97%A5"><span class="nav-text">2019年7月1日</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2019%E5%B9%B44%E6%9C%887%E6%97%A5"><span class="nav-text">2019年4月7日</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2019%E5%B9%B43%E6%9C%8827%E6%97%A5"><span class="nav-text">2019年3月27日</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩上思考🤔️</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+      <meta itemprop="description" content="站在巨人的肩上思考🤔️">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Mac 系统配置指南（2023年8月更新） | 黑客与产品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mac 系统配置指南（2023年8月更新）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-01 15:35:25" itemprop="dateCreated datePublished" datetime="2018-09-01T15:35:25+08:00">2018-09-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-31 16:10:04" itemprop="dateModified" datetime="2023-08-31T16:10:04+08:00">2023-08-31</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-02-4ee82f4547eb2c211ccf32e0b7e71a9a1c730b29.png" alt="img"></p>
+<blockquote>
+<p>强迫症好累啊</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="0x00-安装系统"><a href="#0x00-安装系统" class="headerlink" title="0x00 安装系统"></a>0x00 安装系统</h2><p><a target="_blank" rel="noopener" href="https://support.apple.com/zh-cn/HT204904">参考官方指南</a>，安装完成之后更新系统。</p>
+<h2 id="0x01-修改-Mac-配置"><a href="#0x01-修改-Mac-配置" class="headerlink" title="0x01 修改 Mac 配置"></a>0x01 修改 Mac 配置</h2><h3 id="1-设置三指拖动"><a href="#1-设置三指拖动" class="headerlink" title="1.设置三指拖动"></a>1.设置三指拖动</h3><p>设置入口：辅助功能-指针控制-触控板选项-拖移样式<br><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-08-31-%E6%88%AA%E5%B1%8F2023-08-31_15_50_00.png" alt="img"></p>
+<h3 id="2-设置-DNS（可选）"><a href="#2-设置-DNS（可选）" class="headerlink" title="2.设置 DNS（可选）"></a>2.设置 DNS（可选）</h3><p>给 DNS 添加<code>8.8.8.8</code>和<code>114.114.114.114</code>两条地址。</p>
+<h3 id="3-设置输入法快捷键"><a href="#3-设置输入法快捷键" class="headerlink" title="3.设置输入法快捷键"></a>3.设置输入法快捷键</h3><p>设置入口：键盘-键盘快捷键-输入法</p>
+<p>给输入法换成 Command+Space ，原来冲突的聚焦功能快捷键设置为 Alt+Q。</p>
+<h3 id="4-设置访达"><a href="#4-设置访达" class="headerlink" title="4.设置访达"></a>4.设置访达</h3><p>修改默认打开的文件夹为 user，同时删除左侧边栏不需要的入口，按照自己的需求调整顺序。</p>
+<h2 id="0x02-安装-Xcode-command-line-tools"><a href="#0x02-安装-Xcode-command-line-tools" class="headerlink" title="0x02 安装 Xcode command line tools"></a>0x02 安装 Xcode command line tools</h2><p>在终端里输入如下命令安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@macbook$ xcode-select --install</span><br></pre></td></tr></table></figure>
+
+<p>运行完成命令之后，按照指引安装。</p>
+<h2 id="0x03-安装-ClashX-Pro"><a href="#0x03-安装-ClashX-Pro" class="headerlink" title="0x03 安装 ClashX Pro"></a>0x03 安装 ClashX Pro</h2><p>去下载 <a target="_blank" rel="noopener" href="https://install.appcenter.ms/users/clashx/apps/clashx-pro/distribution_groups/public">ClashX Pro</a>，并且配置好代理。</p>
+<h2 id="0x04-设置Git"><a href="#0x04-设置Git" class="headerlink" title="0x04 设置Git"></a>0x04 设置Git</h2><p>如果正常安装完 Xcode command line tools 之后应该已经自带 Git 了，如果没有可以按照下面的方法继续安装。</p>
+<p>去<a target="_blank" rel="noopener" href="https://git-scm.com/">官网</a>直接下载,安装完成之后输入下面的命令测试：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@macbook$ git --version</span><br></pre></td></tr></table></figure>
+
+<p>如果显示 Git 的版本，则表明安装成功。接下来设置 Git 的用户名和邮箱:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@macbook$ git config --global user.name <span class="string">&quot;Your Name&quot;</span></span><br><span class="line">d4rk30@macbook$ git config --global user.email <span class="string">&quot;&lt;email@example.com&gt;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>最后设置 Git 代理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@macbook$ git config --global http.proxy socks5://127.0.0.1:1086</span><br><span class="line">d4rk30@macbook$ git config --global https.proxy socks5://127.0.0.1:1086</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-安装-Homebrew"><a href="#0x05-安装-Homebrew" class="headerlink" title="0x05 安装 Homebrew"></a>0x05 安装 Homebrew</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@macbook$ /bin/bash -c <span class="string">&quot;<span class="subst">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-iTerm-和-oh-my-zsh"><a href="#0x06-iTerm-和-oh-my-zsh" class="headerlink" title="0x06 iTerm 和 oh-my-zsh"></a>0x06 iTerm 和 oh-my-zsh</h2><h3 id="1-安装iTerm"><a href="#1-安装iTerm" class="headerlink" title="1.安装iTerm"></a>1.安装iTerm</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@macbook$ brew install --cask iterm2</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-安装oh-my-zsh"><a href="#2-安装oh-my-zsh" class="headerlink" title="2.安装oh-my-zsh"></a>2.安装oh-my-zsh</h3><p>通过脚本安装oh-my-zsh：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh -c <span class="string">&quot;<span class="subst">$(curl -fsSL &lt;https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh&gt;)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来打开：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~/.zshrc</span><br></pre></td></tr></table></figure>
+
+<p>修改 <code>ZSH_THEME=&quot;bira&quot;</code></p>
+<h2 id="0x07-一些推荐的软件"><a href="#0x07-一些推荐的软件" class="headerlink" title="0x07 一些推荐的软件"></a>0x07 一些推荐的软件</h2><p>在说必备软件之前，我先推荐一个订阅的合集，叫Setapp，应该很多人都知道了，集成了大量好用的软件，家庭版的话一个人大概一个月17元左右，如果你有一些常用软件不如直接订阅这个，价格上更合适一些。</p>
+<h3 id="1-辅助增强"><a href="#1-辅助增强" class="headerlink" title="1.辅助增强"></a>1.辅助增强</h3><ul>
+<li>Spectacle 窗口快捷键</li>
+<li>Yoink 移动文件神器</li>
+<li><del>TinyCal 小历</del></li>
+<li>iPic 优秀的图床工具</li>
+<li><del>The Unarchiver 免费的压缩工具</del></li>
+<li>Keka 压缩工具</li>
+<li>Bartender 4 整理你的顶部小图标</li>
+<li>Paste 最好用的剪贴板工具</li>
+</ul>
+<h3 id="2-生产力"><a href="#2-生产力" class="headerlink" title="2.生产力"></a>2.生产力</h3><ul>
+<li>Chrome 最好用的浏览器</li>
+<li><del>ShadowsocksX- NG 不解释了</del></li>
+<li>iTerm 终端工具</li>
+<li>Sketch 矢量图形设计</li>
+<li>CodeRuner 轻量的代码编辑器</li>
+<li>FileZilly FTP工具</li>
+<li>Axure 9 原型设计</li>
+<li>ClearMyMac X 系统维护清理</li>
+<li>1password 同样不需要解释</li>
+<li>Parallels Desktop Mac 上最好用的虚拟机</li>
+<li>VMware 另一个虚拟机</li>
+<li>Tweetbot 了解另一个世界</li>
+<li>钉钉 工作沟通协作</li>
+<li><del>Termius 远程SSH工具</del></li>
+<li>Ulysses markdown写作神器</li>
+<li><del>滴答清单 整理你的生活</del></li>
+<li>Mindnode 思维导图</li>
+<li><del>Byword markdown写作</del></li>
+<li>Telegram 安全聊天</li>
+<li>Splayer 不错的播放器</li>
+<li>微信</li>
+<li>网易云音乐</li>
+<li>QQ音乐</li>
+<li><del>Affinity Design 超越PS</del></li>
+<li>Kindle 阅读</li>
+<li>有道</li>
+<li>微软365六件套</li>
+<li>圈点 标记图片神器</li>
+<li>QQ 国民社交工具</li>
+<li><del>Capto 截图，录制GIF</del></li>
+<li>百度网盘 云端同步</li>
+<li><del>Mockplus 又一个原型工具</del></li>
+<li><del>网易MuMu Android模拟器</del></li>
+<li>Firefox 浏览器</li>
+<li>Burp Suite Community Edition 强大的Web工具</li>
+<li>Synology Drive 群晖同步套件</li>
+</ul>
+<h3 id="3-备用工具"><a href="#3-备用工具" class="headerlink" title="3.备用工具"></a>3.备用工具</h3><ul>
+<li>PhotoShop 不解释</li>
+<li><del>duet 让Ipad变成第二块屏幕</del></li>
+<li>Tunnelblick VPN软件</li>
+<li><del>Unsplash Wallpapers 自动壁纸</del></li>
+<li>SD Card Formatter 修复SD卡</li>
+<li>TorBrowswe 洋葱路由</li>
+<li>ETcher 烧录镜像</li>
+<li>Filezilla FTP上传</li>
+<li>Wireshark 抓包工具</li>
+<li>Hex Fiend 查看16进制文件</li>
+<li><del>FSMonitor 监控文件</del></li>
+<li>Docker 安全，运维必备，可以快速构建各种环境</li>
+<li>PyCharm CE Python强大的IDE</li>
+</ul>
+<h2 id="0x08-更新记录"><a href="#0x08-更新记录" class="headerlink" title="0x08 更新记录"></a>0x08 更新记录</h2><h3 id="2023年8月31日"><a href="#2023年8月31日" class="headerlink" title="2023年8月31日"></a>2023年8月31日</h3><ol>
+<li>适配最新版系统和M系列芯片安装方式</li>
+</ol>
+<h3 id="2019年7月22日"><a href="#2019年7月22日" class="headerlink" title="2019年7月22日"></a>2019年7月22日</h3><ol>
+<li>调整部分安装顺序，修改错误编号</li>
+</ol>
+<h3 id="2019年7月18日"><a href="#2019年7月18日" class="headerlink" title="2019年7月18日"></a>2019年7月18日</h3><ol>
+<li>更新了部分软件</li>
+</ol>
+<h3 id="2019年7月1日"><a href="#2019年7月1日" class="headerlink" title="2019年7月1日"></a>2019年7月1日</h3><ol>
+<li>更新了部分软件</li>
+</ol>
+<h3 id="2019年4月7日"><a href="#2019年4月7日" class="headerlink" title="2019年4月7日"></a>2019年4月7日</h3><ol>
+<li>更新了 ohmyzsh 的主题</li>
+<li>更换了 ohmyzsh 的下载链接</li>
+<li>增加了部分系统配置</li>
+</ol>
+<h3 id="2019年3月27日"><a href="#2019年3月27日" class="headerlink" title="2019年3月27日"></a>2019年3月27日</h3><ol>
+<li>新增加了一些软件和其他配置</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>d4rk30
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.nohacker.me/2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/" title="Mac 系统配置指南（2023年8月更新）">https://www.nohacker.me/2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/19/ubuntu-xi-tong-pei-zhi-zhi-nan/" rel="prev" title="Ubuntu系统配置指南">
+                  <i class="fa fa-angle-left"></i> Ubuntu系统配置指南
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/" rel="next" title="使用RTL-SDR接收飞机信号">
+                  使用RTL-SDR接收飞机信号 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">d4rk30</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"d4rk30","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="【Bug Bounty Hunter】笔记系列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Bug Bounty Hunter】第一章-Web 请求">
+<meta property="og:url" content="https://www.nohacker.me/2023/07/02/bug-bounty-hunter-web-requests/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="【Bug Bounty Hunter】笔记系列">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-16-head_img.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-url_structure.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-HTTP_Flow.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_clear.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_google_enc.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_google.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-HTTPS_Flow.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-raw_request.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-raw_response.png">
+<meta property="article:published_time" content="2023-07-02T12:46:13.000Z">
+<meta property="article:modified_time" content="2023-09-16T15:21:51.919Z">
+<meta property="article:author" content="d4rk30">
+<meta property="article:tag" content="HTTP">
+<meta property="article:tag" content="HTTPS">
+<meta property="article:tag" content="Web 协议">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-16-head_img.png">
+
+
+<link rel="canonical" href="https://www.nohacker.me/2023/07/02/bug-bounty-hunter-web-requests/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2023/07/02/bug-bounty-hunter-web-requests/","path":"2023/07/02/bug-bounty-hunter-web-requests/","title":"【Bug Bounty Hunter】第一章-Web 请求"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【Bug Bounty Hunter】第一章-Web 请求 | 黑客与产品</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">黑客与产品</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩上思考🤔️</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81HTTP-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-text">一、HTTP 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%EF%BC%88HTTP%EF%BC%89"><span class="nav-text">1. 超文本传输协议（HTTP）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#URL"><span class="nav-text">URL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-text">HTTP 工作流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cURL"><span class="nav-text">cURL</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%89%E5%85%A8%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%8D%8F%E8%AE%AE%EF%BC%88HTTPS%EF%BC%89"><span class="nav-text">2. 安全超文本传输协议（HTTPS）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTPS-%E6%A6%82%E8%BF%B0"><span class="nav-text">HTTPS 概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTPS-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-text">HTTPS 工作流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-cURL-%E5%A4%84%E7%90%86-HTTPS-%E8%AF%B7%E6%B1%82"><span class="nav-text">使用 cURL 处理 HTTPS 请求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-HTTP-%E8%AF%B7%E6%B1%82%E5%92%8C%E5%93%8D%E5%BA%94"><span class="nav-text">3. HTTP 请求和响应</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E8%AF%B7%E6%B1%82"><span class="nav-text">HTTP 请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E5%93%8D%E5%BA%94"><span class="nav-text">HTTP 响应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8-cURL-%E6%9F%A5%E7%9C%8B%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94%E5%86%85%E5%AE%B9"><span class="nav-text">用 cURL 查看请求与响应内容</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-HTTP-Headers"><span class="nav-text">4. HTTP Headers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#General-Headers"><span class="nav-text">General Headers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Entity-Headers"><span class="nav-text">Entity Headers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Request-Headers"><span class="nav-text">Request Headers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Response-Headers"><span class="nav-text">Response Headers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Security-Headers"><span class="nav-text">Security Headers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-cURL-%E6%9F%A5%E7%9C%8B-Headers-%E5%86%85%E5%AE%B9"><span class="nav-text">使用 cURL 查看 Headers 内容</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81HTTP-%E6%96%B9%E6%B3%95"><span class="nav-text">二、HTTP 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-HTTP-%E6%96%B9%E6%B3%95%E5%92%8C%E4%BB%A3%E7%A0%81"><span class="nav-text">5. HTTP 方法和代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82%E6%96%B9%E6%B3%95"><span class="nav-text">请求方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%93%8D%E5%BA%94%E4%BB%A3%E7%A0%81"><span class="nav-text">响应代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-GET"><span class="nav-text">6. GET</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E5%9F%BA%E6%9C%AC%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81"><span class="nav-text">HTTP 基本身份验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HTTP-%E6%8E%88%E6%9D%83-Header"><span class="nav-text">HTTP 授权 Header</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-POST"><span class="nav-text">7. POST</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-cURL-%E5%8F%91%E9%80%81-POST-%E8%AF%B7%E6%B1%82"><span class="nav-text">使用 cURL 发送 POST 请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Authenticated-Cookies"><span class="nav-text">Authenticated Cookies</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JSON-Data"><span class="nav-text">JSON Data</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-CRUD-API"><span class="nav-text">8. CRUD API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#APIs"><span class="nav-text">APIs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CRUD"><span class="nav-text">CRUD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Read"><span class="nav-text">Read</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Create"><span class="nav-text">Create</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Update"><span class="nav-text">Update</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DELETE"><span class="nav-text">DELETE</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩上思考🤔️</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2023/07/02/bug-bounty-hunter-web-requests/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+      <meta itemprop="description" content="站在巨人的肩上思考🤔️">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="【Bug Bounty Hunter】第一章-Web 请求 | 黑客与产品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Bug Bounty Hunter】第一章-Web 请求
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-02 20:46:13" itemprop="dateCreated datePublished" datetime="2023-07-02T20:46:13+08:00">2023-07-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-09-16 23:21:51" itemprop="dateModified" datetime="2023-09-16T23:21:51+08:00">2023-09-16</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2023/07/02/bug-bounty-hunter-web-requests/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/07/02/bug-bounty-hunter-web-requests/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-16-head_img.png" alt="img"></p>
+<blockquote>
+<p>【Bug Bounty Hunter】笔记系列</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="一、HTTP-基础知识"><a href="#一、HTTP-基础知识" class="headerlink" title="一、HTTP 基础知识"></a>一、HTTP 基础知识</h2><h3 id="1-超文本传输协议（HTTP）"><a href="#1-超文本传输协议（HTTP）" class="headerlink" title="1. 超文本传输协议（HTTP）"></a>1. 超文本传输协议（HTTP）</h3><p>如今，我们使用的大多数应用程序都在不断与互联网互动，包括 Web 和手机应用。大多数互联网通信都是通过 <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616">HTTP</a> 协议进行网络请求的。</p>
+<p>HTTP 通信由客户端和服务器组成，其中客户端向服务器请求资源。服务器处理请求并返回所请求的资源。 HTTP 通信的默认端口是端口 80 ，但可以根据 Web 服务器配置将其更改为任何其他端口。当我们使用互联网访问不同的网站时，会使用相同的请求。我们输入完全限定域名 (FQDN) 作为统一资源定位符 (URL) 来访问所需的网站，例如：<a href="www.google.com">www.google.com</a>。</p>
+<h4 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h4><p>让我们看一下 URL 的结构：</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-url_structure.png" alt="img"></p>
+<p>以下是每个组件代表的含义：</p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scheme</td>
+<td><code>http://</code> <code>https://</code></td>
+<td>用于标识客户端访问的协议，以冒号和双斜线 (<code>://</code>) 结尾</td>
+</tr>
+<tr>
+<td>User Info</td>
+<td>admin:password@</td>
+<td>这是一个可选组件，包含用于验证主机身份的凭据（用冒号<code>:</code>分隔），并用 at 符号 (<code>@</code>) 与主机分隔。</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>inlanefreight.com</td>
+<td>主机表示资源位置。可以是主机名或 IP 地址</td>
+</tr>
+<tr>
+<td>Port</td>
+<td>:80</td>
+<td>端口与主机之间用冒号（<code>:</code>）隔开。如果未指定端口，http 方案默认为 80 端口，https 默认为 443 端口。</td>
+</tr>
+<tr>
+<td>Path</td>
+<td>&#x2F;dashboard.php</td>
+<td>这指向被访问的资源，可以是文件或文件夹。如果没有指定路径，服务器将返回默认索引（如 index.html）。</td>
+</tr>
+<tr>
+<td>Query String</td>
+<td>?login&#x3D;true</td>
+<td>Query String 以问号（<code>?</code>）开头，由一个参数（如登录）和一个值（如 true）组成。多个参数之间可以用（<code>&amp;</code>）分隔。</td>
+</tr>
+<tr>
+<td>Fragments</td>
+<td>#status</td>
+<td>Fragments 由客户端的浏览器处理，以定位主要资源中的部分（如页眉或页面上的部分）。</td>
+</tr>
+</tbody></table>
+<h4 id="HTTP-工作流程"><a href="#HTTP-工作流程" class="headerlink" title="HTTP 工作流程"></a>HTTP 工作流程</h4><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-HTTP_Flow.png" alt="img"></p>
+<p>上图展示了 HTTP 请求的流程。用户第一次在浏览器中输入 URL ( inlanefreight.com ) 时，它会向 DNS（域名解析）服务器发送请求以解析该域并获取其 IP。 DNS 服务器查找 inlanefreight.com 的 IP 地址并返回它。所有域名都需要这样解析，因为服务器没有 IP 地址就无法通信。</p>
+<blockquote>
+<p>注意：我们的浏览器通常首先在本地“&#x2F;etc&#x2F;hosts”文件中查找记录，如果请求的域名不存在存在于其中，然后他们会联系其他 DNS 服务器。我们可以使用“&#x2F;etc&#x2F;hosts”手动添加记录以进行 DNS 解析，添加 IP 后跟域名。</p>
+</blockquote>
+<p>一旦浏览器获得链接到所请求域的 IP 地址，它就会向默认 HTTP 端口（例如 80 ）发送 GET 请求，询问根（<code>/</code>）路径。然后，Web服务器接收请求并处理它。默认情况下，服务器配置是在收到 &#x2F; 请求时返回索引文件。</p>
+<p>在这种情况下，Web 服务器将读取 index.html 的内容并将其作为 HTTP 响应返回。响应还包含状态代码（例如 200 OK ），这表明请求已成功处理。然后，Web 浏览器呈现 index.html 内容并将其呈现给用户。</p>
+<h4 id="cURL"><a href="#cURL" class="headerlink" title="cURL"></a>cURL</h4><p>在本节中，我们将通过两个重要的工具发送 Web 请求：浏览器（例如 Chrome 或 Firefox）以及 cURL 命令行工具。</p>
+<p><a target="_blank" rel="noopener" href="https://curl.haxx.se/">cURL</a> 是一个命令行工具和库，主要支持 HTTP 以及许多其他协议。这使得它成为脚本和自动化的优秀工具，它对于从命令行发送各种类型的 Web 请求至关重要，这对 Web 渗透测试都是必需的。</p>
+<p>我们可以向任何 URL 发送基本的 HTTP 请求，并将其用作 cURL 的参数，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl google.com</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，与 Web 浏览器不同，cURL 不会渲染 HTML&#x2F;JavaScript&#x2F;CSS 代码，而是以其原始格式打印它。</p>
+<p>我们还可以使用 cURL 下载页面或文件，并使用 -O 标志将内容输出到文件中。如果我们想指定输出文件名，我们可以使用 -o 标志并指定名称。否则，我们可以使用 -O ，cURL 将使用远程文件名，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl google.com</span><br><span class="line">d4rk30@linux$ <span class="built_in">ls</span></span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
+
+<p>正如我们所看到的，这次没有打印输出，而是保存到 index.html 中。我们注意到 cURL 在处理请求时仍然打印一些状态。我们可以使用 -s 标志来静默状态，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -s -O inlanefreight.com/index.html</span><br></pre></td></tr></table></figure>
+
+<p>这次，cURL 没有打印任何内容，因为输出已保存到 index.html 文件中。最后，我们可以使用 -h 标志来查看可以与 cURL 一起使用的其他选项：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -h</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-安全超文本传输协议（HTTPS）"><a href="#2-安全超文本传输协议（HTTPS）" class="headerlink" title="2. 安全超文本传输协议（HTTPS）"></a>2. 安全超文本传输协议（HTTPS）</h3><p>在上一节中，我们讨论了如何发送和处理 HTTP 请求。然而，HTTP 的一个重大缺陷是所有数据都以明文方式传输。这意味着在源和目标之间的任何人都可以执行中间人（MiTM）攻击来查看传输的数据。</p>
+<p>为了解决这个问题，<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2660">HTTPS (HTTP Secure) protocol</a> 应运而生，所有通信都以加密格式传输，因此即使第三方拦截了请求，也无法从中提取数据。因此，HTTPS 已成为互联网网站的主流方案，而 HTTP 协议正在被逐步淘汰。</p>
+<h4 id="HTTPS-概述"><a href="#HTTPS-概述" class="headerlink" title="HTTPS 概述"></a>HTTPS 概述</h4><p>如果我们检查一个 HTTP 请求，就能看到浏览器和网站之间不执行安全通信的效果。例如，下面是一个 HTTP 登录请求的内容：</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_clear.png" alt="img"></p>
+<p>我们可以看到，登录信息（账号和密码）可以明文显示。这样，同一网络（如公共无线网络）中的其他人就可以轻松捕获请求，并将登陆信息用于恶意行为。</p>
+<p>相反，当有人拦截并分析来自 HTTPS 请求的流量时，他们会看到如下内容：</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_google_enc.png" alt="img"></p>
+<p>如上图，数据作为单个加密流进行传输，这使得任何人都很难捕获凭证或任何其他敏感数据等信息。</p>
+<p>可以通过其 URL 中的 https:&#x2F;&#x2F;（例如 <a target="_blank" rel="noopener" href="https://www.google.com/">https://www.google.com</a>） 以及浏览器地址栏中 URL 左侧的锁定图标来识别强制执行 HTTPS 的网站：</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_google.png" alt="img"></p>
+<p>因此，如果我们访问使用 HTTPS 的网站（例如 Google），所有流量都会被加密。</p>
+<blockquote>
+<p>注意：虽然通过 HTTPS 协议传输的数据可能会被加密，但如果请求联系明文 DNS 服务器，该请求仍然可能会泄露所访问的 URL。因此，建议使用加密的 DNS 服务器（例如 8.8.8.8 或 1.1.1.1），或使用 VPN 服务以确保所有流量都正确加密。</p>
+</blockquote>
+<h4 id="HTTPS-工作流程"><a href="#HTTPS-工作流程" class="headerlink" title="HTTPS 工作流程"></a>HTTPS 工作流程</h4><p>让我们看看 HTTPS 是如何运行的：</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-HTTPS_Flow.png" alt="img"></p>
+<p>如果我们输入 http:&#x2F;&#x2F; 而不是 https:&#x2F;&#x2F; 来访问强制执行 HTTPS 的网站，浏览器会尝试解析域并将用户重定向到托管目标网站的网络服务器。请求首先发送到端口 80，这是未加密的 HTTP 协议。服务器检测到此情况并将客户端重定向到安全 HTTPS 端口 443。这是通过 301 Moved Permanently 响应代码完成的。</p>
+<p>接下来，客户端（网络浏览器）发送一个 “client hello “数据包，提供关于自己的信息。之后服务器回复 “server hello”，接着进行<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Key_exchange">密钥交换</a>，交换 SSL 证书。客户端验证密钥&#x2F;证书，并发送自己的密钥&#x2F;证书。之后，开始加密<a target="_blank" rel="noopener" href="https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake">握手</a>，以确认加密和传输是否正常。</p>
+<p>一旦握手成功完成，正常的 HTTP 通信就会继续进行，并在此后进行加密。</p>
+<blockquote>
+<p>注意：根据具体情况，攻击者可能会实施 HTTP 降级攻击，将 HTTPS 通信降级为 HTTP，使数据以明文形式传输。具体方法是设置一个中间人（MITM）代理，在用户不知情的情况下通过攻击者的主机传输所有流量。不过，大多数现代浏览器、服务器和网络应用程序都能防范这种攻击。</p>
+</blockquote>
+<h4 id="使用-cURL-处理-HTTPS-请求"><a href="#使用-cURL-处理-HTTPS-请求" class="headerlink" title="使用 cURL 处理 HTTPS 请求"></a>使用 cURL 处理 HTTPS 请求</h4><p>一般情况下 cURL 会自动处理所有 HTTPS 通信标准，执行安全握手，然后自动加密和解密数据。不过，如果我们接触到一个 SSL 证书无效或过期的网站，那么 cURL 默认情况下不会继续通信，以防止前面提到的 MITM 攻击，浏览器也会做同样的事情，警告用户不要访问具有无效 SSL 证书的网站。</p>
+<p>在测试本地 Web 应用程序或出于练习目的，访问测试的目标网站时，我们可能会遇到此类问题，因为此类 Web 应用程序可能尚未实现有效的 SSL 证书。要跳过 cURL 的证书检查，我们可以使用 -k 标志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -k https://test.com</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-HTTP-请求和响应"><a href="#3-HTTP-请求和响应" class="headerlink" title="3. HTTP 请求和响应"></a>3. HTTP 请求和响应</h3><p>HTTP 通信主要由 HTTP 请求和 HTTP 响应组成。 HTTP 请求由客户端（例如 cURL&#x2F;浏览器）发出，并由服务器（例如 Web 服务器）处理。请求包含我们需要从服务器获取的所有详细信息，包括资源（如 URL、路径、参数等）。服务器接收 HTTP 请求，对其进行处理并通过发送 HTTP 响应进行响应，其中包含响应代码，并且可能包含资源数据（如果请求者有权访问它）。</p>
+<h4 id="HTTP-请求"><a href="#HTTP-请求" class="headerlink" title="HTTP 请求"></a>HTTP 请求</h4><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-raw_request.png" alt="img"></p>
+<p>上图显示了对 URL 的 HTTP GET 请求：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://inlanefreight.com/users/login.html">http://inlanefreight.com/users/login.html</a></li>
+</ul>
+<p>任何 HTTP 请求的第一行都包含三个主要字段，“以空格分隔”：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Method</td>
+<td>GET</td>
+<td>指定要执行的操作类型的 HTTP 方法或动词。</td>
+</tr>
+<tr>
+<td>Path</td>
+<td>&#x2F;users&#x2F;login.html</td>
+<td>访问资源的路径。该字段也可以用查询字符串作为后缀（例如：<code>?username=user</code>）。</td>
+</tr>
+<tr>
+<td>Version</td>
+<td>HTTP&#x2F;1.1</td>
+<td>第三个也是最后一个字段用于表示 HTTP 版本。</td>
+</tr>
+</tbody></table>
+<p>下一行包含 HTTP header 值对，例如 Host 、 User-Agent 、 Cookie 和许多其他可能的 header。这些header 用于指定请求的各种属性。header 用换行结束，这是服务器验证请求所必需的。最后请求可能会以请求正文和数据结束。</p>
+<blockquote>
+<p>注意：HTTP 版本 1.X 以明文形式发送请求，并使用换行符分隔不同的字段和不同的请求。另一方面，HTTP 版本 2.X 以字典形式的二进制数据发送请求。</p>
+</blockquote>
+<h4 id="HTTP-响应"><a href="#HTTP-响应" class="headerlink" title="HTTP 响应"></a>HTTP 响应</h4><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-raw_response.png" alt="img"></p>
+<p>HTTP 响应的第一行包含两个以空格分隔的字段。第一个是 HTTP 版本（例如 HTTP&#x2F;1.1 ），第二个表示 HTTP 响应代码（例如 200 OK ）。</p>
+<p>响应代码用于确定请求的状态，在第一行之后，响应列出了其 header ，类似于 HTTP 请求。</p>
+<p>最后，响应可能以响应正文结束，响应正文在 header 后面用换行分隔。响应正文通常定义为 HTML 代码。但是，它还可以响应其他代码类型（例如 JSON ）、网站资源（例如图像、样式表或脚本），甚至是文档（例如托管在网络服务器上的 PDF 文档）。</p>
+<h4 id="用-cURL-查看请求与响应内容"><a href="#用-cURL-查看请求与响应内容" class="headerlink" title="用 cURL 查看请求与响应内容"></a>用 cURL 查看请求与响应内容</h4><p>在我们之前使用 cURL 的示例中，我们仅指定 URL 并获取返回的响应正文。然而，cURL 还允许我们预览完整的 HTTP 请求和完整的 HTTP 响应，要查看完整的 HTTP 请求和响应，我们只需将 <code>-v</code> (verbose) 标志添加到之前的命令中，它就会打印请求和响应：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl google.com -v</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>-vvv 标志显示更详细的输出。尝试使用此标志来查看显示了哪些额外的请求和响应详细信息。</p>
+</blockquote>
+<h3 id="4-HTTP-Headers"><a href="#4-HTTP-Headers" class="headerlink" title="4. HTTP Headers"></a>4. HTTP Headers</h3><p>HTTP Headers 可以有一个或多个值，附加在 Header 名称后面并用冒号分隔。我们可以将 Headers 分为以下几类：</p>
+<ul>
+<li>General Headers （通用标头）</li>
+<li>Entity Headers （实体标头）</li>
+<li>Request Headers （请求标头）</li>
+<li>Response Headers （响应标头）</li>
+<li>Security Headers （安全标头）</li>
+</ul>
+<h4 id="General-Headers"><a href="#General-Headers" class="headerlink" title="General Headers"></a>General Headers</h4><p><a target="_blank" rel="noopener" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html">General Headers</a> 用于 HTTP 请求和响应。它们是上下文相关的，用于描述消息而不是其内容。</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Data</td>
+<td>Date: Wed, 16 Feb 2022 10:38:44 GMT</td>
+<td>表示信息发出的日期和时间。最好将时间转换为标准 UTC 时区。</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>Connection: close</td>
+<td>指示当前网络连接是否应在请求结束后保持激活状态。该 Header 的两个常用值是 close 和 keep-alive。客户端或服务器的 close 值表示他们希望终止连接，而 keep-alive 标头则表示连接应保持开放以接收更多数据和输入。</td>
+</tr>
+</tbody></table>
+<h4 id="Entity-Headers"><a href="#Entity-Headers" class="headerlink" title="Entity Headers"></a>Entity Headers</h4><p>与 General Headers 类似，Entity Headers 可同时用于请求和响应。这些标头用于描述消息传输的内容（实体）。它们通常出现在响应和 POST 或 PUT 请求中。</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Content-Type</td>
+<td>Content-Type: text&#x2F;html</td>
+<td>用于描述传输的资源类型。该值由浏览器在客户端自动添加，并在服务器响应中返回。charset 字段表示编码标准，如 UTF-8。</td>
+</tr>
+<tr>
+<td>Media-Type</td>
+<td>Media-Type: application&#x2F;pdf</td>
+<td>Media-Type 与 Content-Type 类似，描述传输的数据。该 Header 对服务器解释我们的输入起着至关重要的作用。字符集字段也可与该标头一起使用。</td>
+</tr>
+<tr>
+<td>Boundary</td>
+<td>boundary&#x3D;”b4e4fbd93540”</td>
+<td>当同一信息中有多个内容时，作为分隔内容的标记。例如，在表单数据中，该边界会被用作 <code>--b4e4fbd93540</code> 来分隔表单的不同部分。</td>
+</tr>
+<tr>
+<td>Content-Length</td>
+<td>Length Content-Length: 385</td>
+<td>表示所传递实体的大小。服务器使用该 Header 从报文正文中读取数据，浏览器和 cURL 等工具会自动生成该标头。</td>
+</tr>
+<tr>
+<td>Content-Encoding</td>
+<td>Content-Encoding: gzip</td>
+<td>数据在传递之前可以进行多重转换。例如，可以对大量数据进行压缩，以减小信息的大小。使用的编码类型应使用 Content-Encoding Header 指定。</td>
+</tr>
+</tbody></table>
+<h4 id="Request-Headers"><a href="#Request-Headers" class="headerlink" title="Request Headers"></a>Request Headers</h4><p>客户端在 HTTP 事务中发送 <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616">Request Headers</a>。这些 Headers 用于 HTTP 请求，与信息内容无关。以下是 HTTP 请求中常见的标头。</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Host</td>
+<td>Host: <a href="www.inlanefreight.com">www.inlanefreight.com</a></td>
+<td>用于指定查询资源的主机。可以是域名或 IP 地址。HTTP 服务器可配置为不同网站的主机，这些网站可根据主机名显示。这使得 Host Header 成为一个重要的枚举目标，因为它可以显示目标服务器上是否存在其他主机。</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>User-Agent: curl&#x2F;7.77.0</td>
+<td></td>
+</tr>
+<tr>
+<td>Referer</td>
+<td>Referer: <a target="_blank" rel="noopener" href="http://www.inlanefreight.com/">http://www.inlanefreight.com/</a></td>
+<td>表示当前请求来自哪里。例如，点击谷歌搜索结果中的链接会使 <a target="_blank" rel="noopener" href="https://google.com/">https://google.com</a> 成为引用者。信任这个标头是很危险的，因为它很容易被操纵，导致意想不到的后果。</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>Accept: <em>&#x2F;</em></td>
+<td>Accept Header 描述了客户端可以理解的媒体类型。它可以包含多个媒体类型，以逗号分隔。<code>*/*</code> 值表示接受所有媒体类型。</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>Cookie: PHPSESSID&#x3D;b4e4fbd93540</td>
+<td>包含 name&#x3D;value 格式的 Cookie 值对。Cookie 是存储在客户端和服务器上的一段数据，用作标识符。每次请求都会将这些数据传递给服务器，从而保持客户端的访问权限。Cookie 还可用于其他目的，如保存用户偏好或会话跟踪。一个标头中可以有多个 Cookie，中间用分号隔开。</td>
+</tr>
+<tr>
+<td>Authorization</td>
+<td>Authorization: BASIC cGFzc3dvcmQK</td>
+<td>服务器识别客户的另一种方法。认证成功后，服务器会返回客户端独有的令牌。与 Cookie 不同，令牌只存储在客户端，由服务器根据每次请求进行检索。根据所使用的网络服务器和应用程序类型，有多种类型的身份验证类型。</td>
+</tr>
+</tbody></table>
+<p><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc7231#section-5">可以在此处</a>找到请求标头及其用法的完整列表。</p>
+<h4 id="Response-Headers"><a href="#Response-Headers" class="headerlink" title="Response Headers"></a>Response Headers</h4><p><a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc7231#section-6">Response Headers</a> 可在 HTTP 响应中使用，但与内容无关。某些 Response Headers （如年龄、位置和服务器）用于提供有关响应的更多上下文。以下是 HTTP 中常见的Response Headers</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Server</td>
+<td>Server: Apache&#x2F;2.2.14 (Win32)</td>
+<td>包含处理请求的 HTTP 服务器的信息。它可用于获取服务器的信息（如版本）并进一步枚举。</td>
+</tr>
+<tr>
+<td>Set-Cookie</td>
+<td>Set-Cookie: PHPSESSID&#x3D;b4e4fbd93540</td>
+<td>包含客户端识别所需的 cookie。浏览器会解析 cookie 并将其存储起来，以备将来请求之用。该 Header 的格式与 Cookie request header 相同。</td>
+</tr>
+<tr>
+<td>WWW-Authenticate</td>
+<td>WWW-Authenticate: BASIC realm&#x3D;”localhost”</td>
+<td>通知客户端访问请求资源所需的身份验证类型。</td>
+</tr>
+</tbody></table>
+<h4 id="Security-Headers"><a href="#Security-Headers" class="headerlink" title="Security Headers"></a>Security Headers</h4><p>最后是 <a target="_blank" rel="noopener" href="https://owasp.org/www-project-secure-headers/">Security Headers</a>。随着浏览器种类的增多和基于网络的攻击的增加，有必要定义某些增强安全性的 Header 。HTTP Security Headers 是一类响应 Header ，用于指定浏览器在访问网站时应遵循的某些规则和策略。</p>
+<table>
+<thead>
+<tr>
+<th>Header</th>
+<th>示例</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Content-Security-Policy</td>
+<td>Content-Security-Policy: script-src ‘self’</td>
+<td>规定网站对外部注入资源的策略。这可以是 JavaScript 代码，也可以是脚本资源。该 Header 指示浏览器只接受来自特定可信域的资源，从而防止跨站脚本 (XSS) 等攻击。</td>
+</tr>
+<tr>
+<td>Strict-Transport-Security</td>
+<td>Strict-Transport-Security: max-age&#x3D;31536000</td>
+<td>防止浏览器通过明文 HTTP 协议访问网站，并强制所有通信通过安全的 HTTPS 协议进行。这样，攻击者就无法嗅探网络流量和访问受保护的信息，如密码或其他敏感数据。</td>
+</tr>
+<tr>
+<td>Referrer-Policy</td>
+<td>Referrer-Policy: origin</td>
+<td>决定浏览器是否应包含通过 Referer 标头指定的值。它有助于避免在浏览网站时泄露敏感的 URL 和信息。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注意：本节只提及一小部分常见的 HTTP 标头。HTTP 通信中还可以使用许多其他上下文标头。应用程序也可以根据自己的需求定义自定义标头。标准 HTTP 标头的完整列表可在<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">此处</a>找到</p>
+</blockquote>
+<h4 id="使用-cURL-查看-Headers-内容"><a href="#使用-cURL-查看-Headers-内容" class="headerlink" title="使用 cURL 查看 Headers 内容"></a>使用 cURL 查看 Headers 内容</h4><p>在上一节中，我们看到了如何使用 cURL 的 -v 标志来显示 HTTP 请求和响应的全部细节。如果我们只想查看 response headers，那么可以使用 -I 标志发送 HEAD 请求，并只显示 response headers。此外，我们还可以使用 -i 标志同时 headers 和响应主体（例如 HTML 代码）。两者的区别在于，-I 发送的是 HEAD 请求（将在下一节中介绍），而 -i 发送的是我们指定的任何请求，并同时打印 Headers 信息。</p>
+<p>下面的命令显示了使用 -I 标志的输出示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -I google.com</span><br></pre></td></tr></table></figure>
+
+<p>除了查看 Headers 信息外，cURL 还允许我们使用 -H 标志设置 Request Headers 信息，我们将在后面的章节中看到这一点。有些 Headers，如 User-Agent 或 Cookie 标头，有自己的参数。例如，我们可以使用 -A 来设置 User-Agent，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -I google.com -A <span class="string">&#x27;Mozilla/5.0&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="二、HTTP-方法"><a href="#二、HTTP-方法" class="headerlink" title="二、HTTP 方法"></a>二、HTTP 方法</h2><h3 id="5-HTTP-方法和代码"><a href="#5-HTTP-方法和代码" class="headerlink" title="5. HTTP 方法和代码"></a>5. HTTP 方法和代码</h3><p>HTTP 支持多种访问资源的方法。在 HTTP 协议中，多种请求方法允许浏览器向服务器发送信息、表单或文件。除其他外，这些方法用于告诉服务器如何处理我们发送的请求以及如何回复。</p>
+<p>我们在前面部分测试的 HTTP 请求中看到了不同的 HTTP 方法。使用 cURL，如果我们使用 -v 预览完整请求，第一行包含 HTTP 方法（例如 GET &#x2F; HTTP&#x2F;1.1 ），而使用浏览器开发工具，HTTP 方法将显示在 Method 列中。此外，response headers 还包含 HTTP 响应代码，该代码说明了处理 HTTP 请求的状态。</p>
+<h4 id="请求方法"><a href="#请求方法" class="headerlink" title="请求方法"></a>请求方法</h4><p>以下是一些常用的方法：</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td>请求特定资源。附加数据可通过 URL 中的查询字符串（如 ?param&#x3D;value）传递给服务器。</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>向服务器发送数据。它可以处理多种类型的输入，如文本、PDF 和其他形式的二进制数据。这些数据会附加在请求正文中，出现在标头之后。POST 方法通常用于发送信息（如表单&#x2F;登录）或向网站上传数据（如图像或文档）。</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>请求向服务器发出 GET 请求时返回的 Headers 信息。它不会返回请求正文，通常用于在下载资源前检查响应长度。</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>在服务器上创建新资源。允许使用这种方法而不进行适当控制，可能会导致上传恶意资源。</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>删除网络服务器上的现有资源。如果安全措施不当，可能会删除网络服务器上的关键文件，从而导致拒绝服务（DoS）。</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>返回有关服务器的信息，如服务器接受的方法。</td>
+</tr>
+<tr>
+<td>PATCH</td>
+<td>对指定位置的资源进行部分修改。</td>
+</tr>
+</tbody></table>
+<p>该列表仅突出显示了一些最常用的 HTTP 方法。特定方法的可用性取决于服务器以及应用程序配置。有关 HTTP 方法的完整列表，您可以访问此<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods">链接</a>。</p>
+<blockquote>
+<p>注意：大多数现代 Web 应用程序主要依赖 GET 和 POST 方法。但是，任何使用 REST API 的 Web 应用程序也依赖于 PUT 和 DELETE ，它们分别用于更新和删除 API 端点上的数据。有关更多详细信息，请参阅 <a target="_blank" rel="noopener" href="https://academy.hackthebox.com/module/details/75">Web 应用程序简介</a>模块。</p>
+</blockquote>
+<h4 id="响应代码"><a href="#响应代码" class="headerlink" title="响应代码"></a>响应代码</h4><p>HTTP 状态代码用于告诉客户端其请求的状态。 HTTP 服务器可以返回五种类型的响应代码：</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1XX</td>
+<td>提供信息，不影响对申请的处理。</td>
+</tr>
+<tr>
+<td>2XX</td>
+<td>当请求成功时返回。</td>
+</tr>
+<tr>
+<td>3XX</td>
+<td>服务器重定向客户端时返回。</td>
+</tr>
+<tr>
+<td>4XX</td>
+<td>表示客户端请求不当。例如，请求不存在的资源或请求不良格式。</td>
+</tr>
+<tr>
+<td>5XX</td>
+<td>当 HTTP 服务器本身出现问题时返回。</td>
+</tr>
+</tbody></table>
+<p>以下是上述每种 HTTP 方法类型的一些常见示例：</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>200 OK</td>
+<td>请求成功时返回，响应体通常包含请求的资源。</td>
+</tr>
+<tr>
+<td>302 Found</td>
+<td>将客户端重定向到另一个 URL。例如，在成功登录后将用户重定向到其仪表板。</td>
+</tr>
+<tr>
+<td>400 Bad Request</td>
+<td>遇到畸形请求（如缺少行结束符的请求）时返回。</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>表示客户端没有适当的资源访问权限。当服务器检测到用户的恶意输入时，也会返回该值。</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>当客户端请求的资源在服务器上不存在时返回。</td>
+</tr>
+<tr>
+<td>500 Internal Server Error</td>
+<td>当服务器无法处理请求时返回。</td>
+</tr>
+</tbody></table>
+<p>有关标准 HTTP 响应代码的完整列表，您可以访问此<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status">链接</a>。除了标准的 HTTP 代码之外，各种服务器和提供商（例如 <a target="_blank" rel="noopener" href="https://support.cloudflare.com/hc/en-us/articles/115003014432-HTTP-Status-Codes">Cloudflare</a> 或 <a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/AmazonSimpleDB/latest/DeveloperGuide/APIError.html">AWS</a>）还实现了自己的代码。</p>
+<h3 id="6-GET"><a href="#6-GET" class="headerlink" title="6. GET"></a>6. GET</h3><p>每当我们访问任何 URL 时，我们的浏览器都会默认使用 GET 请求来获取该 URL 上托管的远程资源。一旦浏览器收到它请求的初始页面；它可以使用各种 HTTP 方法发送其他请求。</p>
+<h4 id="HTTP-基本身份验证"><a href="#HTTP-基本身份验证" class="headerlink" title="HTTP 基本身份验证"></a>HTTP 基本身份验证</h4><p>当我们访问一些网站时，它会提示我们输入用户名和密码。与使用 HTTP 参数来验证用户凭据（例如 POST 请求）的常用登录表单不同，这种类型的身份验证使用 basic HTTP authentication 由 Web 服务器直接处理的 来保护特定页面&#x2F;目录，而不直接与 Web 应用程序交互。</p>
+<p>我们尝试使用 cURL 访问该页面，然后添加-i以查看响应标头：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -i http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/</span><br><span class="line">HTTP/1.1 401 Authorization Required</span><br><span class="line">Date: Mon, 21 Feb 2022 13:11:46 GMT</span><br><span class="line">Server: Apache/2.4.41 (Ubuntu)</span><br><span class="line">Cache-Control: no-cache, must-revalidate, max-age=0</span><br><span class="line">WWW-Authenticate: Basic realm=<span class="string">&quot;Access denied&quot;</span></span><br><span class="line">Content-Length: 13</span><br><span class="line">Content-Type: text/html; charset=UTF-8</span><br><span class="line"></span><br><span class="line">Access denied</span><br></pre></td></tr></table></figure>
+
+<p>正如我们所看到的，我们获得Access denied了响应正文，并且在 WWW-Authenticate 的 Header 信息中展示了 Basic realm&#x3D;”Access denied”，这确认了该页面确实使用了 basic HTTP auth。我们在 cURL 中使用 <code>-u</code> 参数来发送验证信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -u admin:admin http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/</span><br></pre></td></tr></table></figure>
+
+<p>这次我们在响应信息中可以看到页面内容。我们还可以通过另外一种方式提供的 basic HTTP auth 信息，进行验证：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl http://admin:admin@&lt;SERVER_IP&gt;:&lt;PORT&gt;/</span><br></pre></td></tr></table></figure>
+
+<h4 id="HTTP-授权-Header"><a href="#HTTP-授权-Header" class="headerlink" title="HTTP 授权 Header"></a>HTTP 授权 Header</h4><p>让我们对上述命令添加一个 -v 参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -v http://admin:admin@&lt;SERVER_IP&gt;:&lt;PORT&gt;/</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到 HTTP 请求将 Authorization Header 设置为 <code>Basic YWRtaW46YWRtaW4=</code>，这是 base64 对 <code>admin:admin</code> 进行编码之后得到的。如果我们使用现代的身份验证方法（例如 JWT ），则 Authorization 将是 Bearer 类型，并将包含更长的加密令牌。</p>
+<p>让我们尝试手动设置 Authorization，而不提供凭据，看看它是否允许我们访问该页面。我们可以使用 -H 参数设置 Headers，并将使用与上述 HTTP 请求相同的值。我们可以多次添加 -H 标志来指定多个标头：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -H <span class="string">&#x27;Authorization: Basic YWRtaW46YWRtaW4=&#x27;</span> http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/</span><br></pre></td></tr></table></figure>
+
+<p>正如我们所看到的，这也使我们能够访问该页面。这些是我们可以用来对页面进行身份验证的几种方法。大多数现代 Web 应用程序使用使用后端脚本语言（例如 PHP）构建的登录表单，该表单利用 HTTP POST 请求对用户进行身份验证，然后返回 cookie 来维持其身份验证。</p>
+<h3 id="7-POST"><a href="#7-POST" class="headerlink" title="7. POST"></a>7. POST</h3><p>在上一节中，我们了解了 Web 应用程序如何使用 GET 请求来实现搜索和访问页面等功能。但是，每当 Web 应用程序需要传输文件或从 URL 移动用户参数时，它们都会使用 POST 请求。</p>
+<p>HTTP POST 将用户参数放置在 HTTP 请求正文中。这具有三个主要优点：</p>
+<ul>
+<li>减少日志记录：由于 POST 请求可能会传输大文件（例如文件上传），因此服务器将所有上传的文件记录为请求的 URL 的一部分并不高效，就像使用通过 GET 请求上传的文件。</li>
+<li>更少的编码要求：URL 被设计为共享，这意味着它们需要符合可以转换为字母的字符。 POST 请求将数据放置在可接受二进制数据的正文中。唯一需要编码的字符是用于分隔参数的字符。</li>
+<li>可发送更多数据：可以发送更多数据：最大 URL 长度因浏览器 (Chrome&#x2F;Firefox&#x2F;IE)、Web 服务器 (IIS、Apache、nginx)、内容而异交付网络（Fastly、Cloudfront、Cloudflare），甚至 URL 缩短器（bit.ly、amzn.to）。一般来说，URL 的长度应保持在 2,000 个字符以下，因此它们无法处理大量数据。</li>
+</ul>
+<h4 id="使用-cURL-发送-POST-请求"><a href="#使用-cURL-发送-POST-请求" class="headerlink" title="使用 cURL 发送 POST 请求"></a>使用 cURL 发送 POST 请求</h4><p>我们将使用 -X POST 标志来发送 POST 请求。然后，要添加 POST 数据，我们可以使用 -d 标志并在其后添加上述数据，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -X POST -d <span class="string">&#x27;username=admin&amp;password=admin&#x27;</span> http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>提示：许多登录表单在经过身份验证后会将我们重定向到不同的页面（例如&#x2F;仪表板.php）。如果我们想使用 cURL 进行重定向，我们可以使用 -L 标志。</p>
+</blockquote>
+<h4 id="Authenticated-Cookies"><a href="#Authenticated-Cookies" class="headerlink" title="Authenticated Cookies"></a>Authenticated Cookies</h4><p>如果我们成功通过身份验证，我们应该会收到一个 cookie，以便我们的浏览器可以保留我们的身份验证，并且我们不需要每次访问该页面时都登录。我们可以使用 -v 或 -i 标志来查看响应，该响应应包含带有我们经过身份验证的 cookie 的 Set-Cookie Header：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -X POST -d <span class="string">&#x27;username=admin&amp;password=admin&#x27;</span> http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/ -i</span><br></pre></td></tr></table></figure>
+
+<p>通过经过身份验证的 cookie，我们现在应该能够与 Web 应用程序进行交互，而无需每次都提供我们的凭据。为了测试这一点，我们可以在 cURL 中使用 -b 标志设置上述 cookie，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -b <span class="string">&#x27;PHPSESSID=c1nsa6op7vtk7kdis7bcnbadf1&#x27;</span> http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/</span><br></pre></td></tr></table></figure>
+
+<p>正如我们所看到的，我们确实通过了身份验证并进入了搜索功能。也可以将 cookie 指定为Header，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -H <span class="string">&#x27;Cookie: PHPSESSID=c1nsa6op7vtk7kdis7bcnbadf1&#x27;</span> http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/</span><br></pre></td></tr></table></figure>
+
+<h4 id="JSON-Data"><a href="#JSON-Data" class="headerlink" title="JSON Data"></a>JSON Data</h4><p>大部分情况下，POST 请求发送时候都是带有 json 格式的数据，尝试用 cURL 发送一个 json 数据的请求：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -X POST -d <span class="string">&#x27;&#123;&quot;search&quot;:&quot;london&quot;&#125;&#x27;</span> -b <span class="string">&#x27;PHPSESSID=c1nsa6op7vtk7kdis7bcnbadf1&#x27;</span> -H <span class="string">&#x27;Content-Type: application/json&#x27;</span> http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/search.php</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-CRUD-API"><a href="#8-CRUD-API" class="headerlink" title="8. CRUD API"></a>8. CRUD API</h3><h4 id="APIs"><a href="#APIs" class="headerlink" title="APIs"></a>APIs</h4><p>API 有多种类型。许多API用于与数据库交互，这样我们就可以在API查询中指定请求的表和请求的行，然后使用HTTP方法执行所需的操作。</p>
+<h4 id="CRUD"><a href="#CRUD" class="headerlink" title="CRUD"></a>CRUD</h4><p>正如我们所看到的，我们可以通过此类 API 轻松指定要执行操作的表和行。然后我们可以利用不同的 HTTP 方法对该行执行不同的操作。一般来说，API 对请求的数据库实体执行 4 个主要操作：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>HTTP 方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Create</td>
+<td>POST</td>
+<td>将指定数据添加到数据库表</td>
+</tr>
+<tr>
+<td>Read</td>
+<td>GET</td>
+<td>从数据库表中读取指定实体</td>
+</tr>
+<tr>
+<td>Update</td>
+<td>PUT</td>
+<td>更新指定数据库表的数据</td>
+</tr>
+<tr>
+<td>Delete</td>
+<td>DELETE</td>
+<td>从数据库表中删除指定行</td>
+</tr>
+</tbody></table>
+<p>这四个操作主要与众所周知的 CRUD API 相关，但相同的原理也适用于 REST API 和其他几种类型的 API。当然，并非所有 API 都以相同的方式工作，用户访问控制将限制我们可以执行的操作以及我们可以看到的结果。 Web 应用程序简介模块进一步解释了这些概念，因此您可以参考它以获取有关 API 及其用法的更多详细信息。</p>
+<h4 id="Read"><a href="#Read" class="headerlink" title="Read"></a>Read</h4><p>与 API 交互时我们要做的第一件事就是读取数据。如前所述，我们可以简单地在 API 后面指定表名（例如 &#x2F;city ），然后指定我们的搜索词（例如 &#x2F;london ），如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/api.php/city/london</span><br><span class="line"></span><br><span class="line">[&#123;<span class="string">&quot;city_name&quot;</span>:<span class="string">&quot;London&quot;</span>,<span class="string">&quot;country_name&quot;</span>:<span class="string">&quot;(UK)&quot;</span>&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>我们看到结果以 JSON 字符串的形式发送。为了将其正确格式化为 JSON 格式，我们可以将输出通过管道传输到 jq 实用程序，该实用程序将对其进行正确格式化。我们还将使用 -s 静默任何不需要的 cURL 输出，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -s http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/api.php/city/london | jq</span><br><span class="line"></span><br><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">&quot;city_name&quot;</span>: <span class="string">&quot;London&quot;</span>,</span><br><span class="line">    <span class="string">&quot;country_name&quot;</span>: <span class="string">&quot;(UK)&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h4 id="Create"><a href="#Create" class="headerlink" title="Create"></a>Create</h4><p>要添加新条目，我们可以使用 HTTP POST 请求，这与我们在上一节中执行的操作非常相似。我们可以简单地 POST JSON 数据，它将被添加到表中。由于此 API 使用 JSON 数据，我们还将 Content-Type 标头设置为 JSON，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -X POST http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/api.php/city/ -d <span class="string">&#x27;&#123;&quot;city_name&quot;:&quot;City&quot;, &quot;country_name&quot;:&quot;Country&quot;&#125;&#x27;</span> -H <span class="string">&#x27;Content-Type: application/json&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，我们可以读取我们添加的城市，看看它是否已成功添加：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -s http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/api.php/city/City | jq</span><br></pre></td></tr></table></figure>
+
+<h4 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h4><p>现在我们知道如何通过 API 读取和写入条目，让我们开始讨论其他两种 HTTP 方法到目前为止我们还没有使用过： PUT 和 DELETE 。正如本节开头提到的， PUT 用于更新 API 条目并修改其详细信息，而 DELETE 用于删除特定实体。</p>
+<blockquote>
+<p>注意： HTTP PATCH 方法也可用于更新 API 条目而不是 PUT 。准确地说，PATCH 用于部分更新条目（仅修改其部分数据“例如仅 city_name”），而 PUT 用于更新整个条目。我们还可以使用HTTP OPTIONS方法来查看服务器接受两者中的哪一个，然后相应地使用适当的方法。在本节中，我们将重点关注 PUT 方法，尽管它们的用法非常相似。</p>
+</blockquote>
+<p>使用 PUT 与 POST 非常相似，唯一的区别是我们必须指定我们想要的实体的名称在 URL 中进行编辑，否则 API 将不知道要编辑哪个实体。因此，我们所要做的就是在 URL 中指定城市名称，将请求方法更改为 PUT ，并像使用 POST 一样提供 JSON 数据，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -X PUT http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/api.php/city/london -d <span class="string">&#x27;&#123;&quot;city_name&quot;:&quot;New_City&quot;, &quot;country_name&quot;:&quot;Country&quot;&#125;&#x27;</span> -H <span class="string">&#x27;Content-Type: application/json&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：在某些 API 中，更新操作也可用于创建新条目。基本上，我们会发送数据，如果它不存在，它会创建它。例如，在上面的示例中，即使包含伦敦城市的条目不存在，它也会使用我们传递的详细信息创建一个新条目。然而，在我们的示例中，情况并非如此。尝试更新一个不存在的城市，看看会得到什么。</p>
+</blockquote>
+<h4 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h4><p>最后，我们尝试删除一个城市，这就像读取一个城市一样简单。我们只需为 API 指定城市名称并使用 HTTP DELETE 方法，它就会删除该条目，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -X DELETE http://&lt;SERVER_IP&gt;:&lt;PORT&gt;/api.php/city/New_City</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>d4rk30
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.nohacker.me/2023/07/02/bug-bounty-hunter-web-requests/" title="【Bug Bounty Hunter】第一章-Web 请求">https://www.nohacker.me/2023/07/02/bug-bounty-hunter-web-requests/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+              <a href="/tags/HTTPS/" rel="tag"># HTTPS</a>
+              <a href="/tags/Web-%E5%8D%8F%E8%AE%AE/" rel="tag"># Web 协议</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/03/swiftui-ji-chu-chuang-jian-he-zu-he-shi-tu/" rel="prev" title="SwiftUI基础-创建和组合视图">
+                  <i class="fa fa-angle-left"></i> SwiftUI基础-创建和组合视图
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/08/30/bug-bounty-hunter-xss/" rel="next" title="【Bug Bounty Hunter】第七章-跨站脚本（XSS）">
+                  【Bug Bounty Hunter】第七章-跨站脚本（XSS） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">d4rk30</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"d4rk30","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

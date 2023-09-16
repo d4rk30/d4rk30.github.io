@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文是根据Michael Ossmann先生录制的11部教学视频整理的文字版，对其内容进行修正和精简，使得没有基础的同学可以更快的上手。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HackRF教程（一）">
+<meta property="og:url" content="https://www.nohacker.me/2019/04/18/hackrf-jiao-cheng-yi/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="本文是根据Michael Ossmann先生录制的11部教学视频整理的文字版，对其内容进行修正和精简，使得没有基础的同学可以更快的上手。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-addcac89d448b18acc547862f7562504aeacfa84.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-5de121be35ef87bbbc95c2cff6d890c14fcd2aca.jpeg">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-95797ed20107cd68160e1cf6b0f65902d247ae1e.jpeg">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-59e49023c79da3df9a94ecf54ee599b926f98170.jpeg">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-27f3e586380aab7b880bffc74e157ebe4c9ec591.jpeg">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-c1426f05a53b254ea498f58f533f0c6178ac944b.jpeg">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-68ea155fa4b81ace6c11c3bd3a6ada4bf833850d.jpeg">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-091fa7740d9521cfdaef5a5bae27f266e28fa972.jpeg">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-fbfce4f6bfdc4d5d7205850c9c10c69e2fb8d4e4.jpeg">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-1cca39724d7acb2358cc33e962042a767e9fd7ed.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-2f7c5c6179a2737ad02153dee85398b3bd9b27d9.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-601a0452c6c4a28532323aacbca6b0f187b51288.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-9b0cb18094b3360acff9a9a5d81480f5c0d561fa.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-31d7510f807ca4e49730f695d53a851d2dc1dd41.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-d548e4c90af34c890e95e28683fdaa654c01a8a3.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-2774775731f6c629ceb22a4955a6ee401cc2619b.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-89e7867d967bf919409c029a84655d9373d822ee.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-a2bf7f98b5eccd3f9fec37ec09b855aa44d6adb8.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-186c7930264dbe7e93e6d23f0503b748f50eed8e.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-5642c275e22269aeaaccc73160d0911708bb9049.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-6d9547e9a3f96edc27d8e88643f4606284776a78.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-0f54b835186b7a5fcca1de6bbdc1545c987356b7.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-268e4c23c8c434ced36977de5437769aaafb8718.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-0c6b00f1d1028a81a15f160fb436bba06441353f.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-662b54aab6663ede6eedd050183cf6e64052720a.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-91d48d541893e64d17f7bab17e9cd93de3c9c666.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-ad8e332ae1ca0685f6430c507fc5530fdd203401.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-8d27af4fb4621e6b2073b4a7d41b4566270b2bc8.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-56c6ca583bf876870e5f02cc70b3999f235433f3.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-41d725b8cc656fdf7a3dc236b051683e79fc6d01.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-b2917dcb72398cfa03ed5bdcd275624520ba8cf7.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-9a42a2578a5165409c09edbc20e6a1d922229314.png">
+<meta property="article:published_time" content="2019-04-18T10:14:47.000Z">
+<meta property="article:modified_time" content="2023-08-31T14:43:33.000Z">
+<meta property="article:author" content="d4rk30">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-addcac89d448b18acc547862f7562504aeacfa84.png">
+
+
+<link rel="canonical" href="https://www.nohacker.me/2019/04/18/hackrf-jiao-cheng-yi/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2019/04/18/hackrf-jiao-cheng-yi/","path":"2019/04/18/hackrf-jiao-cheng-yi/","title":"HackRF教程（一）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HackRF教程（一） | 黑客与产品</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">黑客与产品</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩上思考🤔️</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-text">0x00 准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%8A%A8%E6%89%8B%E5%AE%9E%E9%AA%8C"><span class="nav-text">0x01 动手实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%90%8D%E8%AF%8D"><span class="nav-text">0x02 名词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-text">0x03 参考链接</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩上思考🤔️</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2019/04/18/hackrf-jiao-cheng-yi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+      <meta itemprop="description" content="站在巨人的肩上思考🤔️">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="HackRF教程（一） | 黑客与产品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HackRF教程（一）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-04-18 18:14:47" itemprop="dateCreated datePublished" datetime="2019-04-18T18:14:47+08:00">2019-04-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-31 22:43:33" itemprop="dateModified" datetime="2023-08-31T22:43:33+08:00">2023-08-31</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/04/18/hackrf-jiao-cheng-yi/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/18/hackrf-jiao-cheng-yi/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-addcac89d448b18acc547862f7562504aeacfa84.png" alt="img"></p>
+<blockquote>
+<p>本文是根据Michael Ossmann先生录制的11部教学视频整理的文字版，对其内容进行修正和精简，使得没有基础的同学可以更快的上手。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="0x00-准备工作"><a href="#0x00-准备工作" class="headerlink" title="0x00 准备工作"></a>0x00 准备工作</h2><p>本次课程使用的系统是 <del>Ubuntu 18.04.2 LTS</del> Ubuntu 20.04 LTS版，首先是安装好实验所需要的软件和相关依赖包。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sudo apt install gnuradio gr-osmosdr hackrf</span><br></pre></td></tr></table></figure>
+
+<p>然后连接hackRF，输入 <code>hackrf_info</code>，查看是否连接成功。</p>
+<h2 id="0x01-动手实验"><a href="#0x01-动手实验" class="headerlink" title="0x01 动手实验"></a>0x01 动手实验</h2><p>在安装完成 GNU Radio 之后，已经自动安装了 GNU Radio Companion，输入以下命令，启动 GNU Radio Companion：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ gnuradio-companion</span><br></pre></td></tr></table></figure>
+
+<p>首先双击 Options，修改 Generate Options 为 WX GUI。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-5de121be35ef87bbbc95c2cff6d890c14fcd2aca.jpeg" alt="img"></p>
+<p>在右侧的组件区找到 Sources-&gt;osmocom Source 拖到工作区。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-95797ed20107cd68160e1cf6b0f65902d247ae1e.jpeg" alt="img"></p>
+<p>继续从右边找到 Instrumentation-&gt;WX-&gt;WX GUI FFT Sink，然后连在一起（分布点击蓝色 out 和 in 就可以连在一起）。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-59e49023c79da3df9a94ecf54ee599b926f98170.jpeg" alt="img"></p>
+<p>双击 Variable 修改 samp_rate 的值为10e6。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-27f3e586380aab7b880bffc74e157ebe4c9ec591.jpeg" alt="img"></p>
+<p>接下来修改 osmocom Source 中的数据：</p>
+<ul>
+<li>Ch0:Frequency(Hz) &#x3D; 97.9e6</li>
+<li>Ch0:RF Gain(db) &#x3D; 0</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-c1426f05a53b254ea498f58f533f0c6178ac944b.jpeg" alt="img"></p>
+<p>然后再修改 WX GUI FFT Sink 中的数据：</p>
+<ul>
+<li>Average &#x3D; On</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-68ea155fa4b81ace6c11c3bd3a6ada4bf833850d.jpeg" alt="img"></p>
+<p>到目前为止，我们已经可以初步利用 Hack RF 来接收广播信号了，点击上面的播放按钮，首次运行时候会出现下面的提示，不用管他，直接点击 OK 即可。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-091fa7740d9521cfdaef5a5bae27f266e28fa972.jpeg" alt="img"><br><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-fbfce4f6bfdc4d5d7205850c9c10c69e2fb8d4e4.jpeg" alt="img"></p>
+<p>接下来继续修改 WX GUI FFT Sink 中的数据：</p>
+<ul>
+<li>Baseband Freq &#x3D; center_freq</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-1cca39724d7acb2358cc33e962042a767e9fd7ed.png" alt="img"></p>
+<p>从右边找到 Variables-&gt;Variables，添加变量：</p>
+<ul>
+<li>ID &#x3D; center_freq</li>
+<li>Value &#x3D; 97.9e6</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-2f7c5c6179a2737ad02153dee85398b3bd9b27d9.png" alt="img"></p>
+<p>然后来替换 osmocom Source 中的数据：</p>
+<ul>
+<li>Ch0:Frequency(Hz) &#x3D; center_freq</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-601a0452c6c4a28532323aacbca6b0f187b51288.png" alt="img"></p>
+<p>现在点击上面的播放按钮，可以看到中间频率值已经变化了。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-9b0cb18094b3360acff9a9a5d81480f5c0d561fa.png" alt="img"></p>
+<p>从右边找到 Math Operators-&gt;Multiply，添加到图中，并且和 osmocom Source 连接起来。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-31d7510f807ca4e49730f695d53a851d2dc1dd41.png" alt="img"></p>
+<p>从右边找到 Waveform Generators-&gt;Signal Source，拖到图中，并且和 Multiply 连接起来。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-d548e4c90af34c890e95e28683fdaa654c01a8a3.png" alt="img"></p>
+<p>下面添加一个新的变量：</p>
+<ul>
+<li>ID &#x3D; channel_freq</li>
+<li>Value &#x3D; 106.8e6</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-2774775731f6c629ceb22a4955a6ee401cc2619b.png" alt="img"></p>
+<p>下面设置 Signal Source 的数据：</p>
+<ul>
+<li>Frequency &#x3D; center_freq - channel_freq</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-89e7867d967bf919409c029a84655d9373d822ee.png" alt="img"></p>
+<p>然后再次添加 WX GUI FFT Sink ，与 Multiply 连接起来，并修改数据：</p>
+<ul>
+<li>Baseband Freq &#x3D; channel_freq</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-a2bf7f98b5eccd3f9fec37ec09b855aa44d6adb8.png" alt="img"><br><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-186c7930264dbe7e93e6d23f0503b748f50eed8e.png" alt="img"></p>
+<p>这时候在点击播放，可以看到两个FFT的波形图。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-5642c275e22269aeaaccc73160d0911708bb9049.png" alt="img"></p>
+<p>下面开始正式进行音频解调，从右边找到 Filters -&gt; Low Pass Filter 拖到图中，并且和 Multiply 连接起来。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-6d9547e9a3f96edc27d8e88643f4606284776a78.png" alt="img"></p>
+<p>此时添加一个新的变量：</p>
+<ul>
+<li>ID &#x3D; channel_width</li>
+<li>Value &#x3D; 200e3</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-0f54b835186b7a5fcca1de6bbdc1545c987356b7.png" alt="img"></p>
+<p>然后修改 Low Pass Filter 的数据：</p>
+<ul>
+<li>Decimation &#x3D; int(samp_rate&#x2F;channel_width)</li>
+<li>Cutoff Freq &#x3D; 75e3</li>
+<li>Transition Width &#x3D; 25e3</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-268e4c23c8c434ced36977de5437769aaafb8718.png" alt="img"></p>
+<p>从右边找到 Resamplers -&gt; Rational Resampler 拖到图中，并且和 Low Pass Filter 连接起来，然后修改数据：</p>
+<ul>
+<li>Interpolation &#x3D; 12</li>
+<li>Decimation &#x3D; 5</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-0c6b00f1d1028a81a15f160fb436bba06441353f.png" alt="img"><br>1<a target="_blank" rel="noopener" href="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-ea29c71065e27213ceb602179050ed61a1b84897.png">img</a></p>
+<p>继续从右边找到 Modulators -&gt; WBFM Receive 拖到图中，和 Rational Resampler 连接起来，并修改数据：</p>
+<ul>
+<li>Quadrature &#x3D; 480e3</li>
+<li>Audio Decimations &#x3D; 10</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-662b54aab6663ede6eedd050183cf6e64052720a.png" alt="img"></p>
+<p>最后从右边把 Audio -&gt; Audio Sink 拖到图中并和WBFM Receive连接一起，修改数据：</p>
+<ul>
+<li>Sample Rate &#x3D; 48KHz</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-91d48d541893e64d17f7bab17e9cd93de3c9c666.png" alt="img"></p>
+<p>然后右键屏蔽下图的FFT。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-ad8e332ae1ca0685f6430c507fc5530fdd203401.png" alt="img"></p>
+<p>再次点击播放按钮就可以收听到广播了。</p>
+<p>如果这时候听不到声音，可以增加一个音量调节的功能，从右边找到 Math Operators-&gt;Multiply Const，然后按照图上的方式连接，你会看到红色的报错，暂时先不用管。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-8d27af4fb4621e6b2073b4a7d41b4566270b2bc8.png" alt="img"></p>
+<p>然后继续在右边找到 GUI Widgets -&gt; WX -&gt; WX GUI Slider 拖到图中，然后修改数据：</p>
+<ul>
+<li>ID &#x3D; audio_gain</li>
+<li>Default Value &#x3D; 1</li>
+<li>Minimum &#x3D; 0</li>
+<li>Maximum &#x3D; 10</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-56c6ca583bf876870e5f02cc70b3999f235433f3.png" alt="img"><br><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-41d725b8cc656fdf7a3dc236b051683e79fc6d01.png" alt="img"></p>
+<p>这时候在修改 Multiply Const 的数据：</p>
+<ul>
+<li>IO Type &#x3D; Float</li>
+<li>Constant &#x3D; audio_gain</li>
+</ul>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-b2917dcb72398cfa03ed5bdcd275624520ba8cf7.png" alt="img"><br><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-05-9a42a2578a5165409c09edbc20e6a1d922229314.png" alt="img"></p>
+<p>如果这个时候收听到声音杂音很大，波形图很卡，可以尝试降低采样率。</p>
+<h2 id="0x02-名词"><a href="#0x02-名词" class="headerlink" title="0x02 名词"></a>0x02 名词</h2><ul>
+<li>BB gain： 基带增益baseband frequency gain</li>
+<li>IF gain：中频增益Intermediate frequency gain</li>
+<li>RF gain：射频增益Radio frequency gain</li>
+</ul>
+<h2 id="0x03-参考链接"><a href="#0x03-参考链接" class="headerlink" title="0x03 参考链接"></a>0x03 参考链接</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/opensourcesdr/article/details/81143661">https://blog.csdn.net/opensourcesdr/article/details/81143661</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>d4rk30
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.nohacker.me/2019/04/18/hackrf-jiao-cheng-yi/" title="HackRF教程（一）">https://www.nohacker.me/2019/04/18/hackrf-jiao-cheng-yi/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/03/zhuan-zai-wu-lian-wang-an-quan-ba-ya-shi-zhan-di-gong-hao-lan-ya-ble-chu-tan/" rel="prev" title="【转载】物联网安全拔“牙”实战——低功耗蓝牙（BLE）初探">
+                  <i class="fa fa-angle-left"></i> 【转载】物联网安全拔“牙”实战——低功耗蓝牙（BLE）初探
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/" rel="next" title="一文看懂漏洞管理中的CPE">
+                  一文看懂漏洞管理中的CPE <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">d4rk30</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"d4rk30","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

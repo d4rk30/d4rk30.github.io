@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="大概是中文领域中讲解的最详细的一篇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文看懂漏洞管理中的CPE">
+<meta property="og:url" content="https://www.nohacker.me/2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="大概是中文领域中讲解的最详细的一篇">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-ef9990ae65d5db158646f5360baaa7f8872018a1.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-e0c0dfea73d271214f0f52e8ea5e5fe5da5f3861.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-82cab4275ec7d56f369c38b7faafdbc4363af68b.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-7ebc706c7e0d6db96b8ccdcf1f23f3ad860663ab.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-df14abc6c5b938e080cea2fb9820d1c79a286c6c.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-d5ba6b1be519960854b1e0b755dfc2d19c6d2f0b.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-c8cf091c8cca86302725459204197f3dee76cbf5.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-0d5611aa96d3f358185586478b28006c01a6e6f6.png">
+<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-cd9feda29ee79d30481a909b28cfbdec81fd6bcc.png">
+<meta property="article:published_time" content="2021-09-01T10:15:15.000Z">
+<meta property="article:modified_time" content="2023-08-31T15:13:45.000Z">
+<meta property="article:author" content="d4rk30">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-ef9990ae65d5db158646f5360baaa7f8872018a1.png">
+
+
+<link rel="canonical" href="https://www.nohacker.me/2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/","path":"2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/","title":"一文看懂漏洞管理中的CPE"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>一文看懂漏洞管理中的CPE | 黑客与产品</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">黑客与产品</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩上思考🤔️</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E4%BB%80%E4%B9%88%E6%98%AFCPE"><span class="nav-text">0x00 什么是CPE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Naming"><span class="nav-text">Naming</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#WFN"><span class="nav-text">WFN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#URI"><span class="nav-text">URI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FS"><span class="nav-text">FS</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Name-Matching"><span class="nav-text">Name Matching</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dictionary"><span class="nav-text">Dictionary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Applicability-Language"><span class="nav-text">Applicability Language</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-NVD%E7%BD%91%E7%AB%99%E4%B8%8A%E7%9A%84CPE%E6%80%8E%E4%B9%88%E7%9C%8B"><span class="nav-text">0x01 NVD网站上的CPE怎么看</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Basic"><span class="nav-text">Basic</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%A7%8D"><span class="nav-text">第一种</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%A7%8D"><span class="nav-text">第二种</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%A7%8D"><span class="nav-text">第三种</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Running-on-with"><span class="nav-text">Running on&#x2F;with</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advanced"><span class="nav-text">Advanced</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%80%BB%E7%BB%93"><span class="nav-text">0x02 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3"><span class="nav-text">0x03 官方文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E4%B8%80%E4%B8%AA%E5%A4%84%E7%90%86CPE%E7%9A%84Py%E5%8C%85"><span class="nav-text">0x04 一个处理CPE的Py包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-text">0x05 参考链接</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩上思考🤔️</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+      <meta itemprop="description" content="站在巨人的肩上思考🤔️">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="一文看懂漏洞管理中的CPE | 黑客与产品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一文看懂漏洞管理中的CPE
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-01 18:15:15" itemprop="dateCreated datePublished" datetime="2021-09-01T18:15:15+08:00">2021-09-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-31 23:13:45" itemprop="dateModified" datetime="2023-08-31T23:13:45+08:00">2023-08-31</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-ef9990ae65d5db158646f5360baaa7f8872018a1.png" alt="img"></p>
+<blockquote>
+<p>大概是中文领域中讲解的最详细的一篇</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="0x00-什么是CPE"><a href="#0x00-什么是CPE" class="headerlink" title="0x00 什么是CPE"></a>0x00 什么是CPE</h2><p>CPE(Common Platform Enumeration)，中文译为通用枚举平台，是采用了一种结构化命名的方式，基于URI(Uniform Resource Identifiers)一种通用语法规则，通俗的讲：CPE是用来描述漏洞影响了哪些产品&#x2F;组件的哪些版本。</p>
+<p>在2011年8月，NIST发布CPE的最新版本2.3版，同时CPE 2.3版也包含在SCAP的1.2版本中。CPE 2.3版和过去的版本有着很大的改变，在新版本中设计了成为了一种堆栈式的结构，从栈低依次是Naming、Name Matching、Applicability Language、Dictionary。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-e0c0dfea73d271214f0f52e8ea5e5fe5da5f3861.png" alt="img"></p>
+<h3 id="Naming"><a href="#Naming" class="headerlink" title="Naming"></a>Naming</h3><p>我们大部分时间讨论的CPE，一般指的就是在Naming层中表示的CPE规则的描述，在新版规则中，定义了三种方式来描述CPE：</p>
+<ul>
+<li>WFN(well-formed CPE name)：被称为格式良好的CPE名称，WFN是在一种面向人读的描述方式，CPE的命名规范定义了将WFN绑定到URI、FS和解绑的规则。（官方称这种规则转换为绑定，可以理解为转换）</li>
+<li>URI：URI是兼容旧版的一种机读描述方式</li>
+<li>FS(Formatted String)：FS是新版增加具有格式化的机读描述方式</li>
+</ul>
+<p>这三种描述方式可以相互转换，而在NVD看到漏洞详情页面展示的都是FS形式的。</p>
+<h4 id="WFN"><a href="#WFN" class="headerlink" title="WFN"></a>WFN</h4><p>WFN是一组无序的属性值对，用来描述软件、操作系统、硬件的逻辑结构。</p>
+<p>我们先看一个例子：用WFN形式来描述Microsoft Internet Explorer 8.0.6001 Beta：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wfn:[part=&quot;a&quot;,vendor=&quot;microsoft&quot;,product=&quot;internet_explorer&quot;,version=&quot;8\.0\.6001&quot;,update=&quot;beta&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>在WFN中有下列这些属性：</p>
+<ul>
+<li>part：可以理解为分类，有三种分类：<ul>
+<li>a：应用程序</li>
+<li>o：操作系统</li>
+<li>h：硬件设备</li>
+</ul>
+</li>
+<li>vendor：创建产品个人或者组织&#x2F;厂商</li>
+<li>product：产品标题或者名称</li>
+<li>version：由厂商提供用来表示产品的特定的发行版本</li>
+<li>update：同样是厂商提供表示产品的更新版本，比version范围更小</li>
+<li>edition：这个属性同样表示版本，属于被弃用的属性，一般是为了兼容更早CPE版本，默认值为ANY</li>
+<li>language：表示产品在操作界面所支持的语言</li>
+<li>sw_edition：表示产品是针对某些特定市场或类别的目标用户</li>
+<li>target_sw：产品运行需要的软件环境</li>
+<li>target_hw：产品运行需要的硬件环境</li>
+<li>other：表示无法归类上上述其他属性的值</li>
+</ul>
+<p>如果在WFN未使用某个属性，则称为未指明的属性，默认值未ANY。<code>sw_edition</code> <code>target_sw</code> <code>target_hw</code> <code>other</code> 是新引入的属性，被称作扩展属性。</p>
+<p>WFN有两种逻辑属性值：</p>
+<ul>
+<li>ANY：任意值，当属性没有可接受值</li>
+<li>NA：不适用，该属性没有合法或者有意义的值</li>
+</ul>
+<p>另外WFN对于值的规则，也有具体的描述：</p>
+<ul>
+<li>首先WFN属性值应该是可以输出的UTF-8格式的非空连续字符串，十六进制编码位于x00-x7f之间，这意味着CPE中的字符限制为英文、数字和常见的一些符号，即时中文产品也需要用拼音或者有对应的英文名字的形式来表示</li>
+<li>属性值用””包裹起来</li>
+<li>可以使用大小写字符和数字</li>
+<li>下划线可以使用，用来代替空白字符</li>
+<li>可以使用反斜杠表示转义字符</li>
+<li>*号和？号有特殊含义，如果要使用请使用转义字符，*号和？的具体含义由其他CPE规定解释，可以加在字符串的开头和结尾</li>
+<li>其他可以输出的非字母数字符号，在使用时需要放在引号内</li>
+</ul>
+<p>下面是一些在WFN中可以使用值的例子：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&quot;foo\-bar&quot; (hyphen is quoted)</span><br><span class="line">&quot;Acrobat_Reader&quot;</span><br><span class="line">&quot;\&quot;oh_my\!\&quot;&quot; (quotation marks and exclamation point are quoted) </span><br><span class="line">&quot;g\+\+&quot; (plus signs are quoted)</span><br><span class="line">&quot;9\.?&quot; (period is quoted, question mark is unquoted) </span><br><span class="line">&quot;sr*&quot; (asterisk is unquoted)</span><br><span class="line">&quot;big\$money&quot; (dollar sign is quoted)</span><br><span class="line">&quot;foo\:bar&quot; (colon is quoted)</span><br><span class="line">&quot;back\\slash_software&quot; (backslash is quoted)</span><br><span class="line">&quot;with_quoted\~tilde&quot; (tilde is quoted)</span><br><span class="line">&quot;*SOFT*&quot; (single unquoted asterisk at beginning and end)</span><br><span class="line">&quot;8\.??&quot; (two unquoted question marks at end)</span><br><span class="line">&quot;*8\.??&quot; (one unquoted asterisk at beginning, two unquoted question marks at end)</span><br></pre></td></tr></table></figure>
+
+<h4 id="URI"><a href="#URI" class="headerlink" title="URI"></a>URI</h4><p>接下来我们在看看URI，同样的先看一个例子：用URI方式来描述 <code>Microsoft Internet Explorer 8.0.6001 Beta</code>。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpe:/a:microsoft:internet_explorer:8.0.6001:beta</span><br></pre></td></tr></table></figure>
+
+<p>每个URI形式的名称都是以 <code>cpe:</code> 开始的，下图中采用来 ABNF 表示法，解释了 WFN 与 URI 的绑定关系：</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-82cab4275ec7d56f369c38b7faafdbc4363af68b.png" alt="img"></p>
+<h4 id="FS"><a href="#FS" class="headerlink" title="FS"></a>FS</h4><p>FS 是 CPE2.3 的新功能，它看起来和 URI 类似，前缀字符串为 <code>cpe：2.3</code> ，FS以固定的顺序绑定WFN，用冒号作为分隔：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cpe:2.3:part:vendor:product:version:update:edition:language:sw_edition:target_sw: target_hw:other</span><br></pre></td></tr></table></figure>
+
+<p>下图用 ABFN 解释了 FS 和 WFN 的绑定关系：</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-7ebc706c7e0d6db96b8ccdcf1f23f3ad860663ab.png" alt="img"></p>
+<h3 id="Name-Matching"><a href="#Name-Matching" class="headerlink" title="Name Matching"></a>Name Matching</h3><p>在上一节中描述了最基础的CPE名称的定义规则，在这一节将要说明CPE的匹配规则。</p>
+<p>CPE名称匹配定义是将一种源CPE与目标CPE进行1对1比较的方法，简单来说，就是通过匹配规则来发现目标系统是上是否安装了目标产品，假设一个安全团队需要确定哪些主机上安装了Microsoft Internet Explorer 8，以及包括的各种小版本，这个时候可以使用WFN来表示：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wfn:[part=&quot;a&quot;,vendor=&quot;microsoft&quot;,product=&quot;internet_explorer&quot;,version=&quot;8\.*&quot;,update=ANY,edition=ANY,language=ANY]</span><br></pre></td></tr></table></figure>
+
+<p>使用符合 CPE 规则的资产管理工具收集信息，并搜索结果和上述WFN进行比较，假设报告为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wfn:[part=&quot;a&quot;,vendor=&quot;microsoft&quot;,product=&quot;internet_explorer&quot;,version=&quot;8\.0\.6001&quot;,update=NA,edition=NA,language=&quot;en\-us&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>可以明确这个两个WFN（第一个为源WFN，第二个为目标WFN）的集合关系（相等，超集）。</p>
+<p>在Name MAtching中定义了四种关系：</p>
+<ul>
+<li>⊃：源是目标的超集</li>
+<li>⊂：源是目标的字集</li>
+<li>&#x3D;：源和目标相等</li>
+<li>≠：源和目标不相交</li>
+</ul>
+<h3 id="Dictionary"><a href="#Dictionary" class="headerlink" title="Dictionary"></a>Dictionary</h3><p>Dictionary是CPE名称和与名称相关联的元数据存储库，Dictionary的中的每个CPE名称都标识了世界上的一类IT产品。举个例子：假如我有一台电脑，型号是MacBook Pro 2021，那么字典标识的类是MacBook Pro 2021这一类，而不是我手上这一台的实例。</p>
+<p>Dictionary的数据表现方式和Naming一致，也是用三种不同的格式标识，常用的则是FS格式的表现方式。</p>
+<p>Dictionary的数据模型通过标准的xml语法构建，它有三种不同前缀：</p>
+<ul>
+<li>cpe_dict：CPE Dictionary 2.3 XML模式</li>
+<li>cpe_dict_ext：CPE Dictionary 2.3 XML模式扩展类型</li>
+<li>cpe-name：CPE Naming类型的XML模式</li>
+</ul>
+<p>采用<code>cpe_dict</code>前缀通过一个树状结构来描述各个元素的关系：</p>
+<ul>
+<li><code>&lt;cpe_dict:cpe-list&gt;</code>:根节点<ul>
+<li><code>&lt;cpe_dict:generator&gt;</code>：文档的信息，包括Dictionary模式，时间，生成它应用程序的名称和版本<ul>
+<li><code>&lt;cpe_dict:product_name&gt;</code>：生成Dictionary程序的名称</li>
+<li><code>&lt;cpe_dict:prodyct_version&gt;</code>：生成Dictionary程序的版本</li>
+<li><code>&lt;cpe_dict:scheme_version&gt;</code>：写入文档验证的架构版本</li>
+<li><code>&lt;cpe_dict:timestamp&gt;</code>：文件生成时间</li>
+<li><code>&lt;cpe_dict:cpe-item name=&quot;&quot; deprecated_by=&quot;&quot; &gt;</code>：单个字典条目的容器以及其元数据</li>
+<li><code>&lt;cpe_dict:title&gt;</code></li>
+<li><code>&lt;cpe_dict:notes&gt;</code></li>
+<li><code>&lt;cpe_dict:references&gt;</code></li>
+<li><code>&lt;cpe_dict:check&gt;</code></li>
+<li><code>&lt;cpe_dict:cpe23-item&gt;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>在这个结构中我们只需要关注&lt;cpe_dict:cpe23-item&gt;中的CPE数据即可。</p>
+<h3 id="Applicability-Language"><a href="#Applicability-Language" class="headerlink" title="Applicability Language"></a>Applicability Language</h3><p>Applicability Language被称作适用性语言，通俗的讲，Applicability Language也是通过标准的xml语法构建来一种CPE逻辑组合方式，来描述一个组合型产品。</p>
+<p>举个例子：Photoshop 2021版这个软件出现了一个提权漏洞，但是只在windows7和windows10上实现，此时如果直接用CPE方式描述，无法描述出有平台依赖关系的CPE，这个时候就需要进行组合来描述，这也就是Applicability Language的简单的实例。</p>
+<p>下面来说用XML如何描述这个“组合”：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">cpe:platform-specification</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">cpe:platform</span> <span class="attr">id</span>=<span class="string">&quot;789&quot;</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">cpe:title</span>&gt;</span></span><br><span class="line">            Microsoft Windows XP with Internet Explorer 7.x or 8.x</span><br><span class="line">        <span class="tag">&lt;/<span class="name">cpe:title</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">cpe:logical-test</span> <span class="attr">operator</span>=<span class="string">&quot;AND&quot;</span> <span class="attr">negate</span>=<span class="string">&quot;FALSE&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">cpe:fact-ref</span> <span class="attr">name</span>=<span class="string">&quot;cpe:2.3:o:microsoft:windows_xp:*:*:*:*:*:*:*:*&quot;</span>/&gt;</span> </span><br><span class="line">                <span class="tag">&lt;<span class="name">cpe:logical-test</span> <span class="attr">operator</span>=<span class="string">&quot;OR&quot;</span> <span class="attr">negate</span>=<span class="string">&quot;FALSE&quot;</span>&gt;</span> </span><br><span class="line">                    <span class="tag">&lt;<span class="name">cpe:fact-ref</span> <span class="attr">name</span>=<span class="string">&quot;cpe:2.3:a:microsoft:internet_explorer:7.*:*:*:*:*:*:*:*&quot;</span>/&gt;</span> </span><br><span class="line">                    <span class="tag">&lt;<span class="name">cpe:fact-ref</span> <span class="attr">name</span>=<span class="string">&quot;cpe:2.3:a:microsoft:internet_explorer:8.*:*:*:*:*:*:*:*&quot;</span>/&gt;</span> </span><br><span class="line">                <span class="tag">&lt;/<span class="name">cpe:logical-test</span>&gt;</span> </span><br><span class="line">            <span class="tag">&lt;/<span class="name">cpe:logical-test</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">cpe:platform</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">cpe:platform-specification</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>先通过一个树状结构来描述各个元素的关系：</p>
+<ul>
+<li><code>&lt;cpe:platform-specification&gt;</code><ul>
+<li><code>&lt;cpe:platform&gt;</code><ul>
+<li><code>&lt;cpe:title&gt;</code></li>
+<li><code>&lt;cpe:remark&gt;</code></li>
+<li><code>&lt;cpe:logical-test&gt;</code><ul>
+<li><code>&lt;cpe:logical-test&gt;</code><ul>
+<li><code>&lt;cpe:logical-test&gt;</code><ul>
+<li>…</li>
+</ul>
+</li>
+<li><code>&lt;cpe:fact-reft&gt;</code></li>
+<li><code>&lt;cpe:check-fact-ref&gt;</code></li>
+</ul>
+</li>
+<li><code>&lt;cpe:fact-reft&gt;</code></li>
+<li><code>&lt;cpe:check-fact-ref&gt;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>&lt;cpe:platform-specification&gt;</code>作为XML文件最外层的根节点，也可以称为一个容器，在一个文件中只存在一个，并且是在最外层。在<code>&lt;cpe:platform-specification&gt;</code>的下一层就是<code>&lt;cpe:platform&gt;</code> <code>&lt;cpe:platform&gt;</code>表示多个CPE组成的平台，并且有一个属性是id，在同一个容器中，id要保持唯，同时在一个容器中可以有多个平台。</p>
+<p>在<code>&lt;cpe:platform&gt;</code>的下一层包含三个元素<code>&lt;cpe:title&gt;</code>、<code>&lt;cpe:remark&gt;</code>、<code>&lt;cpe:logical-test&gt;</code>，<code>&lt;cpe:title&gt;</code>表示这个平台的名称，可以支持多个<code>&lt;cpe:title&gt;</code>，用来区分不同语言。<code>&lt;cpe:remark&gt;</code>表示是对这个平台的评论或者描述，也支持多条描述，但在大多数时候都是空的。<code>&lt;cpe:logical-test&gt;</code>表示这个平台的下的第一层逻辑关系，在与<code>&lt;cpe:platform&gt;</code>直接接触这一层，只存在一个<code>&lt;cpe:logical-test&gt;</code>，而在它之下可以无限嵌套或平行<code>&lt;cpe:logical-test&gt;</code>来构建组合。</p>
+<p><code>&lt;cpe:logical-test&gt;</code>有两个属性值：<code>operator</code>表示下一层各个元素之间但关系，它有两个值，AND和OR。另外一个是<code>negate</code>，表示对<code>operator</code>计算结果是否进行取反操作。</p>
+<p>另外在每一个<code>&lt;cpe:logical-test&gt;</code>之下还有另外两个元素，<code>&lt;cpe:fact-reft&gt;</code>就是CPE一条规则。<code>&lt;cpe:check-fact-reft&gt;</code>则是对<code>&lt;cpe:fact-reft&gt;</code>的检查描述信息，大多数时间也是空的。</p>
+<h2 id="0x01-NVD网站上的CPE怎么看"><a href="#0x01-NVD网站上的CPE怎么看" class="headerlink" title="0x01 NVD网站上的CPE怎么看"></a>0x01 NVD网站上的CPE怎么看</h2><p>NVD漏洞详情页面上提供了三种类型的CPE匹配信息：<code>Basic</code>、<code>Running on/with</code>、<code>Advanced</code>，不管哪一种信息，都提供了一个<code>Configuration</code>，这个可以理解为一个容器，并且是安装顺序序号排列下来的。</p>
+<h3 id="Basic"><a href="#Basic" class="headerlink" title="Basic"></a>Basic</h3><p>在Basic中也存在不同的情况：</p>
+<h4 id="第一种"><a href="#第一种" class="headerlink" title="第一种"></a>第一种</h4><p>第一种是最简单的，NVD提供了一个匹配的语法，只要点击Show Matching CPE(s)即可看到最终从Dictionary匹配出的结果</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-df14abc6c5b938e080cea2fb9820d1c79a286c6c.png" alt="img"></p>
+<h4 id="第二种"><a href="#第二种" class="headerlink" title="第二种"></a>第二种</h4><p>第二种告诉了匹配这条CPE时候，update字段的上限</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-d5ba6b1be519960854b1e0b755dfc2d19c6d2f0b.png" alt="img"></p>
+<h4 id="第三种"><a href="#第三种" class="headerlink" title="第三种"></a>第三种</h4><p>第三种，则提供匹配的下限和上限</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-c8cf091c8cca86302725459204197f3dee76cbf5.png" alt="img"></p>
+<h3 id="Running-on-with"><a href="#Running-on-with" class="headerlink" title="Running on&#x2F;with"></a>Running on&#x2F;with</h3><p>在Running on&#x2F;with种则是一种特定组合关系，它的意思Running on&#x2F;with上面的CPE信息需要依赖下面的环境，才能触发该漏洞。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-0d5611aa96d3f358185586478b28006c01a6e6f6.png" alt="img"></p>
+<h3 id="Advanced"><a href="#Advanced" class="headerlink" title="Advanced"></a>Advanced</h3><p>Advanced则提供了在Applicability Language种完整组合关系的这种。产生更复杂依赖关系。</p>
+<p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-01-cd9feda29ee79d30481a909b28cfbdec81fd6bcc.png" alt="img"></p>
+<p>在实际情况种Basic和Running on&#x2F;with基本涵盖了几乎全部数据，只有少量会出现Advanced的这种情况。</p>
+<h2 id="0x02-总结"><a href="#0x02-总结" class="headerlink" title="0x02 总结"></a>0x02 总结</h2><p>上述内容详细描述了各个模块的定义与说明。简单来说，在Naming中，定义了基本的CPE的写法；在Dictionary中，是所有细化的产品的枚举字典，而在Name Matching定义了怎么通过cpe匹配模式，匹配出最终的目标产品。而在Applicability Language中，则定义了一种基于逻辑结构的cpe高级用法，可以进行多个CPE的组合形式，来描述IT平台。</p>
+<p>在NVD的漏洞详情页面，有三种形式的展示方式：</p>
+<ul>
+<li>Basic：最基本匹配方式，直接可以通过给出cpe匹配范围，直接进行匹配，然后得出cpe字典列表</li>
+<li>Running On&#x2F;With：一种组合的匹配方式，</li>
+<li>Advanced：一种组合的匹配方式</li>
+</ul>
+<h2 id="0x03-官方文档"><a href="#0x03-官方文档" class="headerlink" title="0x03 官方文档"></a>0x03 官方文档</h2><p><a target="_blank" rel="noopener" href="https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe">https://csrc.nist.gov/projects/security-content-automation-protocol/specifications/cpe</a></p>
+<h2 id="0x04-一个处理CPE的Py包"><a href="#0x04-一个处理CPE的Py包" class="headerlink" title="0x04 一个处理CPE的Py包"></a>0x04 一个处理CPE的Py包</h2><p><a target="_blank" rel="noopener" href="https://cpe.readthedocs.io/">https://cpe.readthedocs.io/</a></p>
+<p>备注：这个包在处理CPE2.3版本时候到匹配有BUG，需要使用2.2版本来进行匹配，然后用2.3版本输出，算是一个曲线救国的方式。</p>
+<h2 id="0x05-参考链接"><a href="#0x05-参考链接" class="headerlink" title="0x05 参考链接"></a>0x05 参考链接</h2><p><a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/vulnerability-detail-pages">https://nvd.nist.gov/vuln/vulnerability-detail-pages</a><br><a target="_blank" rel="noopener" href="https://www.fooying.com/common_vulnerability_management_and_scap/">https://www.fooying.com/common_vulnerability_management_and_scap/</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>d4rk30
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.nohacker.me/2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/" title="一文看懂漏洞管理中的CPE">https://www.nohacker.me/2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/18/hackrf-jiao-cheng-yi/" rel="prev" title="HackRF教程（一）">
+                  <i class="fa fa-angle-left"></i> HackRF教程（一）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/03/swiftui-ji-chu-chuang-jian-he-zu-he-shi-tu/" rel="next" title="SwiftUI基础-创建和组合视图">
+                  SwiftUI基础-创建和组合视图 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">d4rk30</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"d4rk30","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
