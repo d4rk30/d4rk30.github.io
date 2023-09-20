@@ -22,29 +22,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="早就做了这个实验了，一直拖延着，终于忙里偷闲记录下来。">
+    <meta name="description" content="有东西被加密了, 请输入密码查看。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用RTL-SDR接收飞机信号">
-<meta property="og:url" content="https://www.nohacker.me/2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/index.html">
+<meta property="og:title" content="某小区内网渗透实录">
+<meta property="og:url" content="https://www.nohacker.me/2023/09/09/penetration-test-of-residential-property/index.html">
 <meta property="og:site_name" content="黑客与产品">
-<meta property="og:description" content="早就做了这个实验了，一直拖延着，终于忙里偷闲记录下来。">
+<meta property="og:description" content="有东西被加密了, 请输入密码查看。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-03-d71822f1e5899ff95405484331a53faa209852ff.png">
-<meta property="article:published_time" content="2019-03-22T08:11:33.000Z">
-<meta property="article:modified_time" content="2023-08-31T14:46:11.000Z">
+<meta property="article:published_time" content="2023-09-09T04:57:09.000Z">
+<meta property="article:modified_time" content="2023-09-20T15:32:22.508Z">
 <meta property="article:author" content="d4rk30">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-03-d71822f1e5899ff95405484331a53faa209852ff.png">
 
 
-<link rel="canonical" href="https://www.nohacker.me/2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/">
+<link rel="canonical" href="https://www.nohacker.me/2023/09/09/penetration-test-of-residential-property/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/","path":"2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/","title":"使用RTL-SDR接收飞机信号"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2023/09/09/penetration-test-of-residential-property/","path":"2023/09/09/penetration-test-of-residential-property/","title":"某小区内网渗透实录"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>使用RTL-SDR接收飞机信号 | 黑客与产品</title>
+<title>某小区内网渗透实录 | 黑客与产品</title>
   
 
 
@@ -104,7 +102,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -117,7 +115,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E5%87%86%E5%A4%87%E8%AE%BE%E5%A4%87"><span class="nav-text">0x00 准备设备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E7%9A%84%E5%8C%85"><span class="nav-text">0x01 安装依赖的包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-RTL-SDR%E5%AE%89%E8%A3%85%E9%A9%B1%E5%8A%A8"><span class="nav-text">0x02 RTL-SDR安装驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%AE%89%E8%A3%85dump-1090"><span class="nav-text">0x03 安装dump 1090</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E6%8E%A5%E6%94%B6%E9%A3%9E%E6%9C%BA%E4%BF%A1%E5%8F%B7"><span class="nav-text">0x04 接收飞机信号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E7%96%91%E9%9A%BE%E9%97%AE%E9%A2%98"><span class="nav-text">0x05 疑难问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-text">0x06 参考链接</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -162,7 +159,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2023/09/09/penetration-test-of-residential-property/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,12 +172,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="使用RTL-SDR接收飞机信号 | 黑客与产品">
+      <meta itemprop="name" content="某小区内网渗透实录 | 黑客与产品">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          使用RTL-SDR接收飞机信号
+          某小区内网渗透实录
         </h1>
 
         <div class="post-meta-container">
@@ -191,14 +188,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2019-03-22 16:11:33" itemprop="dateCreated datePublished" datetime="2019-03-22T16:11:33+08:00">2019-03-22</time>
+      <time title="创建时间：2023-09-09 12:57:09" itemprop="dateCreated datePublished" datetime="2023-09-09T12:57:09+08:00">2023-09-09</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-08-31 22:46:11" itemprop="dateModified" datetime="2023-08-31T22:46:11+08:00">2023-08-31</time>
+      <time title="修改时间：2023-09-20 23:32:22" itemprop="dateModified" datetime="2023-09-20T23:32:22+08:00">2023-09-20</time>
     </span>
 
   
@@ -217,8 +214,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2023/09/09/penetration-test-of-residential-property/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/09/09/penetration-test-of-residential-property/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -231,39 +228,18 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog2021-1256870184.cos.ap-beijing.myqcloud.com/2021-09-03-d71822f1e5899ff95405484331a53faa209852ff.png" alt="img"></p>
-<blockquote>
-<p>早就做了这个实验了，一直拖延着，终于忙里偷闲记录下来。</p>
-</blockquote>
-<span id="more"></span>
-<h2 id="0x00-准备设备"><a href="#0x00-准备设备" class="headerlink" title="0x00 准备设备"></a>0x00 准备设备</h2><ul>
-<li>RTL-SDR</li>
-<li>Ubuntu 18.04</li>
-</ul>
-<h2 id="0x01-安装依赖的包"><a href="#0x01-安装依赖的包" class="headerlink" title="0x01 安装依赖的包"></a>0x01 安装依赖的包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sudo apt-get install git cmake libusb-1.0-0-dev pkg-config</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x02-RTL-SDR安装驱动"><a href="#0x02-RTL-SDR安装驱动" class="headerlink" title="0x02 RTL-SDR安装驱动"></a>0x02 RTL-SDR安装驱动</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ git <span class="built_in">clone</span> &lt;https://github.com/osmocom/rtl-sdr.git&gt;</span><br><span class="line">d4rk30@linux$ <span class="built_in">cd</span> rtl-sdr/</span><br><span class="line">d4rk30@linux$ <span class="built_in">mkdir</span> build</span><br><span class="line">d4rk30@linux$ <span class="built_in">cd</span> build/</span><br><span class="line">d4rk30@linux$ cmake ../</span><br><span class="line">d4rk30@linux$ make</span><br><span class="line">d4rk30@linux$ sudo make install</span><br><span class="line">d4rk30@linux$ sudo ldconfig</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x03-安装dump-1090"><a href="#0x03-安装dump-1090" class="headerlink" title="0x03 安装dump 1090"></a>0x03 安装dump 1090</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ git <span class="built_in">clone</span> &lt;https://github.com/antirez/dump1090.git&gt;</span><br><span class="line">d4rk30@linux$ <span class="built_in">cd</span> dump1090/</span><br><span class="line">d4rk30@linux$ make</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x04-接收飞机信号"><a href="#0x04-接收飞机信号" class="headerlink" title="0x04 接收飞机信号"></a>0x04 接收飞机信号</h2><p>启动监听信号</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sudo ./dump1090 --interactive --net</span><br></pre></td></tr></table></figure>
-
-<h2 id="0x05-疑难问题"><a href="#0x05-疑难问题" class="headerlink" title="0x05 疑难问题"></a>0x05 疑难问题</h2><p>如果出现以下提示，是因为SDR设备被其他驱动占用了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Found 1 device(s):</span><br><span class="line">0: , , SN:  (currently selected)</span><br><span class="line"></span><br><span class="line">Kernel driver is active, or device is claimed by second instance of librtlsdr.</span><br><span class="line">In the first <span class="keyword">case</span>, please either detach or blacklist the kernel module</span><br><span class="line">(dvb_usb_rtl28xxu), or <span class="built_in">enable</span> automatic detaching at compile time.</span><br><span class="line"></span><br><span class="line">usb_claim_interface error -6</span><br><span class="line">Error opening the RTLSDR device: Device or resource busy</span><br></pre></td></tr></table></figure>
-
-<p>尝试输入命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ rmmod dvb_usb_rtl28xxu rtl2832</span><br></pre></td></tr></table></figure>
-
-<p>如果不能解决，则把RTL默认驱动加入黑名单</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ <span class="built_in">cd</span> /etc/modprobe.d/</span><br><span class="line">d4rk30@linux$ <span class="built_in">touch</span> black.conf</span><br><span class="line">d4rk30@linux$ vim black.conf</span><br></pre></td></tr></table></figure>
-
-<p>加入：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">blacklist dvb_usb_rtl28xxu</span><br><span class="line">blacklist rtl2832</span><br><span class="line">blacklist rtl2830</span><br></pre></td></tr></table></figure>
-
-<p>然后重启设备。</p>
-<h2 id="0x06-参考链接"><a href="#0x06-参考链接" class="headerlink" title="0x06 参考链接"></a>0x06 参考链接</h2><p><a target="_blank" rel="noopener" href="https://osmocom.org/projects/rtl-sdr/wiki/Rtl-sdr">https://osmocom.org/projects/rtl-sdr/wiki/Rtl-sdr</a><br><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/wireless/77819.html">https://www.freebuf.com/articles/wireless/77819.html</a></p>
-
+    <div class="post-body" itemprop="articleBody"><div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试。" data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容。">
+  <script id="hbeData" type="hbeData" data-hmacdigest="ffa973b061eac00843559ab8858c206d5d41ba1bfe123365afbf1d3dac08df2d">c16d6d9746aa09854b1bf901e53fd5007d6e7f6249edad714852a7b42fcbe027e064d91ddc6f785fbe39bb743fb5e246d8ea0bbd2ecca3e476df44fc28851d140b73a6b7c575e7cb34dc553459875e34cf4f8d65cb3d14b35e6a4c76298445f2b10f430349347f232b397e683f3fd4397085727e5f599545e4a1b4f8ba48eab8b178e0f82d20013c5e255bba7343d1c0110b8ef28227d0ed2884cd3dade90617a344ab340d46753fb3389d09de2eec940a84e8f8da4ec2c182ae4943aab10a42db00275892a854f71029ff21ba8c7afd34e78a0f77b2ea1e7322f452d342b143c7a60286343417e5a8bf0c3dd5f1eec79881ad0184b50318f6f8e8ae5c2613367a651e79c7ffd3ad7e9fc3cdaa71051db9b98a8650c3e650523066130012ea5c84f7ccaa3bc0c84c104b8f535171fb61a76c3b53bdce5e689d4fc648c6793eddf8f26f415f3f3b016343337df362d7321123f19f595326a50610e5486da55fc147d2f4f34d1d5cd5081d104fcd24c9f38332047266819fc467cbedf54bb6984c5c3fc0eb4d5e53743c8c82e4f447ed90812c2c5df08df101825d9d13b6b6d25a79bd43ebbacb92601fd6822e0b5a6281015469dbb2ddaeb43814eee8e98b9a0c256c2c3b1ad5dcfc8aee4e7b5ccbd7dc01919652442612622340a2936e57cafeedd7806a59ad15698807262b24baeeb70a0f9fadf69b6b1c6de976afaa6bb9279dcc823318e80ec3fa073b39a1027264d387a963aafd1dc06a69c7b0181ebb4f1da87ac732d48591901870530670bc19f068dda00cde7eb8029df716d2ff38cbd31cfe13f573ddb67e453315b7cbf1b1e74ec216d10c375f6dd3eb18adbebfc9cae1bfd03cad3ebff2cb75d202f350bf039e6cc11645fe03d03f0baeb811c224de0ee1e491f592fb55019bce43c950624d0ae81d631f34170e7c22af0f62626f74394fa5f3dfd2462e4ccbd1bf7abe3210cf15e9680bc9fef890a49bf8df45ba4fe57f4543ddec17f482f2839ec6608c085d23223f0af7c86ec6f086635fd0309f5bd99fadea4d647e5472e244a81cda7d3d44c25d46499a4e8f97c7c70564ca4df1626197c0ae37ff70ea1e7506e1555cdb0605f3e308af882a58ff8036b6ee6957711fb67340deaabe43330cd33eb5ab621c385e0dc13606599ae0c479866f631f6c542e90505d44448ceea21a21df897af5cea3690afc533389d77ce3b0547bd9cfd1621e5d6f4f904b9504e1b351328e44054c866e980daa6c52da7bb02bab274bee20b0e95aeeda9de1ed1521a0ad3c7548d6eb203f2eb2051282ea826efecf9c57349ae8a19154033c7c1ed5b3eeff5134c257e2870fe29fd78d5c51ba0f52ffbb4cc297eb807570a62df0be5c4cf178483798a987402eff65543182f5f16ae9e26ddd276a263fcd3282baecbe43bb5af3aaf0d5aa7e3b92855898dbb7ffb358606c031dd74cc5c32a31603a7dcfcceab45bc2a1f02a10393c955775c6b033fa6181baca4f8ffb9afaa0baf5385a53959a3995fea6ad5e48dca0a9cffedece92ea7e8b2fcea9a98a471ca2890e335e429ca98d8ebae9bbc4d14959efb2b9d6769658a48e6171c010e98a1251fb52afcfe79836d28625e654cfb87828fa4654e33753b50d3314b9a8bfc5a1abbeb41cda5430d4f59a232de27b63a920ef6eadecb04510c8eba76e7f284c7d7f146a3c6eef81d3c44ec206fbd263ae44304d3ac1dd103df0ea24d257132acd07f779bae815c308a6c3663bc8ac0afb013b8811031b04801a0a8a615ff7fe39baebdce973d675310eb9a6b3ec3657705a9acbcb674f2d6d1282555fd02fa6cba521f33b6079a04dc1d35340e712b04e5480ae76108a715202de3b208d1ca0f46cf42fcb9ae4ce40c36e5ddb7975892255d9766bcb0f0809b20433479a23dc591b7b07f9ec8b6f7c423275cba1a906b599057e0413e0ead7fa80b5bc3a952747b6a0979553a7f9238ea7f987d3ef733e7f67cb528ea62036cc59989bd9049126a1f110658752114431d5f0c8df2ef6578cefdeebeccf817d95031fbbca2f71608be1af53e49a1ad926831803c640893b84e835f65bb9283ee57dcefc07ca54a3d572f136a0bebda5741be29402567f272a22ce333b028822ed11f278705b516414579002a258f272a2fd023d555a67b84e04fb046700bc4c3883a8d576548831416acbb38f421dacff59f00f4e4e9fe1384ae1d9fbc2ff85afb920c4d5ad83a2abcf3a2bf9bb1f79f05cd68168d3aed418f44268e95b721e23126a45db2729bf9643f3a3da83eedd15f4870d20e71a889861d93af307a1808af045c6b27f0c808d667679fd9126aa0bef5dcab9f087f54cf91198f1bc52fe5f84eff34ead3188cb42c06a41bc2db418c5cbac9daa94a4118e325daafc451f406195f373adbba4fdc9b6c4e112406dd5d1ce3dd225d5ff630d9c5c5e96ff061e768b10ce4c32028995dd1f77b6ad3d297b43c6e9da2d982d73b9e73469ace2bf67e1b6611619f0d850294b0656b0b6b0175e2833ffec9918ccc88c5e19aa8056b68fb2b96a155d53c8b6b7948edc234a623c043775a9161bc1b82ddbc581a514a84413f412839391b4c5c9f17345dc641dfcebe29194bd3f14d5f27a2955ab8af20ab825432dae4f79a710b11a216dd5580c03bb21badc6ecd6c1c09a73b8aadf6655ae518eda521f91f87a100f5a2365e00e4ca0194e306d24908e97ada54968f8a7f958949a39570a6516d0dbdff07701b30172a116f930905dc70aa85e41bb9f15bee06c15772ba0ba24105679f075f51b5795a7eb2ea8ff731261a25d4f6e6f119b50512bfdbf01851686d5cfd885a0366bf49eb6c7dda41c1dd4ffe3dde7552a47292c27909b872c96387009dc6ce1efecfcabfa3e9395e26554e1c578ac0b9d81183b2521e9ae7bf24a41129570267e63cda1e19fe4b2eee88d879ed62830ef694559088fc129af99a856ca302cc51000a89d49fe3eee90833d050c61ce0a7cde2b8452f8a88231aa695d35476f0f3b369be69dcd6b1ee5f914ec53eb4278caa46ed6b3139f226be1db3dd0f59bbdfc9cedfca59208b091cd777f6252e2aa6e7859c8d69e5360f9887448da29e63c5365527f9ce2dd0929f76e63a0a6e5d7a395992bd6c8f7b1a0915ecc3a39995a8f759ee337cabc70bebd352e70653cf9697a9a97435e2d6bf91761b824950b63078b46dbbafba45df403e845d59b1c826e832be91cbee9fd4d273c40ca67a90fa099ba6f5cbb5097f56de4acbc8975e28d161c940781bbb6f5745b3670405398b7a9b5d683d8c5764eb2cabbada8fd4f203a9a6058a470df3fec06d118ef2ffa9fc0f36df6a60781ca5ad0d2d96215ba2daebff381d869ad49837a0a183353cb533e190bc62ebb1c022c4e797a4c472e31e65cca17de7a59a27769b040f65050811e006216779c3c35f5f33fb86a1657dd7e150fb15d031e2b042a985552d1938663e7cb95c95c27b4416270a7e2a20e896fd7a7ab162025c48e6b6029b1a8e06dea5b07de54f2de3b5c41f0f7fccc975aec74c81a6cee75019ea0b409ce4017a3c6d02d86a83c3f2ac92a2b5d82d6b28bed48c9fe587f6780b0e8d24e2d2bd3feb0e33f285255e5abda0a002dc92b269e226836188af975bb9d3a9b68b5f1211acfc8a98d2a36a850d3a404f2474b783f1e3b09d948451120257766ece1e6213ea6fba8578af949731e096960910f3f33f264d0e969ee14e5cd107fe1f72c4c8725efba0c56b9afe1a8ad473255ae43c69fc382049b6854eb9b3fa040a7128d9e69cf2880c7f03538f60e78ad8592ef952790e72334c878ae0fa037c974b436418466f8465ac05f1f33c8349c7f2f9e88c30bd7abac84aeb876a572cfa1a558c915bee076a6a7f87f8f7d8d32adf7e1bfc5f5c97b3a677ac080b83c36b81090087972ba2425f6aa3bfa810d6e596d39ee851cf4f53a0eedf08a719c17e5629c32785f862b0350b6f3dcf0aa2057a0eee99ffdd288992506c6d02673de57fa77bf9138462bd039f689950a818732014eb2e3723aa3793ebb969df6b06ea96767d626772d620a1e8f22393893f54ed4093abd5bdc2a01013</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">您好, 这里需要密码。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
     </div>
 
     
@@ -280,7 +256,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://www.nohacker.me/2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/" title="使用RTL-SDR接收飞机信号">https://www.nohacker.me/2019/03/22/shi-yong-rtl-sdr-jie-shou-fei-ji-xin-hao/</a>
+      <a href="https://www.nohacker.me/2023/09/09/penetration-test-of-residential-property/" title="某小区内网渗透实录">https://www.nohacker.me/2023/09/09/penetration-test-of-residential-property/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -293,13 +269,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2018/09/01/mac-xi-tong-pei-zhi-zhi-nan/" rel="prev" title="Mac 系统配置指南（2023年8月更新）">
-                  <i class="fa fa-angle-left"></i> Mac 系统配置指南（2023年8月更新）
+                <a href="/2023/09/02/bug-bounty-hunter-sql-injection-fundamentals/" rel="prev" title="【Bug Bounty Hunter】第八章-SQL 注入基础">
+                  <i class="fa fa-angle-left"></i> 【Bug Bounty Hunter】第八章-SQL 注入基础
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2019/04/03/zhuan-zai-wu-lian-wang-an-quan-ba-ya-shi-zhan-di-gong-hao-lan-ya-ble-chu-tan/" rel="next" title="【转载】物联网安全拔“牙”实战——低功耗蓝牙（BLE）初探">
-                  【转载】物联网安全拔“牙”实战——低功耗蓝牙（BLE）初探 <i class="fa fa-angle-right"></i>
+                <a href="/2023/09/10/zhuan-zai-hou-shen-tou-jie-duan-qing-li-hen-ji-fang-shi-zong-jie/" rel="next" title="【转载】后渗透阶段清理痕迹方式总结">
+                  【转载】后渗透阶段清理痕迹方式总结 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
