@@ -30,16 +30,16 @@
 <meta property="og:description" content="【Bug Bounty Hunter】笔记系列">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-16-head_img.png">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-url_structure.png">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-HTTP_Flow.png">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_clear.png">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_google_enc.png">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_google.png">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-HTTPS_Flow.png">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-raw_request.png">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-raw_response.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-16-url_structure.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-16-HTTP_Flow.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-https_clear.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-https_google_enc.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-https_google.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-HTTPS_Flow.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-raw_request.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-raw_response.png">
 <meta property="article:published_time" content="2023-07-02T12:46:13.000Z">
-<meta property="article:modified_time" content="2023-09-16T15:21:51.919Z">
+<meta property="article:modified_time" content="2023-10-17T02:33:28.329Z">
 <meta property="article:author" content="d4rk30">
 <meta property="article:tag" content="HTTP">
 <meta property="article:tag" content="HTTPS">
@@ -141,12 +141,12 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -209,7 +209,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-16 23:21:51" itemprop="dateModified" datetime="2023-09-16T23:21:51+08:00">2023-09-16</time>
+      <time title="修改时间：2023-10-17 10:33:28" itemprop="dateModified" datetime="2023-10-17T10:33:28+08:00">2023-10-17</time>
     </span>
 
   
@@ -247,10 +247,9 @@
 <p>【Bug Bounty Hunter】笔记系列</p>
 </blockquote>
 <span id="more"></span>
-<h2 id="一、HTTP-基础知识"><a href="#一、HTTP-基础知识" class="headerlink" title="一、HTTP 基础知识"></a>一、HTTP 基础知识</h2><h3 id="1-超文本传输协议（HTTP）"><a href="#1-超文本传输协议（HTTP）" class="headerlink" title="1. 超文本传输协议（HTTP）"></a>1. 超文本传输协议（HTTP）</h3><p>如今，我们使用的大多数应用程序都在不断与互联网互动，包括 Web 和手机应用。大多数互联网通信都是通过 <a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2616">HTTP</a> 协议进行网络请求的。</p>
-<p>HTTP 通信由客户端和服务器组成，其中客户端向服务器请求资源。服务器处理请求并返回所请求的资源。 HTTP 通信的默认端口是端口 80 ，但可以根据 Web 服务器配置将其更改为任何其他端口。当我们使用互联网访问不同的网站时，会使用相同的请求。我们输入完全限定域名 (FQDN) 作为统一资源定位符 (URL) 来访问所需的网站，例如：<a href="www.google.com">www.google.com</a>。</p>
+<h2 id="一、HTTP-基础知识"><a href="#一、HTTP-基础知识" class="headerlink" title="一、HTTP 基础知识"></a>一、HTTP 基础知识</h2><h3 id="1-超文本传输协议（HTTP）"><a href="#1-超文本传输协议（HTTP）" class="headerlink" title="1. 超文本传输协议（HTTP）"></a>1. 超文本传输协议（HTTP）</h3><p>HTTP 通信由客户端和服务器组成，其中客户端向服务器请求资源。服务器处理请求并返回所请求的资源。HTTP 通信的默认端口是端口 80 ，但可以根据 Web 服务器配置将其更改为任何其他端口。当我们使用互联网访问不同的网站时，会使用相同的请求。我们输入完全限定域名 (FQDN) 作为统一资源定位符 (URL) 来访问所需的网站，例如：<a href="www.google.com">www.google.com</a>。</p>
 <h4 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h4><p>让我们看一下 URL 的结构：</p>
-<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-url_structure.png" alt="img"></p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-16-url_structure.png" alt="img"></p>
 <p>以下是每个组件代表的含义：</p>
 <table>
 <thead>
@@ -296,21 +295,21 @@
 <td>Fragments 由客户端的浏览器处理，以定位主要资源中的部分（如页眉或页面上的部分）。</td>
 </tr>
 </tbody></table>
-<h4 id="HTTP-工作流程"><a href="#HTTP-工作流程" class="headerlink" title="HTTP 工作流程"></a>HTTP 工作流程</h4><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-HTTP_Flow.png" alt="img"></p>
-<p>上图展示了 HTTP 请求的流程。用户第一次在浏览器中输入 URL ( inlanefreight.com ) 时，它会向 DNS（域名解析）服务器发送请求以解析该域并获取其 IP。 DNS 服务器查找 inlanefreight.com 的 IP 地址并返回它。所有域名都需要这样解析，因为服务器没有 IP 地址就无法通信。</p>
+<h4 id="HTTP-工作流程"><a href="#HTTP-工作流程" class="headerlink" title="HTTP 工作流程"></a>HTTP 工作流程</h4><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-16-HTTP_Flow.png" alt="img"></p>
+<p>上图展示了 HTTP 请求的流程。用户第一次在浏览器中输入 URL(inlanefreight.com)时，它会向 DNS（域名解析）服务器发送请求以解析该域并获取其 IP。 DNS 服务器查找 inlanefreight.com 的 IP 地址并返回它。所有域名都需要这样解析，因为服务器没有 IP 地址就无法通信。</p>
 <blockquote>
-<p>注意：我们的浏览器通常首先在本地“&#x2F;etc&#x2F;hosts”文件中查找记录，如果请求的域名不存在存在于其中，然后他们会联系其他 DNS 服务器。我们可以使用“&#x2F;etc&#x2F;hosts”手动添加记录以进行 DNS 解析，添加 IP 后跟域名。</p>
+<p>注意：我们的浏览器通常首先在本地“&#x2F;etc&#x2F;hosts”文件中查找记录，如果请求的域名不存在存在于其中，然后他们会联系其他 DNS 服务器。我们可以使用“&#x2F;etc&#x2F;hosts”手动添加记录以进行 DNS 解析。</p>
 </blockquote>
-<p>一旦浏览器获得链接到所请求域的 IP 地址，它就会向默认 HTTP 端口（例如 80 ）发送 GET 请求，询问根（<code>/</code>）路径。然后，Web服务器接收请求并处理它。默认情况下，服务器配置是在收到 &#x2F; 请求时返回索引文件。</p>
+<p>浏览器获得链接所请求域名的 IP 地址后，它就会向默认 HTTP 端口（例如 80 ）发送 GET 请求，询问根（<code>/</code>）路径。然后，Web服务器接收请求并处理它。默认情况下，服务器配置是在收到 <code>/</code> 请求时返回索引文件。</p>
 <p>在这种情况下，Web 服务器将读取 index.html 的内容并将其作为 HTTP 响应返回。响应还包含状态代码（例如 200 OK ），这表明请求已成功处理。然后，Web 浏览器呈现 index.html 内容并将其呈现给用户。</p>
 <h4 id="cURL"><a href="#cURL" class="headerlink" title="cURL"></a>cURL</h4><p>在本节中，我们将通过两个重要的工具发送 Web 请求：浏览器（例如 Chrome 或 Firefox）以及 cURL 命令行工具。</p>
 <p><a target="_blank" rel="noopener" href="https://curl.haxx.se/">cURL</a> 是一个命令行工具和库，主要支持 HTTP 以及许多其他协议。这使得它成为脚本和自动化的优秀工具，它对于从命令行发送各种类型的 Web 请求至关重要，这对 Web 渗透测试都是必需的。</p>
 <p>我们可以向任何 URL 发送基本的 HTTP 请求，并将其用作 cURL 的参数，如下所示：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl google.com</span><br></pre></td></tr></table></figure>
 
-<p>我们看到，与 Web 浏览器不同，cURL 不会渲染 HTML&#x2F;JavaScript&#x2F;CSS 代码，而是以其原始格式打印它。</p>
-<p>我们还可以使用 cURL 下载页面或文件，并使用 -O 标志将内容输出到文件中。如果我们想指定输出文件名，我们可以使用 -o 标志并指定名称。否则，我们可以使用 -O ，cURL 将使用远程文件名，如下所示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl google.com</span><br><span class="line">d4rk30@linux$ <span class="built_in">ls</span></span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
+<p>我们看到与 Web 浏览器不同，cURL 不会渲染 HTML&#x2F;JavaScript&#x2F;CSS 代码，而是以其原始格式打印它。</p>
+<p>我们还可以使用 cURL 下载页面或文件，使用 -O 标志将内容输出到文件中。并且我们可以使用 -o 标志并指定名称。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -O inlanefreight.com/index.html</span><br><span class="line">d4rk30@linux$ <span class="built_in">ls</span></span><br><span class="line">index.html</span><br></pre></td></tr></table></figure>
 
 <p>正如我们所看到的，这次没有打印输出，而是保存到 index.html 中。我们注意到 cURL 在处理请求时仍然打印一些状态。我们可以使用 -s 标志来静默状态，如下所示：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -s -O inlanefreight.com/index.html</span><br></pre></td></tr></table></figure>
@@ -318,34 +317,33 @@
 <p>这次，cURL 没有打印任何内容，因为输出已保存到 index.html 文件中。最后，我们可以使用 -h 标志来查看可以与 cURL 一起使用的其他选项：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -h</span><br></pre></td></tr></table></figure>
 
-<h3 id="2-安全超文本传输协议（HTTPS）"><a href="#2-安全超文本传输协议（HTTPS）" class="headerlink" title="2. 安全超文本传输协议（HTTPS）"></a>2. 安全超文本传输协议（HTTPS）</h3><p>在上一节中，我们讨论了如何发送和处理 HTTP 请求。然而，HTTP 的一个重大缺陷是所有数据都以明文方式传输。这意味着在源和目标之间的任何人都可以执行中间人（MiTM）攻击来查看传输的数据。</p>
-<p>为了解决这个问题，<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2660">HTTPS (HTTP Secure) protocol</a> 应运而生，所有通信都以加密格式传输，因此即使第三方拦截了请求，也无法从中提取数据。因此，HTTPS 已成为互联网网站的主流方案，而 HTTP 协议正在被逐步淘汰。</p>
+<h3 id="2-安全超文本传输协议（HTTPS）"><a href="#2-安全超文本传输协议（HTTPS）" class="headerlink" title="2. 安全超文本传输协议（HTTPS）"></a>2. 安全超文本传输协议（HTTPS）</h3><p>HTTP 的一个重大缺陷是所有数据都以明文方式传输。这意味着在源和目标之间的任何人都可以执行中间人（MiTM）攻击来查看传输的数据。为了解决这个问题，<a target="_blank" rel="noopener" href="https://tools.ietf.org/html/rfc2660">HTTPS (HTTP Secure) 协议</a> 应运而生，所有通信都以加密格式传输，因此即使第三方拦截了请求，也无法从中提取数据。因此，HTTPS 已成为互联网网站的主流方案，而 HTTP 协议正在被逐步淘汰。</p>
 <h4 id="HTTPS-概述"><a href="#HTTPS-概述" class="headerlink" title="HTTPS 概述"></a>HTTPS 概述</h4><p>如果我们检查一个 HTTP 请求，就能看到浏览器和网站之间不执行安全通信的效果。例如，下面是一个 HTTP 登录请求的内容：</p>
-<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_clear.png" alt="img"></p>
-<p>我们可以看到，登录信息（账号和密码）可以明文显示。这样，同一网络（如公共无线网络）中的其他人就可以轻松捕获请求，并将登陆信息用于恶意行为。</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-https_clear.png" alt="img"></p>
+<p>我们可以看到登录信息（账号和密码）使用明文显示。这样一来同一网络（如公共无线网络）中的其他人就可以轻松捕获请求，从而获取登陆信息。</p>
 <p>相反，当有人拦截并分析来自 HTTPS 请求的流量时，他们会看到如下内容：</p>
-<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_google_enc.png" alt="img"></p>
-<p>如上图，数据作为单个加密流进行传输，这使得任何人都很难捕获凭证或任何其他敏感数据等信息。</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-https_google_enc.png" alt="img"></p>
+<p>正如我们看到的，数据作为一个独立的加密信息流而进行传输，其他人想要获取这些数据变得异常困难。</p>
 <p>可以通过其 URL 中的 https:&#x2F;&#x2F;（例如 <a target="_blank" rel="noopener" href="https://www.google.com/">https://www.google.com</a>） 以及浏览器地址栏中 URL 左侧的锁定图标来识别强制执行 HTTPS 的网站：</p>
-<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-https_google.png" alt="img"></p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-https_google.png" alt="img"></p>
 <p>因此，如果我们访问使用 HTTPS 的网站（例如 Google），所有流量都会被加密。</p>
 <blockquote>
 <p>注意：虽然通过 HTTPS 协议传输的数据可能会被加密，但如果请求联系明文 DNS 服务器，该请求仍然可能会泄露所访问的 URL。因此，建议使用加密的 DNS 服务器（例如 8.8.8.8 或 1.1.1.1），或使用 VPN 服务以确保所有流量都正确加密。</p>
 </blockquote>
 <h4 id="HTTPS-工作流程"><a href="#HTTPS-工作流程" class="headerlink" title="HTTPS 工作流程"></a>HTTPS 工作流程</h4><p>让我们看看 HTTPS 是如何运行的：</p>
-<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-HTTPS_Flow.png" alt="img"></p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-HTTPS_Flow.png" alt="img"></p>
 <p>如果我们输入 http:&#x2F;&#x2F; 而不是 https:&#x2F;&#x2F; 来访问强制执行 HTTPS 的网站，浏览器会尝试解析域并将用户重定向到托管目标网站的网络服务器。请求首先发送到端口 80，这是未加密的 HTTP 协议。服务器检测到此情况并将客户端重定向到安全 HTTPS 端口 443。这是通过 301 Moved Permanently 响应代码完成的。</p>
 <p>接下来，客户端（网络浏览器）发送一个 “client hello “数据包，提供关于自己的信息。之后服务器回复 “server hello”，接着进行<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Key_exchange">密钥交换</a>，交换 SSL 证书。客户端验证密钥&#x2F;证书，并发送自己的密钥&#x2F;证书。之后，开始加密<a target="_blank" rel="noopener" href="https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake">握手</a>，以确认加密和传输是否正常。</p>
 <p>一旦握手成功完成，正常的 HTTP 通信就会继续进行，并在此后进行加密。</p>
 <blockquote>
 <p>注意：根据具体情况，攻击者可能会实施 HTTP 降级攻击，将 HTTPS 通信降级为 HTTP，使数据以明文形式传输。具体方法是设置一个中间人（MITM）代理，在用户不知情的情况下通过攻击者的主机传输所有流量。不过，大多数现代浏览器、服务器和网络应用程序都能防范这种攻击。</p>
 </blockquote>
-<h4 id="使用-cURL-处理-HTTPS-请求"><a href="#使用-cURL-处理-HTTPS-请求" class="headerlink" title="使用 cURL 处理 HTTPS 请求"></a>使用 cURL 处理 HTTPS 请求</h4><p>一般情况下 cURL 会自动处理所有 HTTPS 通信标准，执行安全握手，然后自动加密和解密数据。不过，如果我们接触到一个 SSL 证书无效或过期的网站，那么 cURL 默认情况下不会继续通信，以防止前面提到的 MITM 攻击，浏览器也会做同样的事情，警告用户不要访问具有无效 SSL 证书的网站。</p>
+<h4 id="使用-cURL-处理-HTTPS-请求"><a href="#使用-cURL-处理-HTTPS-请求" class="headerlink" title="使用 cURL 处理 HTTPS 请求"></a>使用 cURL 处理 HTTPS 请求</h4><p>一般情况下 cURL 会自动处理所有 HTTPS 通信标准，执行安全握手，然后自动加密和解密数据。不过，如果我们接触到一个 SSL 证书无效或过期的网站，那么 cURL 默认情况下不会继续通信，以防止前面提到的 MITM 攻击。</p>
 <p>在测试本地 Web 应用程序或出于练习目的，访问测试的目标网站时，我们可能会遇到此类问题，因为此类 Web 应用程序可能尚未实现有效的 SSL 证书。要跳过 cURL 的证书检查，我们可以使用 -k 标志：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -k https://test.com</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-HTTP-请求和响应"><a href="#3-HTTP-请求和响应" class="headerlink" title="3. HTTP 请求和响应"></a>3. HTTP 请求和响应</h3><p>HTTP 通信主要由 HTTP 请求和 HTTP 响应组成。 HTTP 请求由客户端（例如 cURL&#x2F;浏览器）发出，并由服务器（例如 Web 服务器）处理。请求包含我们需要从服务器获取的所有详细信息，包括资源（如 URL、路径、参数等）。服务器接收 HTTP 请求，对其进行处理并通过发送 HTTP 响应进行响应，其中包含响应代码，并且可能包含资源数据（如果请求者有权访问它）。</p>
-<h4 id="HTTP-请求"><a href="#HTTP-请求" class="headerlink" title="HTTP 请求"></a>HTTP 请求</h4><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-raw_request.png" alt="img"></p>
+<h4 id="HTTP-请求"><a href="#HTTP-请求" class="headerlink" title="HTTP 请求"></a>HTTP 请求</h4><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-raw_request.png" alt="img"></p>
 <p>上图显示了对 URL 的 HTTP GET 请求：</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="http://inlanefreight.com/users/login.html">http://inlanefreight.com/users/login.html</a></li>
@@ -379,7 +377,7 @@
 <blockquote>
 <p>注意：HTTP 版本 1.X 以明文形式发送请求，并使用换行符分隔不同的字段和不同的请求。另一方面，HTTP 版本 2.X 以字典形式的二进制数据发送请求。</p>
 </blockquote>
-<h4 id="HTTP-响应"><a href="#HTTP-响应" class="headerlink" title="HTTP 响应"></a>HTTP 响应</h4><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-02-raw_response.png" alt="img"></p>
+<h4 id="HTTP-响应"><a href="#HTTP-响应" class="headerlink" title="HTTP 响应"></a>HTTP 响应</h4><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-raw_response.png" alt="img"></p>
 <p>HTTP 响应的第一行包含两个以空格分隔的字段。第一个是 HTTP 版本（例如 HTTP&#x2F;1.1 ），第二个表示 HTTP 响应代码（例如 200 OK ）。</p>
 <p>响应代码用于确定请求的状态，在第一行之后，响应列出了其 header ，类似于 HTTP 请求。</p>
 <p>最后，响应可能以响应正文结束，响应正文在 header 后面用换行分隔。响应正文通常定义为 HTML 代码。但是，它还可以响应其他代码类型（例如 JSON ）、网站资源（例如图像、样式表或脚本），甚至是文档（例如托管在网络服务器上的 PDF 文档）。</p>
@@ -546,7 +544,7 @@
 <blockquote>
 <p>注意：本节只提及一小部分常见的 HTTP 标头。HTTP 通信中还可以使用许多其他上下文标头。应用程序也可以根据自己的需求定义自定义标头。标准 HTTP 标头的完整列表可在<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">此处</a>找到</p>
 </blockquote>
-<h4 id="使用-cURL-查看-Headers-内容"><a href="#使用-cURL-查看-Headers-内容" class="headerlink" title="使用 cURL 查看 Headers 内容"></a>使用 cURL 查看 Headers 内容</h4><p>在上一节中，我们看到了如何使用 cURL 的 -v 标志来显示 HTTP 请求和响应的全部细节。如果我们只想查看 response headers，那么可以使用 -I 标志发送 HEAD 请求，并只显示 response headers。此外，我们还可以使用 -i 标志同时 headers 和响应主体（例如 HTML 代码）。两者的区别在于，-I 发送的是 HEAD 请求（将在下一节中介绍），而 -i 发送的是我们指定的任何请求，并同时打印 Headers 信息。</p>
+<h4 id="使用-cURL-查看-Headers-内容"><a href="#使用-cURL-查看-Headers-内容" class="headerlink" title="使用 cURL 查看 Headers 内容"></a>使用 cURL 查看 Headers 内容</h4><p>在上一节中，我们看到了如何使用 cURL 的 -v 标志来显示 HTTP 请求和响应的全部细节。如果我们只想查看 response headers，那么可以使用 -I 标志发送 HEAD 请求，并只显示 response headers。此外，我们可以使用 -i 标志来显示头部和响应正文（例如 HTML 代码）。两者的区别在于，-I 发送的是 HEAD 请求（将在下一节中介绍），而 -i 发送的是我们指定的任何请求，并同时打印 Headers 信息。</p>
 <p>下面的命令显示了使用 -I 标志的输出示例：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl -I google.com</span><br></pre></td></tr></table></figure>
 
@@ -799,8 +797,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/08/30/bug-bounty-hunter-xss/" rel="next" title="【Bug Bounty Hunter】第七章-跨站脚本（XSS）">
-                  【Bug Bounty Hunter】第七章-跨站脚本（XSS） <i class="fa fa-angle-right"></i>
+                <a href="/2023/07/03/bug-bounty-hunter-introduction-to-web-applications/" rel="next" title="【Bug Bounty Hunter】第二章-Web 应用程序简介">
+                  【Bug Bounty Hunter】第二章-Web 应用程序简介 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
