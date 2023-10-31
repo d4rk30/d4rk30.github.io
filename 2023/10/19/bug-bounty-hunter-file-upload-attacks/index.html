@@ -22,24 +22,20 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="【Bug Bounty Hunter】笔记系列">
+    <meta name="description" content="有东西被加密了, 请输入密码查看。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【Bug Bounty Hunter】第十一章-文件上传">
 <meta property="og:url" content="https://www.nohacker.me/2023/10/19/bug-bounty-hunter-file-upload-attacks/index.html">
 <meta property="og:site_name" content="黑客与产品">
-<meta property="og:description" content="【Bug Bounty Hunter】笔记系列">
+<meta property="og:description" content="有东西被加密了, 请输入密码查看。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-19-head_img.png">
-<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-25-062057.png">
 <meta property="article:published_time" content="2023-10-19T08:44:32.000Z">
-<meta property="article:modified_time" content="2023-10-25T06:21:13.187Z">
+<meta property="article:modified_time" content="2023-10-31T05:22:42.038Z">
 <meta property="article:author" content="d4rk30">
 <meta property="article:tag" content="安全">
 <meta property="article:tag" content="Web安全">
 <meta property="article:tag" content="文件上传">
-<meta property="article:tag" content="[object Object]">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-19-head_img.png">
 
 
 <link rel="canonical" href="https://www.nohacker.me/2023/10/19/bug-bounty-hunter-file-upload-attacks/">
@@ -109,7 +105,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+    <div class="sidebar-inner sidebar-overview-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -122,7 +118,6 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E6%A6%82%E8%BF%B0"><span class="nav-text">0x00 文件上传漏洞概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-WebShell"><span class="nav-text">0x01 WebShell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-Bypass"><span class="nav-text">0x02 Bypass</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%89%8D%E7%AB%AF%E8%BF%87%E6%BB%A4Bypass"><span class="nav-text">1. 前端过滤Bypass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%BB%91%E5%90%8D%E5%8D%95Bypass"><span class="nav-text">2. 黑名单Bypass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%99%BD%E5%90%8D%E5%8D%95Bypass"><span class="nav-text">3. 白名单Bypass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%B1%BB%E5%9E%8BBypas"><span class="nav-text">4. 类型Bypas</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%85%B6%E4%BB%96%E4%B8%8A%E4%BC%A0%E6%94%BB%E5%87%BB"><span class="nav-text">0x03 其他上传攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E9%A2%84%E9%98%B2%E7%AD%96%E7%95%A5"><span class="nav-text">0x04 预防策略</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -140,7 +135,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -203,7 +198,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-25 14:21:13" itemprop="dateModified" datetime="2023-10-25T14:21:13+08:00">2023-10-25</time>
+      <time title="修改时间：2023-10-31 13:22:42" itemprop="dateModified" datetime="2023-10-31T13:22:42+08:00">2023-10-31</time>
     </span>
 
   
@@ -236,16 +231,18 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-19-head_img.png" alt="img"></p>
-<blockquote>
-<p>【Bug Bounty Hunter】笔记系列</p>
-</blockquote>
-<span id="more"></span>
-
-<h2 id="0x00-文件上传漏洞概述"><a href="#0x00-文件上传漏洞概述" class="headerlink" title="0x00 文件上传漏洞概述"></a>0x00 文件上传漏洞概述</h2><h2 id="0x01-WebShell"><a href="#0x01-WebShell" class="headerlink" title="0x01 WebShell"></a>0x01 WebShell</h2><h2 id="0x02-Bypass"><a href="#0x02-Bypass" class="headerlink" title="0x02 Bypass"></a>0x02 Bypass</h2><h3 id="1-前端过滤Bypass"><a href="#1-前端过滤Bypass" class="headerlink" title="1. 前端过滤Bypass"></a>1. 前端过滤Bypass</h3><p>最简单的一种验证方式是在前端限制了上传了文件类型，如果不是被允许上传的文件类型，则无法进行提交。但是这种方法很容易被绕过，我们可以借助一些工具（例如Burp）可以轻松的绕过此限制。</p>
-<p>在上传的过程中，如果Burp进行上传的拦截，可以看到如下请求：</p>
-<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-25-062057.png" alt="img"></p>
-<h3 id="2-黑名单Bypass"><a href="#2-黑名单Bypass" class="headerlink" title="2. 黑名单Bypass"></a>2. 黑名单Bypass</h3><h3 id="3-白名单Bypass"><a href="#3-白名单Bypass" class="headerlink" title="3. 白名单Bypass"></a>3. 白名单Bypass</h3><h3 id="4-类型Bypas"><a href="#4-类型Bypas" class="headerlink" title="4. 类型Bypas"></a>4. 类型Bypas</h3><h2 id="0x03-其他上传攻击"><a href="#0x03-其他上传攻击" class="headerlink" title="0x03 其他上传攻击"></a>0x03 其他上传攻击</h2><h2 id="0x04-预防策略"><a href="#0x04-预防策略" class="headerlink" title="0x04 预防策略"></a>0x04 预防策略</h2>
+    <div class="post-body" itemprop="articleBody"><div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试。" data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容。">
+  <script id="hbeData" type="hbeData" data-hmacdigest="af19df44c2daaca6390402c424be9dac0bdd868a0fc3ce30d877f61316053f7c">c16d6d9746aa09854b1bf901e53fd5007d6e7f6249edad714852a7b42fcbe027e064d91ddc6f785fbe39bb743fb5e2469e46b64fae6b9c8550e87336258f2d7411fb2b9dfa3caaa8e9878d784ce370fc5cf3ce205b6f20f15071cf0478783ed532a72661937b7201f0e607f33a3e39913f600320b6222f8da007659662a6cf9baa43870d6ae88f44fc2bc12e9dee974c572705f4a26aa74123d292e3299c20dedfe67512698c26d96175269f52df5a00e7062533854e31d666b892471e408c5b7d8aa61a95a603b5f56cccb057373d3f4a109e30e659aac2b94fa228891b6e5921a03773e0c4961dc19c321ff678009590125fa7c883a53a326c2bb7d5e17e823606f6e4a001514e2b4e040a3cfe970dcaa851351fb7212f23d4ce7cf837cc10fd7ad51a4e8896e071e475a2819f331c58cdb1748bd6d1de49b1831035a95b8a42b1d0d9b3f6723d9f8bd28b6c1741153313b6f86eaa0f86e858ee78716355897a0b621771399276446c134d5605962a8b524e2cd3cffe912f313d6e2e683ba5e074ad5f0823612ef18daf0b468e4d0e6b8db79e7a39471c9c73975d9863032b62c38a05721a030d8aac1aa8eb3537205dfb09da5abee64457b3924d4956c8feff0819509d1fb6a435c8f80f6446926960a2d12a8b293bbcf28304e20c03ab55b5e66392573068aad5ef91978428cddeffd78c74fa37cd2b96dc37900f05db5b87c059370f48de6a6aadef5fbbfcb79d0a7044356b20589c66c2f9427ca21f5f01406846734c43facdb34bb8c39220731a8fc351cc80529227f735a73bcc4458c8195ab56c79112b9c46a031de4f723d022ba5536d0d7d78132568dfc1d5f895c62b010bc053b78fda8df63e0466d8a96e8059a24eca24868e9061100d6acda42ec2adb2c181cf75b786b6b5edd12123e7254be3668e0af694eeef3099d296490574b339e760bbbeb7b7f4721197e02967c16cf51beb429e45644e24812c0b87b8138ad43ac4d136646184fc58fe59a523b0a9917cd1bec06ae942aae9502c8473689f9e158fa308d005719d335b366e2964ad3bfab7f68b39520d9ad7659f5bfba9b0dedf8933cf290c1d6e7c1786464db3130b38555f86314611dae562688da16b3de523166535965208612c1dc2636936b508edaa8e1937e9cc4931cf90e343a26e52583114927165beb07782562d3050309f33df0b0b8ec684ad0517b30f2b56ad82c03f0ec94419c6d17aed14d8d7d9880762a5a5fc1920425731909f9ea186caaa53a517611ae52748eefeb508caecdbeeca092db52fc633bdea26b84383275cb8038c5082bd626e36927a4b6efbe0881ae0a0030399f564c3898dd8a482bbce5997b59ba8d2ff29861dedbf69fa00047e9969820d260bea028a8521b5f2fb35f3ff192d8d949040ecb853496ea61f741bf6fea4a3bc6e2abfffeb4619853ba7f183bc75bfa7d515483df46d1f4932035a9825d4a86befaa860a924b103f300a685e0c00b065bd8afd6c436c0be52c51c18d1d075862f5f10f028d646453df9fddc9b5703ff9d31416e12486cb9ccb8bcfc9b314faf24302b8a82a48a88a6eb9358e291994e6c8d13a41dd4dded3f08725d41a3d907abc22cd591b3adf4e40988dfda6fd20139599aa225f721fa01388c87e8af5492cb77e0d5d848eda585c0a1c629f87d8c451d4866193816ed40ee10db3e5621c8a7d6e77390a315547c4fe3f44f3e7b31694f7e81e67b7643fdaf4fd53d87a938a14ad37ad72516c95d36ce572527a0ae4b2249d51ef0cf2835c32c4ce345ddb1bac676b50c169c7aa9925a4ad80e06142cd9830b60ff0aadc76070fc1a2c48904a32012e832216edf6ea8bc1c9eebedc47a195b21078b8c344de1786a8be2a0a99ee7d01e319a791edfbf83d105a6235efc5d9ab05fa543747419e007aba8646ac85790e8e5cc58994ed2fc8f77ce37ff7bcdce1d7e619687a5464e639eb5081eed585dcfe738c1afe87c695aa4dd9be1a6b8bd7422315e57d47a4a46d2e36dd0b9a1228dd966a96a1d01354500db619250e8801df30df04c8f413b296c4bd5922666d142e294214857592b71507aa7bafaf6316795508d4212088b566d636166686cbf5c9a480cef5988c7758d95731c0ffceebfbac2ce423b3ec56f802fb165e9daa65b82c574abc9c55d4de91c19021743363fa5a4a30eeee8e6147f5427c1789a176437d0a0f0f761e6a8350d52b77fe53b3b33857328a5e367247aa17940f69a5531bee0cd992ac06aa0ef9713a78a9b55bda68129ce8d547a037128886619c60f86b2bf0fa4467cd0d7a7ebda745ea538e68f055ee32779109e94327e1905cc414c8a273933298648165eb68ac46487289cc73463b134fc96c665455c643d216e0ebad86d8580779a29109b2e74145212a50bc7861a2d616d29d0cab9c15a8ab70fd51409719d25ea77438bee617fbe64f86f6fe944bfa03ca16ba6655f6908db6796c4e18776e56773b2dbe4ff4b098a771ea2d2826bcb53a5ca149a9b3f3edcdc81f339aafaed06ee0283cf3c0612af408f512d8a27683c088d8944a640bffd49745eec79be951e7822b7a5a2feddb4648be40178688562947f1f75b110794f67d79ca66bc3c875ed4cac8bf1e3cb36ada4103e143e8e10e4ff472da7a92e33b1a9cb19ea94fdbfe6ae7f22ef9f04757c3580de</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">您好, 这里需要密码。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
     </div>
 
     
@@ -274,7 +271,6 @@
               <a href="/tags/%E5%AE%89%E5%85%A8/" rel="tag"># 安全</a>
               <a href="/tags/Web%E5%AE%89%E5%85%A8/" rel="tag"># Web安全</a>
               <a href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" rel="tag"># 文件上传</a>
-              <a href="/tags/object-Object/" rel="tag"># [object Object]</a>
           </div>
 
         
