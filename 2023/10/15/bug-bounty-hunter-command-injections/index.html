@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-cmdinj_basic_repeater_2.jpg">
 <meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-cmdinj_filters_1.jpg">
 <meta property="article:published_time" content="2023-10-15T15:25:01.000Z">
-<meta property="article:modified_time" content="2023-10-18T15:03:13.709Z">
+<meta property="article:modified_time" content="2023-10-19T12:10:51.485Z">
 <meta property="article:author" content="d4rk30">
 <meta property="article:tag" content="安全">
 <meta property="article:tag" content="Web安全">
@@ -124,7 +124,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%88%A9%E7%94%A8"><span class="nav-text">一、利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%A3%80%E6%B5%8B"><span class="nav-text">1. 检测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%A3%80%E6%B5%8B"><span class="nav-text">命令注入检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%96%B9%E6%B3%95"><span class="nav-text">命令注入方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5"><span class="nav-text">2. 命令注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E5%85%A5%E6%88%91%E4%BB%AC%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-text">注入我们的命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E5%89%8D%E7%AB%AF%E9%AA%8C%E8%AF%81"><span class="nav-text">绕过前端验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%B6%E4%BB%96%E6%B3%A8%E5%85%A5%E6%93%8D%E4%BD%9C"><span class="nav-text">3. 其他注入操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%BF%87%E6%BB%A4%E5%99%A8%E8%A7%84%E9%81%BF"><span class="nav-text">二、过滤器规避</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AF%86%E5%88%AB%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">4. 识别过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8-WAF%E6%A3%80%E6%B5%8B"><span class="nav-text">过滤器&#x2F;WAF检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%86%E5%88%AB%E8%A2%AB%E5%88%97%E5%85%A5%E9%BB%91%E5%90%8D%E5%8D%95%E7%9A%84%E5%AD%97%E7%AC%A6"><span class="nav-text">识别被列入黑名单的字符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%BB%95%E8%BF%87%E7%A9%BA%E6%A0%BC%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">5. 绕过空格过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E9%BB%91%E5%90%8D%E5%8D%95%E7%A9%BA%E6%A0%BC"><span class="nav-text">绕过黑名单空格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%88%B6%E8%A1%A8%E7%AC%A6"><span class="nav-text">使用制表符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-IFS"><span class="nav-text">使用$IFS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%8A%B1%E6%8B%AC%E5%8F%B7%E6%89%A9%E5%B1%95"><span class="nav-text">使用花括号扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%BB%95%E8%BF%87%E5%85%B6%E4%BB%96%E9%BB%91%E5%90%8D%E5%8D%95%E5%AD%97%E7%AC%A6"><span class="nav-text">6. 绕过其他黑名单字符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux"><span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Windows"><span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E8%BD%AC%E6%8D%A2"><span class="nav-text">字符转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E7%BB%95%E8%BF%87%E9%BB%91%E5%90%8D%E5%8D%95%E5%91%BD%E4%BB%A4"><span class="nav-text">7. 绕过黑名单命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-Windows%E9%80%9A%E7%94%A8%E6%B7%B7%E6%B7%86%E6%8A%80%E6%9C%AF"><span class="nav-text">Linux &amp; Windows通用混淆技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%85%E9%99%90Linux%E7%9A%84%E6%B7%B7%E6%B7%86"><span class="nav-text">仅限Linux的混淆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%85%E9%99%90Windows%E7%9A%84%E6%B7%B7%E6%B7%86"><span class="nav-text">仅限Windows的混淆</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E9%AB%98%E7%BA%A7%E5%91%BD%E4%BB%A4%E6%B7%B7%E6%B7%86"><span class="nav-text">8. 高级命令混淆</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E8%BD%AC%E6%8D%A2"><span class="nav-text">大小写转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E8%BD%AC%E5%91%BD%E4%BB%A4"><span class="nav-text">反转命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E5%91%BD%E4%BB%A4"><span class="nav-text">编码命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90%E7%BB%95%E8%BF%87%E5%91%BD%E4%BB%A4"><span class="nav-text">9. 使用工具生成绕过命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux%E5%B9%B3%E5%8F%B0%E5%B7%A5%E5%85%B7-Bashfuscator"><span class="nav-text">Linux平台工具-Bashfuscator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Windows%E5%B9%B3%E5%8F%B0%E5%B7%A5%E5%85%B7-DOSfuscation"><span class="nav-text">Windows平台工具-DOSfuscation</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E5%88%A9%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="nav-text">一、命令注入利用过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%BC%8F%E6%B4%9E%E6%A3%80%E6%B5%8B"><span class="nav-text">1. 漏洞检测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5%E6%A3%80%E6%B5%8B"><span class="nav-text">命令注入检测</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5"><span class="nav-text">2. 命令注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E5%85%A5%E6%88%91%E4%BB%AC%E7%9A%84%E5%91%BD%E4%BB%A4"><span class="nav-text">注入我们的命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E5%89%8D%E7%AB%AF%E9%AA%8C%E8%AF%81"><span class="nav-text">绕过前端验证</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%B6%E4%BB%96%E6%B3%A8%E5%85%A5%E6%93%8D%E4%BD%9C"><span class="nav-text">3. 其他注入操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%BF%87%E6%BB%A4%E5%99%A8%E7%BB%95%E8%BF%87"><span class="nav-text">二、过滤器绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%AF%86%E5%88%AB%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">4. 识别过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%99%A8-WAF%E6%A3%80%E6%B5%8B"><span class="nav-text">过滤器&#x2F;WAF检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%86%E5%88%AB%E8%A2%AB%E5%88%97%E5%85%A5%E9%BB%91%E5%90%8D%E5%8D%95%E7%9A%84%E5%AD%97%E7%AC%A6"><span class="nav-text">识别被列入黑名单的字符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E7%BB%95%E8%BF%87%E7%A9%BA%E6%A0%BC%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">5. 绕过空格过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%95%E8%BF%87%E9%BB%91%E5%90%8D%E5%8D%95%E7%A9%BA%E6%A0%BC"><span class="nav-text">绕过黑名单空格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%88%B6%E8%A1%A8%E7%AC%A6"><span class="nav-text">使用制表符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-IFS"><span class="nav-text">使用$IFS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%8A%B1%E6%8B%AC%E5%8F%B7%E6%89%A9%E5%B1%95"><span class="nav-text">使用花括号扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%BB%95%E8%BF%87%E5%85%B6%E4%BB%96%E9%BB%91%E5%90%8D%E5%8D%95%E5%AD%97%E7%AC%A6"><span class="nav-text">6. 绕过其他黑名单字符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux"><span class="nav-text">Linux</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Windows"><span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E8%BD%AC%E6%8D%A2"><span class="nav-text">字符转换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E7%BB%95%E8%BF%87%E9%BB%91%E5%90%8D%E5%8D%95%E5%91%BD%E4%BB%A4"><span class="nav-text">7. 绕过黑名单命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux-Windows%E9%80%9A%E7%94%A8%E6%B7%B7%E6%B7%86%E6%8A%80%E6%9C%AF"><span class="nav-text">Linux &amp; Windows通用混淆技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%85%E9%99%90Linux%E7%9A%84%E6%B7%B7%E6%B7%86"><span class="nav-text">仅限Linux的混淆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%85%E9%99%90Windows%E7%9A%84%E6%B7%B7%E6%B7%86"><span class="nav-text">仅限Windows的混淆</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E9%AB%98%E7%BA%A7%E5%91%BD%E4%BB%A4%E6%B7%B7%E6%B7%86"><span class="nav-text">8. 高级命令混淆</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%A7%E5%B0%8F%E5%86%99%E8%BD%AC%E6%8D%A2"><span class="nav-text">大小写转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E8%BD%AC%E5%91%BD%E4%BB%A4"><span class="nav-text">反转命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E7%A0%81%E5%91%BD%E4%BB%A4"><span class="nav-text">编码命令</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E4%BD%BF%E7%94%A8%E5%B7%A5%E5%85%B7%E7%94%9F%E6%88%90%E7%BB%95%E8%BF%87%E5%91%BD%E4%BB%A4"><span class="nav-text">9. 使用工具生成绕过命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Linux%E5%B9%B3%E5%8F%B0%E5%B7%A5%E5%85%B7-Bashfuscator"><span class="nav-text">Linux平台工具-Bashfuscator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Windows%E5%B9%B3%E5%8F%B0%E5%B7%A5%E5%85%B7-DOSfuscation"><span class="nav-text">Windows平台工具-DOSfuscation</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -137,12 +137,12 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -205,7 +205,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-18 23:03:13" itemprop="dateModified" datetime="2023-10-18T23:03:13+08:00">2023-10-18</time>
+      <time title="修改时间：2023-10-19 20:10:51" itemprop="dateModified" datetime="2023-10-19T20:10:51+08:00">2023-10-19</time>
     </span>
 
   
@@ -243,9 +243,9 @@
 <p>【Bug Bounty Hunter】笔记系列</p>
 </blockquote>
 <span id="more"></span>
-<h2 id="一、利用"><a href="#一、利用" class="headerlink" title="一、利用"></a>一、利用</h2><h3 id="1-检测"><a href="#1-检测" class="headerlink" title="1. 检测"></a>1. 检测</h3><h4 id="命令注入检测"><a href="#命令注入检测" class="headerlink" title="命令注入检测"></a>命令注入检测</h4><p>当我们访问下面练习中的Web应用程序时，我们会看到一个Host Checker程序，尝试输入本地主机IP地址127.0.0.1来检查功能，它返回ping命令的输出。</p>
+<h2 id="一、命令注入利用过程"><a href="#一、命令注入利用过程" class="headerlink" title="一、命令注入利用过程"></a>一、命令注入利用过程</h2><h3 id="1-漏洞检测"><a href="#1-漏洞检测" class="headerlink" title="1. 漏洞检测"></a>1. 漏洞检测</h3><h4 id="命令注入检测"><a href="#命令注入检测" class="headerlink" title="命令注入检测"></a>命令注入检测</h4><p>下图展示了一个Web应用程序（Host Checker），当输入IP地址之后点击<code>Check</code>，会显示<code>ping</code>命令的输出。</p>
 <p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-cmdinj_basic_exercise_2.jpg" alt="img"></p>
-<h4 id="命令注入方法"><a href="#命令注入方法" class="headerlink" title="命令注入方法"></a>命令注入方法</h4><p>为了向预定的命令注入额外的命令，我们可以使用以下任何一个运算符：</p>
+<p>想要检测命令注入漏洞，我们可以使用以下任何一个运算符：</p>
 <table>
 <thead>
 <tr>
@@ -307,14 +307,14 @@
 <blockquote>
 <p>注意：唯一的例外可能是分号;，如果命令是在Windows命令行（CMD）中执行，则不起作用，但如果在Windows PowerShell中执行，则仍然有效。</p>
 </blockquote>
-<h3 id="2-命令注入"><a href="#2-命令注入" class="headerlink" title="2. 命令注入"></a>2. 命令注入</h3><h4 id="注入我们的命令"><a href="#注入我们的命令" class="headerlink" title="注入我们的命令"></a>注入我们的命令</h4><p>我们可以在输入127.0.0.1后加上一个分号，然后附加我们的命令（例如whoami），这样我们将使用的最终有效载荷是<code>127.0.0.1; whoami</code>，要执行的最终命令将是：</p>
+<h3 id="2-命令注入"><a href="#2-命令注入" class="headerlink" title="2. 命令注入"></a>2. 命令注入</h3><h4 id="注入我们的命令"><a href="#注入我们的命令" class="headerlink" title="注入我们的命令"></a>注入我们的命令</h4><p>我们正常输入127.0.0.1，会显示Ping命令返回的结果。如果我们在127.0.0.1后加上一个分号，然后附加我们的命令（例如whoami），这样最终输入的内容为：<code>127.0.0.1; whoami</code>，要执行的最终命令将是：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d4rk30@linux$ ping -c 1 127.0.0.1; <span class="built_in">whoami</span></span><br></pre></td></tr></table></figure>
 
-<p>我们可以尝试在Host Checker Web应用程序中使用我们之前的有效载荷：</p>
+<p>我们尝试在程序中输入我们的Payload：</p>
 <p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-cmdinj_basic_injection.jpg" alt="img"></p>
-<p>如我们所看到的，网络应用程序拒绝了我们的输入，因为它似乎只接受IP格式的输入。然而，从错误消息的外观来看，它似乎是来自前端而不是后端。</p>
-<h4 id="绕过前端验证"><a href="#绕过前端验证" class="headerlink" title="绕过前端验证"></a>绕过前端验证</h4><p>定制发送到后端服务器的HTTP请求的最简单方法是使用一个能够拦截应用程序发送的HTTP请求的Web代理。因此我们可以启动Burp Suite或ZAP，并配置Firefox通过它们代理流量。然后我们可以启用代理拦截功能，使用任何IP（例如127.0.0.1）从Web应用程序发送标准请求。</p>
-<p>现在我们可以自定义HTTP请求并发送，看看网络应用程序是如何处理它的。首先我们将使用与之前相同的有效负载<code>127.0.0.1; whoami</code>。我们还应该对有效负载进行URL编码，以确保它能按照我们的意图发送。我们可以选择有效载荷，然后点击<code>CTRL + U</code>。最后，我们可以点击Send来发送HTTP请求：</p>
+<p>正如图上所示，Web应用程序拒绝了我们的输入，因为它似乎只接受IP格式的输入。然而从错误消息的提示样式来看，这种格式校验处理应该来自于前端。</p>
+<h4 id="绕过前端验证"><a href="#绕过前端验证" class="headerlink" title="绕过前端验证"></a>绕过前端验证</h4><p>这样我们就可以通过手动构造请求，而绕过前端的限制。我们可以启动Burp Suite或ZAP，并配置Firefox通过它们代理流量，然后我们可以启用代理拦截功能。</p>
+<p>现在我们可以自定义HTTP请求并发送，首先我们将使用与之前相同的输入<code>127.0.0.1; whoami</code>。然后对Payload进行URL编码，以确保它能按照我们的想法发送请求。我们可以选择有效载荷，然后点击<code>CTRL + U</code>。最后，我们可以点击Send来发送HTTP请求：</p>
 <p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-cmdinj_basic_repeater_2.jpg" alt="img"></p>
 <h3 id="3-其他注入操作"><a href="#3-其他注入操作" class="headerlink" title="3. 其他注入操作"></a>3. 其他注入操作</h3><p>以下这些操作符可以用于各种注入类型，如SQL注入、LDAP注入、XSS、SSRF、XML等。我们已经创建了一个包含最常用操作符的列表，可用于注入攻击：</p>
 <table>
@@ -369,8 +369,8 @@
 <td>\n \r \n \t %0d %0a %09</td>
 </tr>
 </tbody></table>
-<p>这张表格是不完整的，还有许多其他选项和运算符是可能的。</p>
-<h2 id="二、过滤器规避"><a href="#二、过滤器规避" class="headerlink" title="二、过滤器规避"></a>二、过滤器规避</h2><h3 id="4-识别过滤器"><a href="#4-识别过滤器" class="headerlink" title="4. 识别过滤器"></a>4. 识别过滤器</h3><h4 id="过滤器-WAF检测"><a href="#过滤器-WAF检测" class="headerlink" title="过滤器&#x2F;WAF检测"></a>过滤器&#x2F;WAF检测</h4><p>本节末尾的练习中的网络应用程序开始。我们看到了同样的Host Checker网络应用程序，但现在它有一些缓解措施。我们可以看到，如果我们尝试之前测试过的操作符，比如<code>;, &amp;&amp;, ||</code>，我们会收到无效输入的错误消息：</p>
+<p>这张表格实际上并不完整的，还有许多其他选项和运算符是可能被利用的。</p>
+<h2 id="二、过滤器绕过"><a href="#二、过滤器绕过" class="headerlink" title="二、过滤器绕过"></a>二、过滤器绕过</h2><h3 id="4-识别过滤器"><a href="#4-识别过滤器" class="headerlink" title="4. 识别过滤器"></a>4. 识别过滤器</h3><h4 id="过滤器-WAF检测"><a href="#过滤器-WAF检测" class="headerlink" title="过滤器&#x2F;WAF检测"></a>过滤器&#x2F;WAF检测</h4><p>本节依然有同样的Host Checker应用程序，但现在它有一些缓解措施。我们可以看到，如果我们尝试之前测试过的操作符，比如<code>;, &amp;&amp;, ||</code>，我们会收到无效输入的错误消息：</p>
 <p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-10-17-cmdinj_filters_1.jpg" alt="img"></p>
 <p>让我们检查我们发送的有效载荷，除了我们知道没有被列入黑名单的IP地址之外，我们还发送了：</p>
 <ul>
@@ -510,11 +510,14 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/10/15/bug-bounty-hunter-sqlmap-essentials/" rel="prev" title="【Bug Bounty Hunter】第九章-SQLMap精要">
-                  <i class="fa fa-angle-left"></i> 【Bug Bounty Hunter】第九章-SQLMap精要
+                <a href="/2023/10/15/bug-bounty-hunter-sqlmap-essentials/" rel="prev" title="【Bug Bounty Hunter】第九章-SQLMap">
+                  <i class="fa fa-angle-left"></i> 【Bug Bounty Hunter】第九章-SQLMap
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2023/10/19/bug-bounty-hunter-file-upload-attacks/" rel="next" title="【Bug Bounty Hunter】第十一章-文件上传">
+                  【Bug Bounty Hunter】第十一章-文件上传 <i class="fa fa-angle-right"></i>
+                </a>
             </div>
           </div>
     </footer>

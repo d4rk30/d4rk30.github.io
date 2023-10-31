@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有东西被加密了, 请输入密码查看。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Burp Suite备忘录">
+<meta property="og:url" content="https://www.nohacker.me/2023/10/27/burp-suite-note/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="有东西被加密了, 请输入密码查看。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-26T16:41:33.000Z">
+<meta property="article:modified_time" content="2023-10-31T02:31:56.292Z">
+<meta property="article:author" content="d4rk30">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.nohacker.me/2023/10/27/burp-suite-note/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2023/10/27/burp-suite-note/","path":"2023/10/27/burp-suite-note/","title":"Burp Suite备忘录"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Burp Suite备忘录 | 黑客与产品</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">黑客与产品</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩上思考🤔️</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩上思考🤔️</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2023/10/27/burp-suite-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+      <meta itemprop="description" content="站在巨人的肩上思考🤔️">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Burp Suite备忘录 | 黑客与产品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Burp Suite备忘录
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-27 00:41:33" itemprop="dateCreated datePublished" datetime="2023-10-27T00:41:33+08:00">2023-10-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-10-31 10:31:56" itemprop="dateModified" datetime="2023-10-31T10:31:56+08:00">2023-10-31</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2023/10/27/burp-suite-note/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/10/27/burp-suite-note/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><div class="hbe hbe-container" id="hexo-blog-encrypt" data-wpm="抱歉, 这个密码看着不太对, 请再试试。" data-whm="抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容。">
+  <script id="hbeData" type="hbeData" data-hmacdigest="cf327b3b9d703649494ed33a67a2934527808ba89470c3a80895b614eac62c27">c16d6d9746aa09854b1bf901e53fd5007d6e7f6249edad714852a7b42fcbe027e064d91ddc6f785fbe39bb743fb5e2469e46b64fae6b9c8550e87336258f2d7411fb2b9dfa3caaa8e9878d784ce370fc5cf3ce205b6f20f15071cf0478783ed5c21e1133aa06b16501c7a694bed8a42b5f09107685ae9809890f2e27798ff30badf3579c3a7dabda18d72fa5f46b282e562def0f8659b6ccafe065f00b0c6d7559b22e33d1d5c883595105510e3ce2970e9dec830937a283f79f48d7b989078563f0130bfd6c99d3ec7c502450ce7153011c1628372b286a18b5949a699b8f42b4f4ea9dfe8193b65d769169a8afc0720d805d0b463eec3b355c5aa8a1cfb8ea4ff48c3868eac07cd7300dfd8576fd5cbe1d55f856ee891b41b57be3e4c405baf028844086c8a25fa669bd0bcab58e84e154707c704dc08b7e8089f5fedeb7cf5538c9391c899346db0715101679ba591268c65310f6e9f54a22efc878e048ba9a55e924e8c286034e38d6dce46c7f472742fbf0f72b0f3a7db9d69a5c51846b365cb5e6ff5fa54b2eb7b894fe6d429ec0dbdb07229064db577f2884d8adcccb4cba1cece25e764477d3fccb9fbe4295461199fe98317e369ea899e7c681c3ebddb681edff369125ddedf0c3b72cfc6faaa177e2963bfd22130dd402e8ea600ba51114545b0753fd39a094f018f9856492000aea0309c3f2ae850e9109771ae69c445a660ece9e48f9229ca98990258fb70c7345255f0df7ea0a4f04b9d4dca2593b592c8da798a9966fce03582b26b915253b984b7da45fd173b3df64de39d1ac3dfc3baad92a020c5d9f9e973d34b43164aff5d93dd070e8b1a66e3b64aa1661a3374e9c36cecadb6dd15e671d728ffd04fedf29b6c65dffa9b71580987017e1fbc7d649c6317654b1f37c85d55382d9ed0ecb5bf820b71383f5e1f84a41a4d4f4e2b8f10db24a4868d52dc6a1ce68c8fd9b11881219a0bed58704969c940cb07d80a56704c004c29a3afea5fca5a69a534e88a4aee4fb1ab8783a955a86b106ff92a77073667482c8ef6ec8cd97143e67405006c3effe72d83eb84551e536a5e03d0b0b1f46f0d22d64a3858de2fb71783ef7d9a8886931f85eb54ef47158be1d2f0a094408bfcec9e9b4b97f5915543faea2d9d80fe05c8967f369d8e09e0e0bcefa0ca07e47843996970870af8795fbcf93055389da1f9089f781dcd7b8b46ec1cc6cb62b55aca09e4406d5665a84640fa88049be40fd552e64ddcbc1a40d2e23f843dac24b1b0308479b440c1056f8ee0b000378eca4a50932baadbf0b76dd84c3f54e51944bc28dfdd07e0bc6ecaddf7fe2f6f67e72a9b8339aeaecfe8caab84c892dd70c60e45a74c5c41a83ed63db0cf712767485d319e59807552f0bbe9d3ba294da7131fe19366c17572be3b7c6f913ae567f4dbb2575f261e96dcb9d93ad79395737b4fb7d8806d2999285efb682c6d4bacda1dddc039e7425198787d211eea24cf8337394610598fb4e93089ae489c3392fb4d052a97d898866f5ae615bc9f68ee916a62265820e823d6ec60f356101ec81fd75917728b713aa3c64a2e1b323ca6aa226b5c1143eeebdd60a0975f04d7dee5462872576e91049218674133c240c8cfbb7818d3050f374096f1ef930e4b57be21e35eef3e02a807831f604365f28fa017ff5e6beaeb8414c57315d026dfd52b23a3cfcd41b976584394746e10b08512b65aadd2f4c4b2e18e2d1ec7dc53f4a65fe5a08d8f85a137549a6d7e9d819d37e0108c80b5e7d061d45eb644dfe99dc06171d8e26f094f7848cd6def5ee9aa67f560974c8145c7a839fb0de5a4013281342a0822af2c2712121168159cec69729a32e8d8b38f5c34d38eb6681201eea35f55593decc5167428df54368701998c0a6818f20a983dbdbe416dfad81c21a3700212e0cf8f4081c36b1e1891a30eba1a63b243f593021e2cd700c98274a6890f4b5dcfbae6724502e84e362e1f9734fd94be0a801740d419eb7439934dd2c3045b26009876e9a30993254361941c86c9f181d37d0aa25267bbe9d6f36dc22e1b427e420816cb7da611fcdac1cf663b1e0478cfba97bdce6eed50f3ce861778194bab4b82c6e72b23ab4a3a156c32b9663655d39353b0c7100373ad4443a8e67021a5e346fb88a82d0963c6524b718d0779adcd9257f185004254d9e4184c0aa969f99222e09349ab101a92a5c45b7b95006a9391830cc0d60751b9097dc18050a5425dc130ebb935b836e7391f3d153cb46e6191808c53e0572d2058128b28ccc3286827e73b5f4226b19301d3d444d160ea3ee03102f1b02c32d7231a65bb6f4cfe7967c62bcfa2e2d3343440824698ec6a24c792df02bd44032f8fb8dd60f657bf6f4d944c2f8d42bee74cfb3793b25a80c64139c50e68152e13592837bf571357c85657ee1a8c6976090dd1a82d24fb068a411974c05ce83526c2aaebb6655df30e759133bce311469866e5b2167f427e314b33c83288289c3c75368d1109a8fb362f3537cb2213ca4de291b6831d41f107fb7ff706ac6443719e0144effa8beb2abc19522a1cd8eceb33d501e34c58c3c145567277428c1eea54679be2db5d3ab6d9126a14e8da94207850ff58a4d28d6f3f6035e02e8a33e5bf6155fba1733e770e27d28cf7484d1f119da7644d9281189a54651ebe905e8f27530736863ddfa4379e1ed4644e32b1e6d3b3148f3fedb31c7616675da8366693efe479b1e3cb2f29e874afaf57c6afc4376d11652492ad3c2e418c50234fe7a65aeee0ccdaba120b0f373ce8cf551f101f188bfaeca3764da2c5a91abf8d492b22a9e66c1bc458d2c230a9a61f7c472475e8cfdb0466fcd2bd80f208190dbe6b9bb37ea25264414fb790c9717283d3603cea2db1114026022985c56d5e285c6cd0999b5716202b23d8c434ac06e5398665ead19d59822ace876220bb19a15ba849a16cdc4f1cab212875a360911d61eeeef57996fa7c8c205dc62bfea9118c3885bddc4bdadb31d738d6d38b5dfc354a234ccace88adbba66ac75016b8e95923c884ea0f3500464dd9e057a0e74d682501f6a832b5eda376589a8b5186fe83224a4a46d1bcec36c3bb296953a66161034cb2faa701e975e143bb63450487453f301792a23379752656e88243ab7af9b8c44f774608599f86c31011d86ecd97aa929f6f0c4cc5fb32450791681f5db41cbe75bf0169fc8d8212c1d562915c9e6eec82663028b4ceb338fa0369820884535d385ee1c30fb7c9ea8ae14aef95ae418373080dd8ddabb5ae24309316617bd2d2f74914251060936c08623d5503a2397bd6b36fdbdfd3006f0a4701d524828d7e3d9696d3520c7956dfecc2f12a89586855a59450a749909b050bcaeb44f6a762e1a7d3add895124d360ee669be6b8396e31d362cf736f3e9ba6dbac81a3f3892c8898e2060b6b18dbedec7d5fe08af7c89a366b78559658af0b81718970b9d21b76234498180c7dcb59218b6e5bfaedecaa22f21c6840a0d13bf789d3392fbfe2b46ace8a1b90147203b323e9f38f68b06701cc1615862514b9d252a75e691a893d8274233c6789080f7127989719881c40d543387399ffd8c96e3ede1ddb61c90dc15f8a0b5158b2dc45df3dc2e13a304a3a98c24452b7481af9678f9f5632cfe808b4adde3029bcc0864820abcbe1d97cb5b3f5a01284937372735b5cca7111c93db44d3039a16a614a923235ce0bead5cdb6d18378b13fd72d0b8ec095be4b3b0166078b160f5ac4e7d897eaf184f2a2915c45d16c9ec943f77c56de7bdcdb61ac914049f810531bce2b74d7420eda58610e0238f6aa7709a00d9d0d6de2e168be4cd349e1e442018328678f0c3b7ad71846e51b92e29c7999440625a2dc5448a569e5f2c766cb50c0872733a317bcc5a451be6df08adaddc85bbc0768b1b715fa5c1718b701614a4ae0c2fcb0493b5e87ae1335d5b3bd11182e77b86f1b62cefb5d455a313bbfedbdff7bb2afade40c0159696597e0f93738832d4e531d6ebd46b19182c2234ffac72b6b3f1b47fda489de8100ec1191ea5064df808a0b673d6ae4bef65a3cbf36994c58ee0cf7edf8b120e52b47e9a46aa05edf48aa6e44d53184c8c2740db7031270aff0bae1ee59504740a96950d5671471edb915cc3852ccac346cf0809a3528c699f6b54b588b859b3a02fc9bd6517402a73b3270d784157779449a5b2f6601fc3bf0a879b0d313fc34bd3bf23fdffe5ae3d1e80d8649c0aabb232345919882a7f137a385ce17d73ea334a225f217926ccab27bb379cdbb77007f01eae8f82151f96c2877fbdb50de6070311c53c17c9a7788d8110030a38c509f6dd1d140a72fc020047c6063ddf77aec891515c16f3cccf560e8dde8524e1fdf3975b40a4a2f6ea43613e29c6a7e8c7a509993284c8c8f10f266a92b9415cd98594b4a7ce3c49f0527f34e134ea0b87646a79317b83219d63e825561f233812c0b0747ea01b9f7b974bc6c2c3a4794e89448f08d5e58f3f26c5f5b9ff516a8eb2934175ede57e670f79dd3569a52bf237cead3c7b4d4a73577e4d4559bc2077a640a44019aeccd9301075029929e4cfa0fed9aceceee225e17de3d408a93d58d113d868b3b3c5b0d9a4c8a932b55fcce6ae80070593186485516f1b2f8d0efcc9fb5b577e365810d315e913ca80cb0dec608b7fbc9495436578c9c4d81126e999256776170f4e4c33a1f2a8520675d7e61cbd5ccb3cdd3c0ced2f35d10d1ce1111d673baf84a74aaf3512e34a7d01eada842de6ed75e4e088603a269588371d73216fd8df358c48fb750385cec6d7d13f7e4ed568576ba681681cdba112e5a805a5764169c70499e11774354e869da36fb95dad46025b0eef069967db4c2add136464fb02256eba525df377b6ecc2882591d01536b25f0454aab1ae407118dc2511eaac9ba3ba0ce780a712a912f9a977ea31cf50ef945dc4a24806f711c555b5fb1d17382f08846235b1cff655f9e6f5c407f25c4cd7b7870abc9b8d731c818201ea8d3ffd9bed127bb99594f5bab48df77d560982cf9c1ee81bb27bdc0c08550c92fc75e17222b6d962ee8f878bd8f0570238d6b7c9d3ad219d1d59608a70e1d86d525ab094968863db3ce0bcc9d79324f68c801c809b39425a1ac721f717fcec7d0e96136eeed9cc154acc98f98043edab4ff65925f1c9e4eb8532ffc5dd5e545f1e3cb2c1627809809004f5a5fcc13dd7626f435e312c66ba4b004c979658fa5e229c236addf2e2cdf075ba6d5101450c5d7f58bf8230aff049a81a4c384b2c063d5461a541867cdc981f65d93ddeeb9d70fb64fdc7868b1f360cd828b27ed5979b0dcbcc468b3ecc0953ff883c08039b2b3c0768b6ef8d560767bb8d5c5dfdde8bd845b85d942aec33d6666fb4ead114e8bb5492d4a80c76dcd2dc9894abde56140bc8912a6fe1568c81db2b896351c1c76dad4986e370b1cf443bb7d4bbaf9be20a75a49ff97374baec438de6e347730db4c1a81166c14a9cca7546c2b3030647fd3b7967acf11be9b405122af6e11c00008384a49916664ae83d86f113aca01700805820cf0fad762512f6ac98e6eee20a428c297ac1fda274150fa7ab2524bc29b650d480c9d4c0517afbc2e46868005bd9f3a814d1440bc1ed4ddf2103b41159be0913f2607a3022c4e8c0cf524a7c7d91c18bb2d6fd0796ec89378deeabf5afa458ab5a2fe5ed23c4d90c2962cdc47eb1ed37c2defa68f737594cf9191bac2fbad81c794a0431c5b8e1361f7c7f07ebc3104146dbf4c7a6fdf5df83cf53f429ca54f572dcd8d1a6c905198b5b3f34cf895e8831d4a315b39ed4fe759cf2972ba4500e85cc789a795a041f861e8f8d5fde0381f96c18e52f31ee667b9d59da1d180bb093af09842a37722c5fcd9906b2dd27d25cbe4b298bc8d0be2ab3b3836377d0d196cd173bfb3e0ebe018ebfdb783a38591274b55c9d5637ae292a868bc2f0cf710395cf7f6fce97cb569b61faf705ce15d419cbce0f85ef6a3c32417bb5f98b5327480c7564278409c22b787f06996519a2d97d2997eaff29837f8016cb57cf0626e15f9c9c0e84608e869c4f1ba71391891a5f0fdfa9b37a91b972c2888c31c99fe65cccf9de5e8b2cf45ef1de65e840f91c95e410da71f798eb9dfaac002cc85f1cb2416884c08dd205c85a1e1b0b10f60abf5cd5ac3d97f16c2f29de7f14122dcb535bdf591d9a9535e32edfefffb1d5e65e7afa8ee0624273929c40d16e9d589d889a8d84c51e8c4ff13cf96ee0714d23ad54489b05d7575e9b2709bf4e2c1183b3002dc9ea3b6c86b2dc1e30357f9561756e4d2f939e72e44b7d33e48b51075f379384d62b2a3633518d131e4d12995a2d1fb13f244a8095ce1a13a190f4685dd12f60e9b5b8271f5f4c749f5a68055a2722e84302d85f2bd8fc0dc11be0c0e511554f640a73f92d6d0f255b1b957b1d89fefc8cf2e2e9fecc46e3597c2f6fe266817fc3a4b6e7ae49a4adc2ce54cd417a418e498c8e6e85b13d5ddc65e9b3e8a23e8a85a8c9f1d65b6c64542f9900abd3a01fdc8cb74487b8cffbadb6ab4d1a236516ccf52926e6b65d4812b2ec6f889c817acccd344073ee20a5a1dc15e6313df98c27e381902d59822e9c6918efc752a2e12e6384280424b7c37418f9773fc6e877b86fcc156299c355e76ce1d0401dbce4aa4b71dbf0e9ee0f70008c057de2fa0253c77d09cfc2397bd15fb21dec7ea31adb8a2776f69a7276afb63b14618acb7b2e561ab37a13f6c3da344a9c30bc95ce512e15916025cd11e83cc2bf1f2bb06b3ff95d6e10b628744aafdfa36ab7aeeaac026d5a6b1ca70223beb8d9d74e8972ede6d223ed3eb91dcbec098ccebc82b5149de0c1c683b2b8d1f16784c59e0238f3a9ccf6b2f06a91bf44782b6be47497d1abce6c1dc2a947ab03114885194eb175ef6e5cfefbd1e44f2576e5f5d93b56a6c7c05bafe92ea6827f7571354d6f6893fd9a4ea2277cae9c20e37111cef239f8df798abc7914761810e2df823647cb4226833fad8ef1c2bff33a4d2145778ae13296dc9b5ded7a0ba27ae765998d33be4a4e0b9a79598076575a6e7c1ca73415f668c7b8cbde91da1c6a91defe60101c0fcf22edf7c296a767d20e0eb10265a9517edaf9023f15afc24bf749de504231beda9a13e8b994ed54f553d3cb538b7f811329fc75be2f024ad98932098dee12c9ccc57a0dd0ea5bc2e6be8c37244230509f9d1853a08a8090b3bd08112ca9ca29467c6e0c881fc4398bb7db3b74625a172287769dd2dd3a5c8a567530cc1a7d32e318ce7397c26821ac81a71bfaa36fd78dcaba899405e8c413a04972a5655a85fde8fecbbc374528517d2d79e0f64d962823f06e28fdaa496d60b918f34c79e839d67559f5b222eb58d270f0b3fc4a7c31cc8d739891cc84d120cb01fd3c6cb660f77949d94f7b3f39a02099cab2e41129997d5d83cf70158f759b3bec07c7470b7cb69c10f45e749054cc98e7029ef90ae6e45444611d953a0b0e8e6e13eb9032114bd80d48ac25f14fb6f0d4d130ab8a8021b7f01da251f323c9e0ffdf5f81ceca0bf90ce</script>
+  <div class="hbe hbe-content">
+    <div class="hbe hbe-input hbe-input-default">
+      <input class="hbe hbe-input-field hbe-input-field-default" type="password" id="hbePass">
+      <label class="hbe hbe-input-label hbe-input-label-default" for="hbePass">
+        <span class="hbe hbe-input-label-content hbe-input-label-content-default">您好, 这里需要密码。</span>
+      </label>
+    </div>
+  </div>
+</div>
+<script data-pjax src="/lib/hbe.js"></script><link href="/css/hbe.style.css" rel="stylesheet" type="text/css">
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>d4rk30
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.nohacker.me/2023/10/27/burp-suite-note/" title="Burp Suite备忘录">https://www.nohacker.me/2023/10/27/burp-suite-note/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/10/21/use-pyenv-to-manage-python-versions-on-linux/" rel="prev" title="在Linux上使用pyenv管理Python版本">
+                  <i class="fa fa-angle-left"></i> 在Linux上使用pyenv管理Python版本
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/10/31/burp-suite-crack/" rel="next" title="Burp Suite Professional 2023.10.3.2 最新版破解">
+                  Burp Suite Professional 2023.10.3.2 最新版破解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">d4rk30</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"d4rk30","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
