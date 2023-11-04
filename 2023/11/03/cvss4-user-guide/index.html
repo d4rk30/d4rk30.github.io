@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="快速了解CVSS4的升级内容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CVSS4升级内容浅析">
+<meta property="og:url" content="https://www.nohacker.me/2023/11/03/cvss4-user-guide/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="快速了解CVSS4的升级内容">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-11-03-head_img.png">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-11-03-cvss4.jpg">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-11-03-cvss3.1.jpg">
+<meta property="article:published_time" content="2023-11-03T03:22:16.000Z">
+<meta property="article:modified_time" content="2023-11-04T14:54:10.759Z">
+<meta property="article:author" content="d4rk30">
+<meta property="article:tag" content="CVSS4">
+<meta property="article:tag" content="漏洞评分">
+<meta property="article:tag" content="漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-11-03-head_img.png">
+
+
+<link rel="canonical" href="https://www.nohacker.me/2023/11/03/cvss4-user-guide/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2023/11/03/cvss4-user-guide/","path":"2023/11/03/cvss4-user-guide/","title":"CVSS4升级内容浅析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CVSS4升级内容浅析 | 黑客与产品</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">黑客与产品</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩上思考🤔️</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-CVSS4%E4%B8%8ECVSS3-1%E7%9A%84%E5%BA%A6%E9%87%8F%E6%A0%87%E5%87%86%E5%AF%B9%E6%AF%94"><span class="nav-text">0x01 CVSS4与CVSS3.1的度量标准对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-CVSS%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="nav-text">0x02 CVSS命名规范</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-CVSS%E5%9F%BA%E7%A1%80%E5%88%86%EF%BC%88CVSS-B%EF%BC%89%E8%A1%A1%E9%87%8F%E7%9A%84%E6%98%AF%E4%B8%A5%E9%87%8D%E6%80%A7%EF%BC%88Severity%EF%BC%89%E8%80%8C%E4%B8%8D%E6%98%AF%E9%A3%8E%E9%99%A9%EF%BC%88Risk%EF%BC%89"><span class="nav-text">0x03 CVSS基础分（CVSS-B）衡量的是严重性（Severity）而不是风险（Risk）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-Scope%E6%8C%87%E6%A0%87%E7%A7%BB%E9%99%A4"><span class="nav-text">0x04 Scope指标移除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E8%AF%84%E4%BC%B0%E8%BD%AF%E4%BB%B6%E5%BA%93%EF%BC%88%E6%88%96%E7%B1%BB%E4%BC%BC%E5%BA%93%EF%BC%89%E4%B8%AD%E7%9A%84%E6%BC%8F%E6%B4%9E"><span class="nav-text">0x05 评估软件库（或类似库）中的漏洞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-%E5%85%81%E8%AE%B8%E5%A4%9A%E4%B8%AACVSS%E5%9F%BA%E7%A1%80%E5%88%86"><span class="nav-text">0x06 允许多个CVSS基础分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-%E7%8E%AF%E5%A2%83%E5%AE%89%E5%85%A8%E8%A6%81%E6%B1%82%E5%BA%A6%E9%87%8F%E6%A0%87%E5%87%86%E7%9A%84%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97"><span class="nav-text">0x07 环境安全要求度量标准的使用指南</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-%E6%96%B0%E7%9A%84%E6%8C%87%E6%A0%87%EF%BC%9A%E6%94%BB%E5%87%BB%E8%A6%81%E6%B1%82%EF%BC%88Attack-Requirements%EF%BC%89"><span class="nav-text">0x08 新的指标：攻击要求（Attack Requirements）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x09-%E6%9B%B4%E6%96%B0%E7%9A%84%E6%8C%87%E6%A0%87%EF%BC%9A%E7%94%A8%E6%88%B7%E4%BA%A4%E4%BA%92%EF%BC%88User-Interaction%EF%BC%89"><span class="nav-text">0x09 更新的指标：用户交互（User Interaction）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0x10-%E6%97%B6%E9%97%B4%EF%BC%88Temporal%EF%BC%89%E5%BA%A6%E9%87%8F%E7%BB%84%E6%9B%B4%E6%96%B0%E4%B8%BA%E5%A8%81%E8%83%81%EF%BC%88Threat%EF%BC%89%E5%BA%A6%E9%87%8F%E7%BB%84"><span class="nav-text">0x10 时间（Temporal）度量组更新为威胁（Threat）度量组</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x11-CVSS%E6%89%A9%E5%B1%95%E6%A1%86%E6%9E%B6"><span class="nav-text">0x11 CVSS扩展框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x12-%E6%96%B0%E7%9A%84%E8%AF%84%E5%88%86%E7%B3%BB%E7%BB%9F"><span class="nav-text">0x12 新的评分系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x13-%E5%9C%A8%E5%90%91%E9%87%8F%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E6%9B%B4%E6%96%B0%E7%89%88%E6%9C%AC%E6%A0%87%E8%AF%86"><span class="nav-text">0x13 在向量字符串中更新版本标识</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩上思考🤔️</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2023/11/03/cvss4-user-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+      <meta itemprop="description" content="站在巨人的肩上思考🤔️">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CVSS4升级内容浅析 | 黑客与产品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CVSS4升级内容浅析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-11-03 11:22:16" itemprop="dateCreated datePublished" datetime="2023-11-03T11:22:16+08:00">2023-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-04 22:54:10" itemprop="dateModified" datetime="2023-11-04T22:54:10+08:00">2023-11-04</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2023/11/03/cvss4-user-guide/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2023/11/03/cvss4-user-guide/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-11-03-head_img.png" alt="img"></p>
+<blockquote>
+<p>快速了解CVSS4的升级内容</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>FIRST.Org, Inc. (FIRST)在2023年11月1日，正式发布了Common Vulnerability Scoring System version 4.0（简称CVSS4），熟悉我的小伙伴应该知道我的工作内容有一部分和漏洞评级相关，当时团队内负责漏洞运营分析的各位师傅能明显感受到CVSS3.1所带来的局限性，为此我们还做了一些修正的方案。这次终于在年底前把CVSS4等到，接下来我们看看具体的内容，CVSS4带来了哪些改变。</p>
+<h2 id="0x01-CVSS4与CVSS3-1的度量标准对比"><a href="#0x01-CVSS4与CVSS3-1的度量标准对比" class="headerlink" title="0x01 CVSS4与CVSS3.1的度量标准对比"></a>0x01 CVSS4与CVSS3.1的度量标准对比</h2><p>先贴两张图。</p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-11-03-cvss4.jpg" alt="img"></p>
+<p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-11-03-cvss3.1.jpg" alt="img"></p>
+<p>可以方便大家直观的感受一下，CVSS4与CVSS3.1的差异。</p>
+<h2 id="0x02-CVSS命名规范"><a href="#0x02-CVSS命名规范" class="headerlink" title="0x02 CVSS命名规范"></a>0x02 CVSS命名规范</h2><p>CVSS4中引入了一个新的命名规范，用来描述在不同场景下的评分。我们知道CVSS3.1的评分规范中，是有三个部分组成的（上图所示），大部分情况，包括第三方的漏洞库，甚至NVD和CNA厂商所提供评分中，仅仅只提供了基础度量组（Base Metric Group）的分数，如果在分数计算器中继续填写时间度量组（Temporal Metric Group）或环境度量组（Environmental Metric Group）中的指标，会进一步得出一个新的分数，但是这种方式提供的分数，无法明确感知是否包含时间度量和环境度量的情况，所以在CVSS4中，对这种情况增加了一个的命名的概念，用来区分最终评分采用了哪些指标组。</p>
+<p>另外我们也可以看到在CVSS4中度量组也产生了新的变化，基础和环境两个组保留下来，原来的时间（Temporal）重命名为威胁（Threat）,另外新增了补充（Supplemental），我们会在稍后讨论这些改动。</p>
+<p>根据使用的Metrics Group有如下的命名方式：</p>
+<table>
+<thead>
+<tr>
+<th>CVSS命名</th>
+<th>使用的指标组</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CVSS-B</td>
+<td>基础指标</td>
+</tr>
+<tr>
+<td>CVSS-BE</td>
+<td>基础和环境指标</td>
+</tr>
+<tr>
+<td>CVSS-BT</td>
+<td>基础和威胁指标</td>
+</tr>
+<tr>
+<td>CVSS-BTE</td>
+<td>基础，威胁和环境指标</td>
+</tr>
+</tbody></table>
+<p>此外还有以下几点需要注意：</p>
+<ul>
+<li>不管在任何时候显示或者传递CVSS分数时候，应该明确显示这个命名法。</li>
+<li>环境和威胁指标，NVD依然和3.1版一样，不做提供，根据FIRST的定义，这些指标应该是CVSS的消费者（也就是使用方）的责任，例如公司安全部门，需要根据这些指标对自己的资产收到的影响做重新的评估。</li>
+<li>有朋友可能注意到了上图中还有一个补充度量组，并没有出现在这个命名方案中，原因是因为这个度量组的指标不会影响最终的评分，另外和环境，威胁指标一样，在FIRST的定义中，也需要由CVSS的消费者自行去确定。</li>
+</ul>
+<h2 id="0x03-CVSS基础分（CVSS-B）衡量的是严重性（Severity）而不是风险（Risk）"><a href="#0x03-CVSS基础分（CVSS-B）衡量的是严重性（Severity）而不是风险（Risk）" class="headerlink" title="0x03 CVSS基础分（CVSS-B）衡量的是严重性（Severity）而不是风险（Risk）"></a>0x03 CVSS基础分（CVSS-B）衡量的是严重性（Severity）而不是风险（Risk）</h2><p>在CVSS4.0的规范文章中特地强调了：CVSS的基础分 (CVSS-B) 旨在衡量漏洞的严重性，不应单独用于评估风险。CVSS基本分仅代表漏洞本身的特征，与它能造成的危害或者所处的环境没有关系。如果想要评估漏洞的真实风险，则可以使用CVSS-BTE做更加全面的评估，CVSS-BTE的分数被视为更加接近真实的风险。</p>
+<p>说到这里想提及两件事，第一个是在国内环境做漏洞预警相关的业务，经常会感觉CVSS评分给了一个比较高的分数，但实际在测试利用过程中，发现是属于很鸡肋的一个洞，利用场景的要求非常高，会下意识的认为这个漏洞CVSS分数不准，然后吐槽一句CVSS就是一坨💩，其实本质上可能就是对Severity和Risk概念没有分清楚，才造成这种误解（来自某威胁情报中心某领导的说法）。</p>
+<p>第二件事是关于漏洞修复优先级，单纯依靠CVSS-B来做，早已被证实其实不是那么准确，需要评估漏洞对目标所造成对真实风险是如何的，面对不同的目标环境下，可能造成的风险水平也有较大的差异，所以FIRST给出的建议可以参考CVSS-BTE，如果有做相关的扫描器或ASM等产出的漏洞报告时候，可以根据所处环境评估TE两个指标的分数，进一步得出更加真实的优先级排序。</p>
+<h2 id="0x04-Scope指标移除"><a href="#0x04-Scope指标移除" class="headerlink" title="0x04 Scope指标移除"></a>0x04 Scope指标移除</h2><p>原3.1版本中包含Scope的指标，并且与Confidentiality、Integrity、Availability三个指标相关。在4.0版本中被Vulnerable System Impact Metrics中的Confidentiality（简称VC）、Integrity（简称VI）、Availability（简称VA）和Subsequent System Impact Metrics中的Confidentiality（简称SC）、Integrity（简称SI）、Availability（简称SA）所代替。</p>
+<h2 id="0x05-评估软件库（或类似库）中的漏洞"><a href="#0x05-评估软件库（或类似库）中的漏洞" class="headerlink" title="0x05 评估软件库（或类似库）中的漏洞"></a>0x05 评估软件库（或类似库）中的漏洞</h2><p>在新的指南中说明了如何评估外部引入的库文件存在漏洞所造成影响，包括但不限于类似Maven，pip，npm等类似的软件库，包文件等。</p>
+<h2 id="0x06-允许多个CVSS基础分"><a href="#0x06-允许多个CVSS基础分" class="headerlink" title="0x06 允许多个CVSS基础分"></a>0x06 允许多个CVSS基础分</h2><p>我们知道漏洞通常会影响产品的多个版本，不同的平台或操作系统。在这种情况下适用指标选项可能并不相同。举个例子来说，一个漏洞在同一厂商的低版本操作系统上攻击复杂度(AC) 为低 (L)。但是在较新的操作系统上增加了额外的保护功能，攻击复杂度变为高 (H)。这种差异会最终导致同一漏洞在两个操作系统上的CVSS-B得分不同。</p>
+<p>在新版规范中同一个漏洞如果有多个CVSS-B的情况是允许的。</p>
+<h2 id="0x07-环境安全要求度量标准的使用指南"><a href="#0x07-环境安全要求度量标准的使用指南" class="headerlink" title="0x07 环境安全要求度量标准的使用指南"></a>0x07 环境安全要求度量标准的使用指南</h2><p>在环境度量组（Environmental Metric Group）中分为了两个部分，第一部分是根据实际环境的影响按照Base组指标重新进行评分，另外一部分新增了三个安全要求度量：易受攻击系统的机密性要求（CR）、易受攻击系统的完整性要求（IR）和易受攻击系统的可用性要求（AR）。</p>
+<h2 id="0x08-新的指标：攻击要求（Attack-Requirements）"><a href="#0x08-新的指标：攻击要求（Attack-Requirements）" class="headerlink" title="0x08 新的指标：攻击要求（Attack Requirements）"></a>0x08 新的指标：攻击要求（Attack Requirements）</h2><p>在CVSS3.1中，攻击复杂度（AC）的“低”和“高”这两种分类方式并不能准确反映出所有攻击复杂性的实际差异。也就是说，尤其是在“高”这一类别，把许多明显不同的攻击条件都压缩到了一起，这种二元分类方法降低了评价的精准度。例如，绕开安全缓解技术如ASLR或者密码技术明显需要比重放攻击复杂性更高，但是，这两种条件都会给最终的严重性评分带来相同的“惩罚”。</p>
+<p>为了解决这个问题，CVSS4将AC定义拆分为两个指标，分别为攻击复杂度（AC）和攻击要求（AT）：</p>
+<ul>
+<li>攻击复杂性（Attack Complexity）：表示逃避或规避防御或安全增强技术所需的利用工程复杂性。</li>
+<li>攻击要求（Attack Requirements ）：表示让攻击成为可能的易受攻击组件的先决条件。</li>
+</ul>
+<h2 id="0x09-更新的指标：用户交互（User-Interaction）"><a href="#0x09-更新的指标：用户交互（User-Interaction）" class="headerlink" title="0x09 更新的指标：用户交互（User Interaction）"></a>0x09 更新的指标：用户交互（User Interaction）</h2><p>考虑用户交互行为与易受攻击组件之前增加了额外的细节考虑：</p>
+<ul>
+<li>None（N）：除攻击者外，不需要任何人的交互就可以利用漏洞。</li>
+<li>Passive（P）：被动式，成功利用这个漏洞需要目标用户对脆弱组件和攻击者的payload进行有限的交互。这些交互被认为是无意识的，不需要用户主动破坏脆弱组件中的保护。</li>
+<li>Active（A）：主动式，成功利用这个漏洞需要目标用户对脆弱组件和攻击者的payload进行特定的，有意识的交互，或者用户的交互会主动破坏保护机制，导致漏洞被利用。</li>
+</ul>
+<h3 id="0x10-时间（Temporal）度量组更新为威胁（Threat）度量组"><a href="#0x10-时间（Temporal）度量组更新为威胁（Threat）度量组" class="headerlink" title="0x10 时间（Temporal）度量组更新为威胁（Threat）度量组"></a>0x10 时间（Temporal）度量组更新为威胁（Threat）度量组</h3><p>威胁度量组有以下几项改动：</p>
+<ul>
+<li>时间度量组更名为威胁度量组。</li>
+<li>修复级别（通常为O）和报告置信度（通常为C）已经停用。</li>
+<li>利用代码成熟度（Exploit Code Maturity）改名为利用成熟度（Exploit Maturity）。</li>
+<li>威胁度量值的对评分的影响进行了增强。</li>
+</ul>
+<p>威胁度量组通过使用威胁情报来调整“合理最坏情况”的基础得分，以降低CVSS-BTE得分，用来解决许多CVSS-B得分过高的问题。</p>
+<h2 id="0x11-CVSS扩展框架"><a href="#0x11-CVSS扩展框架" class="headerlink" title="0x11 CVSS扩展框架"></a>0x11 CVSS扩展框架</h2><p>在CVSS4中，新定义了一种标准方法，可以扩展CVSS以包括额外的指标和指标组，同时保留官方的基础，威胁和环境指标。这种扩展性允许不同的行业，如隐私保护和汽车安全等，对那些不在CVSS核心标准范围内的因素进行评估。</p>
+<h2 id="0x12-新的评分系统"><a href="#0x12-新的评分系统" class="headerlink" title="0x12 新的评分系统"></a>0x12 新的评分系统</h2><p>新的度量组产生了变化，对应的整体评分算法也进行了更新，可以参看4.0版的<a target="_blank" rel="noopener" href="https://www.first.org/cvss/calculator/4.0">评分计算器</a></p>
+<h2 id="0x13-在向量字符串中更新版本标识"><a href="#0x13-在向量字符串中更新版本标识" class="headerlink" title="0x13 在向量字符串中更新版本标识"></a>0x13 在向量字符串中更新版本标识</h2><p>新版的向量字符串开头更新为：<code>CVSS:4.0</code>，例如：<code>CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:A/VC:H/VI:H/VA:H/SC:L/SI:H/SA:H</code></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>d4rk30
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.nohacker.me/2023/11/03/cvss4-user-guide/" title="CVSS4升级内容浅析">https://www.nohacker.me/2023/11/03/cvss4-user-guide/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/CVSS4/" rel="tag"># CVSS4</a>
+              <a href="/tags/%E6%BC%8F%E6%B4%9E%E8%AF%84%E5%88%86/" rel="tag"># 漏洞评分</a>
+              <a href="/tags/%E6%BC%8F%E6%B4%9E/" rel="tag"># 漏洞</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/10/31/burp-suite-crack/" rel="prev" title="Burp Suite Professional 2023.10.3.2 最新版破解">
+                  <i class="fa fa-angle-left"></i> Burp Suite Professional 2023.10.3.2 最新版破解
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">d4rk30</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"d4rk30","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
