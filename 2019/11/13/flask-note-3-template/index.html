@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="旧的笔记，以前存放的笔记软件停止运营了，重新迁移到博客上，删除和修改一些过时的内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="✅【Flask笔记】第三节：模版">
+<meta property="og:url" content="https://www.nohacker.me/2019/11/13/flask-note-3-template/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="旧的笔记，以前存放的笔记软件停止运营了，重新迁移到博客上，删除和修改一些过时的内容。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-12-06-head_img.png">
+<meta property="article:published_time" content="2019-11-13T01:34:20.000Z">
+<meta property="article:modified_time" content="2023-12-07T12:19:09.336Z">
+<meta property="article:author" content="d4rk30">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="flask">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-12-06-head_img.png">
+
+
+<link rel="canonical" href="https://www.nohacker.me/2019/11/13/flask-note-3-template/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2019/11/13/flask-note-3-template/","path":"2019/11/13/flask-note-3-template/","title":"✅【Flask笔记】第三节：模版"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>✅【Flask笔记】第三节：模版 | 黑客与产品</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">黑客与产品</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩上思考🤔️</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E6%A8%A1%E7%89%88%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95"><span class="nav-text">0x00 模版基础用法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA%E6%A8%A1%E7%89%88"><span class="nav-text">1. 创建模版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%A8%A1%E7%89%88%E8%AF%AD%E6%B3%95"><span class="nav-text">2. 模版语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%B8%B2%E6%9F%93%E6%A8%A1%E7%89%88"><span class="nav-text">3. 渲染模版</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%A8%A1%E7%89%88%E8%BE%85%E5%8A%A9%E5%B7%A5%E5%85%B7"><span class="nav-text">0x01 模版辅助工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-text">1. 上下文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E5%86%85%E7%BD%AE%E4%B8%8A%E4%B8%8B%E6%96%87%E5%8F%98%E9%87%8F"><span class="nav-text">1.1 内置上下文变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="nav-text">1.2 自定义上下文</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%85%A8%E5%B1%80%E5%AF%B9%E8%B1%A1"><span class="nav-text">2. 全局对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E5%85%A8%E5%B1%80%E5%87%BD%E6%95%B0"><span class="nav-text">内置全局函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%A8%E5%B1%80%E5%87%BD%E6%95%B0"><span class="nav-text">自定义全局函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">3. 过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">内置过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="nav-text">自定义过滤器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%B5%8B%E8%AF%95%E5%99%A8"><span class="nav-text">4. 测试器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E7%BD%AE%E6%B5%8B%E8%AF%95%E5%99%A8"><span class="nav-text">内置测试器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B5%8B%E8%AF%95%E5%99%A8"><span class="nav-text">自定义测试器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%A8%A1%E7%89%88%E7%8E%AF%E5%A2%83%E5%AF%B9%E8%B1%A1"><span class="nav-text">5. 模版环境对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E5%85%A8%E5%B1%80%E5%AF%B9%E8%B1%A1%EF%BC%9A"><span class="nav-text">添加自定义全局对象：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%9A"><span class="nav-text">添加自定义过滤器：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E6%B5%8B%E8%AF%95%E5%99%A8%EF%BC%9A"><span class="nav-text">添加自定义测试器：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%A8%A1%E7%89%88%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="nav-text">0x02 模版组织结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%B1%80%E9%83%A8%E6%A8%A1%E7%89%88"><span class="nav-text">1. 局部模版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%8F"><span class="nav-text">2. 宏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%A8%A1%E7%89%88%E7%BB%A7%E6%89%BF"><span class="nav-text">3. 模版继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E5%9F%BA%E6%A8%A1%E7%89%88"><span class="nav-text">编写基模版</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%96%E5%86%99%E5%AD%90%E6%A8%A1%E7%89%88"><span class="nav-text">编写子模版</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E6%A8%A1%E7%89%88%E8%BF%9B%E9%98%B6%E5%AE%9E%E8%B7%B5"><span class="nav-text">0x03 模版进阶实践</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text"></span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩上思考🤔️</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2019/11/13/flask-note-3-template/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+      <meta itemprop="description" content="站在巨人的肩上思考🤔️">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="✅【Flask笔记】第三节：模版 | 黑客与产品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ✅【Flask笔记】第三节：模版
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-13 09:34:20" itemprop="dateCreated datePublished" datetime="2019-11-13T09:34:20+08:00">2019-11-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-12-07 20:19:09" itemprop="dateModified" datetime="2023-12-07T20:19:09+08:00">2023-12-07</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/11/13/flask-note-3-template/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/13/flask-note-3-template/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-12-06-head_img.png" alt="img"></p>
+<blockquote>
+<p>旧的笔记，以前存放的笔记软件停止运营了，重新迁移到博客上，删除和修改一些过时的内容。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="0x00-模版基础用法"><a href="#0x00-模版基础用法" class="headerlink" title="0x00 模版基础用法"></a>0x00 模版基础用法</h2><h3 id="1-创建模版"><a href="#1-创建模版" class="headerlink" title="1. 创建模版"></a>1. 创建模版</h3><p>Jinja2常见的三种定界符：</p>
+<p>语句：比如<code>if</code>判断，<code>for</code>循环等。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;%...%&#125;</span><br></pre></td></tr></table></figure>
+
+<p>表达式：比如字符串，变量，函数调用等。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;...&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注释。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;#...#&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-模版语法"><a href="#2-模版语法" class="headerlink" title="2. 模版语法"></a>2. 模版语法</h3><p>利用Jinja2这样等模版引擎，可以将一部分程序逻辑放在模版中，但是Jinja2并不支持所有的Python语法，我们应该适度使用模版，仅把和输出控制相关的逻辑操作放到模版中。</p>
+<p>Jinja2允许在模版中使用大量Python对象，比如字符串，列表，字典，元组，整型，浮点型，布尔值。它支持基本的运算符号（+、-、*、&#x2F;等）、比较符号（比如&#x3D;&#x3D;、!&#x3D;等）、逻辑符号（and、or、not和括号）以及in、is、None和布尔值（Ture、False）。</p>
+<p>Jinja2提供了多种控制结构，其中for和if是最常用的两种：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if user.bio %&#125;</span><br><span class="line">    &lt;i&gt;&#123;&#123;user.bio&#125;&#125;&lt;/i&gt;</span><br><span class="line">&#123;% else %&#125;</span><br><span class="line">    &lt;i&gt;This is user has not provided a bio.&lt;/i&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">&#123;% for movie in movies %&#125;</span><br><span class="line">    &lt;li&gt;&#123;&#123;movie.name&#125;&#125;-&#123;&#123;movie.year&#125;&#125;&lt;/li&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+
+<p>另外在模版中，Jinja2支持使用<code>.</code>获取变量属性。比如user字典中的username可以通过<code>.</code>获取，等同于<code>user[&#39;username&#39;]</code></p>
+<p>在<code>for</code>循环内，Jinja2提供了多个<a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.10.x/templates/#for">特殊变量</a>，常用的Jinja2循环变量如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">变量名</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">loop.index</td>
+<td align="left">当前迭代数（从1开始计算）</td>
+</tr>
+<tr>
+<td align="left">loop.index0</td>
+<td align="left">当前迭代数（从0开始计算）</td>
+</tr>
+<tr>
+<td align="left">loop.revindex</td>
+<td align="left">当前反向迭代数（从1开始计算）</td>
+</tr>
+<tr>
+<td align="left">loop.revindex0</td>
+<td align="left">当前反向迭代数（从0开始计算）</td>
+</tr>
+<tr>
+<td align="left">loop.first</td>
+<td align="left">如果是第一个元素，则为True</td>
+</tr>
+<tr>
+<td align="left">loop.last</td>
+<td align="left">如果是最后一个元素，则为True</td>
+</tr>
+<tr>
+<td align="left">loop.previtem</td>
+<td align="left">上一个迭代条目</td>
+</tr>
+<tr>
+<td align="left">loop.nextitem</td>
+<td align="left">下一个迭代条目</td>
+</tr>
+<tr>
+<td align="left">loop.length</td>
+<td align="left">序列包含的元素数量</td>
+</tr>
+</tbody></table>
+<h3 id="3-渲染模版"><a href="#3-渲染模版" class="headerlink" title="3. 渲染模版"></a>3. 渲染模版</h3><p>渲染模版就是执行模版中代码，渲染后的结果就是我们要返回给客户的的HTML响应。在视图函数中渲染模版并不知节使用jinja2提供的函数，而是使用Flash中的<code>render_template()</code>。在<code>render_template()</code>函数中，Flask会在程序的根目录下的<code>templates</code>文件夹里寻找模版文件。同时还以关键字参数的形式传入模版中使用的变量值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask,render_template</span><br><span class="line">...</span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/watchlist&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">watchlist</span>():</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;watchlist.html&#x27;</span>,user = user,movies = movies)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>除了<code>render_template()</code>函数，Flask还提供了一个<code>render_template_string()</code>函数用来渲染模版字符串</p>
+</blockquote>
+<h2 id="0x01-模版辅助工具"><a href="#0x01-模版辅助工具" class="headerlink" title="0x01 模版辅助工具"></a>0x01 模版辅助工具</h2><h3 id="1-上下文"><a href="#1-上下文" class="headerlink" title="1. 上下文"></a>1. 上下文</h3><p>模版中定义变量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set navigation = [(&#x27;/&#x27;,&#x27;Home&#x27;),(&#x27;/about&#x27;,&#x27;About&#x27;)]%&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以将一部分模版数据定义为变量，使用<code>set</code>和<code>endset</code>标签声明开始和结束：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set navigation%&#125;</span><br><span class="line">    &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;&lt;a href=&quot;/about&quot;&gt;About&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">&#123;% endset %&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-1-内置上下文变量"><a href="#1-1-内置上下文变量" class="headerlink" title="1.1 内置上下文变量"></a>1.1 内置上下文变量</h4><p>Flask在模版上下文中提供了一些内置变量。</p>
+<table>
+<thead>
+<tr>
+<th align="left">变量</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">config</td>
+<td align="left">当前配置对象</td>
+</tr>
+<tr>
+<td align="left">request</td>
+<td align="left">当前请求对象，在已激活的请求环境下使用</td>
+</tr>
+<tr>
+<td align="left">session</td>
+<td align="left">当前会话对象，在已激活的请求环境下使用</td>
+</tr>
+<tr>
+<td align="left">g</td>
+<td align="left">与请求绑定的全局变量，在已激活的请求环境下使用</td>
+</tr>
+</tbody></table>
+<h4 id="1-2-自定义上下文"><a href="#1-2-自定义上下文" class="headerlink" title="1.2 自定义上下文"></a>1.2 自定义上下文</h4><p>如果多个模版都需要使用同一个变量，那么比起在多个视图函数中重复传入，更好的方法是能够设置一个模版全局变量。使用<code>@app.context_processor</code>注册模版上下文处理函数，它可以帮助我们完成统一传入变量的工作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.context_processor</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">inject_foo</span>():</span><br><span class="line">    foo = <span class="string">&#x27;I am foo.&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">dict</span>(foo = foo) <span class="comment">#等同于 retunr &#123;&#x27;foo&#x27;:foo&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>当我们调用<code>render_template()</code>函数渲染任意一个模版时，所有使用<code>@app.context_processor</code>装饰器的模版上下文处理函数都会被执行，这些函数的返回值会被添加到模版中。因此我们可以在模版中直接使用<code>foo</code>变量。</p>
+<p>除了使用<code>@app.context_processor</code>装饰器，也可以直接将其作为方法调用，传入模版上下文处理函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">inject_foo</span>():</span><br><span class="line">    foo = <span class="string">&#x27;I am foo.&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">dict</span>(foo = foo)</span><br><span class="line">app.context_processor(inject_foo)</span><br></pre></td></tr></table></figure>
+
+<p>使用lambda简化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.context_processor(<span class="keyword">lambda</span>:<span class="built_in">dict</span>(foo=<span class="string">&#x27;I am foo.&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-全局对象"><a href="#2-全局对象" class="headerlink" title="2. 全局对象"></a>2. 全局对象</h3><p>全局对象是指在所有模版中都可以直接使用的对象。</p>
+<h4 id="内置全局函数"><a href="#内置全局函数" class="headerlink" title="内置全局函数"></a>内置全局函数</h4><p>Jinja2常用的内置模版全局函数：</p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">range([start,]stop[,step])</td>
+<td align="left">和Python中的range()用法相同</td>
+</tr>
+<tr>
+<td align="left">lipsum(n&#x3D;5,html&#x3D;True,min&#x3D;20,max&#x3D;100)</td>
+<td align="left">生成随机文本（lorem ipsum）可以在测试时用来填充页面，默认生成5段HTML文本，每段包含20～100个单词</td>
+</tr>
+<tr>
+<td align="left">dict(**items)</td>
+<td align="left">和Python中dict()用法相同</td>
+</tr>
+</tbody></table>
+<p>Flask内置模版全局函数：</p>
+<table>
+<thead>
+<tr>
+<th align="left">函数</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">url_for()</td>
+<td align="left">用于生成URL的函数</td>
+</tr>
+<tr>
+<td align="left">get_flashed_messages()</td>
+<td align="left">用于获取flash消息的函数</td>
+</tr>
+</tbody></table>
+<p>Flask除了把g，session，config，request对象注册为上下文变量，也将它们设为全局变量，因此可以全局使用url_for()。</p>
+<h4 id="自定义全局函数"><a href="#自定义全局函数" class="headerlink" title="自定义全局函数"></a>自定义全局函数</h4><p>使用<code>app.template_global</code>装饰器可以直接将函数注册为模版全局函数。默认使用函数的原名称传入模版，在<code>app.template_global()</code>装饰器中使用<code>name</code>参数可以指定一个自定义名称。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.template_global()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bar</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;I am bar.&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>你可以直接使用<code>app.add_template_global()</code>方法注册自定义全局函数，传入函数对象和可选的自定义名称<code>(name)</code>，比如<code>app.add_template_global(your_global_function)</code></p>
+</blockquote>
+<h3 id="3-过滤器"><a href="#3-过滤器" class="headerlink" title="3. 过滤器"></a>3. 过滤器</h3><p>在Jinja2中，过滤器是一些可以修改和过滤变量的特殊函数。</p>
+<p>两种过滤器的写法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; name|title &#125;&#125; #将name变量的值标题化。相当于Python中的name.title()</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#使用filter和endfilter标签声明开始和结束，upper过滤器将一段文字转换为大写。</span><br><span class="line">&#123;% filter upper %&#125;</span><br><span class="line">    This text becomes uppercase.</span><br><span class="line">&#123;% endfilter %&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="内置过滤器"><a href="#内置过滤器" class="headerlink" title="内置过滤器"></a>内置过滤器</h4><p>Jinja2常用的内置过滤器：</p>
+<table>
+<thead>
+<tr>
+<th align="left">过滤器</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">default(value,default_value &#x3D; ‘’,boolean&#x3D;False)</td>
+<td align="left">设置默认值，默认值作为参数传入，别名为d</td>
+</tr>
+<tr>
+<td align="left">escape(s)</td>
+<td align="left">转义HTML文本，别名为e</td>
+</tr>
+<tr>
+<td align="left">first(seq)</td>
+<td align="left">返回序列的第一个元素</td>
+</tr>
+<tr>
+<td align="left">last(seq)</td>
+<td align="left">返回序列的最后一个元素</td>
+</tr>
+<tr>
+<td align="left">length(object)</td>
+<td align="left">返回变量的长度</td>
+</tr>
+<tr>
+<td align="left">random(seq)</td>
+<td align="left">返回序列中的随机元素</td>
+</tr>
+<tr>
+<td align="left">safe(value)</td>
+<td align="left">将变量标记为安全，避免转义</td>
+</tr>
+<tr>
+<td align="left">trim(value)</td>
+<td align="left">清楚变量值前后的空格</td>
+</tr>
+<tr>
+<td align="left">max(value,case_sensitive&#x3D;False,attribute&#x3D;None)</td>
+<td align="left">返回序列中最大的值</td>
+</tr>
+<tr>
+<td align="left">min(value,case_sensitive&#x3D;False,attribute&#x3D;None)</td>
+<td align="left">返回序列中最小的值</td>
+</tr>
+<tr>
+<td align="left">unique(value,case_sensitive&#x3D;False,attribute&#x3D;None)</td>
+<td align="left">返回序列中不重复的值</td>
+</tr>
+<tr>
+<td align="left">striptags(value)</td>
+<td align="left">清楚变量值内的HTML标签</td>
+</tr>
+<tr>
+<td align="left">urlize(value,trim_url_limit&#x3D;None,nofollow&#x3D;False,target&#x3D;None,rel&#x3D;None)</td>
+<td align="left">将URL文本转换成可单击的HTML链接</td>
+</tr>
+<tr>
+<td align="left">wordcount(s)</td>
+<td align="left">计算单词数量</td>
+</tr>
+<tr>
+<td align="left">tojson(value,indent&#x3D;None)</td>
+<td align="left">将变量值转换为JSON格式</td>
+</tr>
+<tr>
+<td align="left">truncate(s,length&#x3D;255,killwords&#x3D;False,end&#x3D;’…’,leeway&#x3D;None)</td>
+<td align="left">截断字符串，常用于显示文章摘要length参数设置截断的长度，killwords参数设置是否截断单词，end参数设置结尾符号</td>
+</tr>
+</tbody></table>
+<p>在使用过滤器时，列表中过滤器函数的第一个参数表示被过滤的变量值<code>(Value)</code>或字符串<code>(s)</code>，即竖线符号左侧的值，其他参数可以通过添加括号传入。</p>
+<p>过滤器可以叠加使用：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;Hello,&#123;&#123;name|default(&#x27;陌生人&#x27;)|title&#125;&#125;&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果像避免转义可以使用safe过滤器<code>&#123;&#123; sanitized_text|safe &#125;&#125;</code>，另一种将文本标记安全的方法是在渲染前将变量转换为<code>Markup</code>对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from flask import Markup</span><br><span class="line"></span><br><span class="line">@app.route(&#x27;/hello&#x27;)</span><br><span class="line">def hello():</span><br><span class="line">    text = Markup(&#x27;&lt;h1&gt;Hello,Flask!&lt;/h1&gt;&#x27;) </span><br><span class="line">    return render_template(&#x27;index.html&#x27;,text = text)</span><br></pre></td></tr></table></figure>
+
+<p>这时在模版中可以直接使用<code>&#123;&#123; text &#125;&#125;</code></p>
+<h4 id="自定义过滤器"><a href="#自定义过滤器" class="headerlink" title="自定义过滤器"></a>自定义过滤器</h4><p>使用<code>app.template_filter()</code>装饰器可以注册自定义的过滤器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from flask import Markup</span><br><span class="line"></span><br><span class="line">@app.template_filter()</span><br><span class="line">def musical(s):</span><br><span class="line">    return s+Markup(&#x27;#%9835;&#x27;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>和注册全局函数类型，你可以在<code>app.template_filter()</code>中使用<code>name</code>关键字设置过滤器的名称，默认会使用函数名称。 </p>
+</blockquote>
+<h3 id="4-测试器"><a href="#4-测试器" class="headerlink" title="4. 测试器"></a>4. 测试器</h3><p>在Jinja2中，测试器是一些用来测试变量或表达式，返回布尔值的特殊函数。</p>
+<h4 id="内置测试器"><a href="#内置测试器" class="headerlink" title="内置测试器"></a>内置测试器</h4><p>常用的内置测试器：</p>
+<table>
+<thead>
+<tr>
+<th align="left">测试器</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">callable(object)</td>
+<td align="left">判断变量是否可被调用</td>
+</tr>
+<tr>
+<td align="left">defined(value)</td>
+<td align="left">判断变量是否已定义</td>
+</tr>
+<tr>
+<td align="left">undefined(value)</td>
+<td align="left">判断变量是否为定义</td>
+</tr>
+<tr>
+<td align="left">none(value)</td>
+<td align="left">判断变量是否是否为None</td>
+</tr>
+<tr>
+<td align="left">number(value)</td>
+<td align="left">判断变量是否为数字</td>
+</tr>
+<tr>
+<td align="left">string(value)</td>
+<td align="left">判断变量是否为字符串</td>
+</tr>
+<tr>
+<td align="left">sequence(value)</td>
+<td align="left">判断变量是否为序列，比如字符串，列表，元组</td>
+</tr>
+<tr>
+<td align="left">iterable(value)</td>
+<td align="left">判断变量是否可迭代</td>
+</tr>
+<tr>
+<td align="left">mapping(value)</td>
+<td align="left">判断变量是否匹配对象，比如字典</td>
+</tr>
+<tr>
+<td align="left">sameas(value,other)</td>
+<td align="left">判断变量与other是否指向相同的内存地址</td>
+</tr>
+</tbody></table>
+<p>在使用测试器时，<code>is</code>左侧是测试器函数的第一个参数<code>(value)</code>，其他参数可以添加括号传入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if age is number %&#125;</span><br><span class="line">    &#123;&#123; age*365 &#125;&#125;</span><br><span class="line">&#123;% else %&#125;</span><br><span class="line">    无效的数字。</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p>也可以在右侧使用空格链接：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if foo is sameas(bar) %&#125;</span><br></pre></td></tr></table></figure>
+<p>等同于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if foo is sameas bar %&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="自定义测试器"><a href="#自定义测试器" class="headerlink" title="自定义测试器"></a>自定义测试器</h4><p>可以使用Flask提供的<code>app.template_test()</code>装饰器来注册一个自定义测试器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@app.template_test()</span><br><span class="line">def baz(n):</span><br><span class="line">    if n == &#x27;baz&#x27;:</span><br><span class="line">        return True</span><br><span class="line">    return False</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>测试器的名称默认为函数名称，你可以在<code>app.template_test()</code>中使用<code>name</code>关键字指定自定义名称。测试器函数需要接受被测试的值作为输入，返回布尔值。 </p>
+</blockquote>
+<h3 id="5-模版环境对象"><a href="#5-模版环境对象" class="headerlink" title="5. 模版环境对象"></a>5. 模版环境对象</h3><p>自定义jinja2的变量定界符：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app = Flask(__name)</span><br><span class="line">app.jinja_env.varibale_start_string = &#x27;[[&#x27;</span><br><span class="line">app.jinja_env.varibale_end_string = &#x27;]]&#x27;</span><br></pre></td></tr></table></figure>
+<h4 id="添加自定义全局对象："><a href="#添加自定义全局对象：" class="headerlink" title="添加自定义全局对象："></a>添加自定义全局对象：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def bar():</span><br><span class="line">    return &#x27;I am bar&#x27;</span><br><span class="line">foo = &#x27;I am foo&#x27;</span><br><span class="line">app.jinja_env.globals[&#x27;bar&#x27;] = bar</span><br><span class="line">app.jinja_env.globals[&#x27;bar&#x27;] = bar</span><br></pre></td></tr></table></figure>
+<h4 id="添加自定义过滤器："><a href="#添加自定义过滤器：" class="headerlink" title="添加自定义过滤器："></a>添加自定义过滤器：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def smiling(s):</span><br><span class="line">    return s+&#x27;:)&#x27;</span><br><span class="line">app.jinja_env.filters[&#x27;smiling&#x27;] = smiling</span><br></pre></td></tr></table></figure>
+<h4 id="添加自定义测试器："><a href="#添加自定义测试器：" class="headerlink" title="添加自定义测试器："></a>添加自定义测试器：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def baz(n):</span><br><span class="line">    if n == &#x27;baz&#x27;:</span><br><span class="line">        return True</span><br><span class="line">    return False</span><br><span class="line">app.jinja_env.tests(&#x27;baz&#x27;) = baz</span><br></pre></td></tr></table></figure>
+<h2 id="0x02-模版组织结构"><a href="#0x02-模版组织结构" class="headerlink" title="0x02 模版组织结构"></a>0x02 模版组织结构</h2><h3 id="1-局部模版"><a href="#1-局部模版" class="headerlink" title="1. 局部模版"></a>1. 局部模版</h3><p>当多个独立模版中都会使用同一块HTML代码时，我们可以把这部分代码抽离出来，存储到局部模版中。我们用<code>include</code>标签插入一个局部模版，这会把局部模版的全部内容插在使用<code>include</code>标签的位置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% include &#x27;_banner.html&#x27; %&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为了和普通模版区分开，局部模版命名通常以一个下划线开始。 </p>
+</blockquote>
+<h3 id="2-宏"><a href="#2-宏" class="headerlink" title="2. 宏"></a>2. 宏</h3><p>宏类似Python中的函数，为了方便管理，我们可以把宏存储在单独的文件中，这个文件通常命名为<code>macros.html</code>或<code>_macros.html</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% macros qux(amount=1) %&#125;</span><br><span class="line">    &#123;% if amount ==1 %&#125;</span><br><span class="line">        I am qux.</span><br><span class="line">    &#123;% elif amount&gt;1 %&#125;</span><br><span class="line">        We are qux.</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">&#123;% endmacros %&#125;</span><br></pre></td></tr></table></figure>
+<p>使用时需要像从Python模块中导入函数一样使用<code>import</code>语句导入它，然后作为函数调用，出入必要参数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% from &#x27;macros.html&#x27; import qux %&#125;</span><br><span class="line">...</span><br><span class="line">&#123;% qux(amount=5) %&#125;</span><br></pre></td></tr></table></figure>
+<p>显式地使用<code>with context</code>声明，传入当前模版上下文：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% from &#x27;macros.html&#x27; import qux with context %&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-模版继承"><a href="#3-模版继承" class="headerlink" title="3. 模版继承"></a>3. 模版继承</h3><h4 id="编写基模版"><a href="#编写基模版" class="headerlink" title="编写基模版"></a>编写基模版</h4><p>基模版存储了程序页面固定部分，通常被命名为<code>base.html</code>或<code>layout.html</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &#123;% block head %&#125;</span><br><span class="line">        &lt;meta charset=&quot;utf-9&quot;&gt;</span><br><span class="line">        &lt;title&gt;</span><br><span class="line">            &#123;% block title %&#125;</span><br><span class="line">                Template - HelloFlask</span><br><span class="line">            &#123;% endblock %&#125;</span><br><span class="line">        &lt;/title&gt;</span><br><span class="line">        &#123;% block style %&#125;</span><br><span class="line">        &#123;% endblock%&#125;</span><br><span class="line">    &#123;% endblock %&#125;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;nav&gt;</span><br><span class="line">        &lt;ul&gt;</span><br><span class="line">            &lt;li&gt;&lt;a href=&quot;&#123;&#123; url_for(&#x27;index&#x27;) &#125;&#125;&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">        &lt;/ul&gt;</span><br><span class="line">    &lt;/nav&gt;</span><br><span class="line">    &lt;main&gt;</span><br><span class="line">        &#123;% block content %&#125;</span><br><span class="line">        &#123;% endblock %&#125;</span><br><span class="line">    &lt;/main&gt;</span><br><span class="line">    &lt;footer&gt;</span><br><span class="line">        &#123;% block footer %&#125;</span><br><span class="line">        &#123;% endblock %&#125;</span><br><span class="line">    &lt;/footer&gt;</span><br><span class="line">    &#123;% block scripts %&#125;</span><br><span class="line">    &#123;% endblock %&#125;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>为了避免块的混乱，块结束的标签可以指明块名：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% block body %&#125;</span><br><span class="line">&#123;% endblock body %&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="编写子模版"><a href="#编写子模版" class="headerlink" title="编写子模版"></a>编写子模版</h4><h2 id="0x03-模版进阶实践"><a href="#0x03-模版进阶实践" class="headerlink" title="0x03 模版进阶实践"></a>0x03 模版进阶实践</h2><h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>d4rk30
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.nohacker.me/2019/11/13/flask-note-3-template/" title="✅【Flask笔记】第三节：模版">https://www.nohacker.me/2019/11/13/flask-note-3-template/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/18/hackrf-jiao-cheng-yi/" rel="prev" title="HackRF教程（一）">
+                  <i class="fa fa-angle-left"></i> HackRF教程（一）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/11/13/flask-note-1-environment/" rel="next" title="✅【Flask笔记】第一节：初识">
+                  ✅【Flask笔记】第一节：初识 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">d4rk30</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"d4rk30","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>

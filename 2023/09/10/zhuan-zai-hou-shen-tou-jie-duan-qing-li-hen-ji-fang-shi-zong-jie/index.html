@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-16-head_img-2.png">
 <meta property="article:published_time" content="2023-09-10T07:41:01.000Z">
-<meta property="article:modified_time" content="2023-10-17T03:49:04.367Z">
+<meta property="article:modified_time" content="2023-12-07T11:04:05.644Z">
 <meta property="article:author" content="d4rk30">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-09-16-head_img-2.png">
@@ -117,7 +117,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Windows"><span class="nav-text">0x01 Windows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-Linux"><span class="nav-text">0x02 Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%85%E9%99%A4%E5%91%BD%E4%BB%A4%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95"><span class="nav-text">清除命令历史记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E9%9A%90%E8%94%BD%E7%9A%84%E4%BD%8D%E7%BD%AE%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="nav-text">在隐蔽的位置执行命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linux%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="nav-text">linux日志文件</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E5%89%8D%E8%A8%80"><span class="nav-text">0x00 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Windows"><span class="nav-text">0x01 Windows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-Linux"><span class="nav-text">0x02 Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B8%85%E9%99%A4%E5%91%BD%E4%BB%A4%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95"><span class="nav-text">1. 清除命令历史记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%9C%A8%E9%9A%90%E8%94%BD%E7%9A%84%E4%BD%8D%E7%BD%AE%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="nav-text">2. 在隐蔽的位置执行命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-linux%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6"><span class="nav-text">3. linux日志文件</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -130,12 +130,12 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -198,7 +198,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-17 11:49:04" itemprop="dateModified" datetime="2023-10-17T11:49:04+08:00">2023-10-17</time>
+      <time title="修改时间：2023-12-07 19:04:05" itemprop="dateModified" datetime="2023-12-07T19:04:05+08:00">2023-12-07</time>
     </span>
 
   
@@ -249,12 +249,12 @@
 <p>在文件资源管理器中点击“查看”-&gt;“选项”-&gt;在常规-&gt;隐私中点击”清除”按钮</p>
 <p>或直接打开 <code>C:\Users\Administrator\Recent</code> 并删除所有内容</p>
 <p>或在命令行中输入 <code>del /f /s /q “%userprofile%\Recent*.*</code></p>
-<h2 id="0x02-Linux"><a href="#0x02-Linux" class="headerlink" title="0x02 Linux"></a>0x02 Linux</h2><h3 id="清除命令历史记录"><a href="#清除命令历史记录" class="headerlink" title="清除命令历史记录"></a>清除命令历史记录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">histroy -r          <span class="comment"># 删除当前会话历史记录</span></span><br><span class="line"><span class="built_in">history</span> -c          <span class="comment"># 删除内存中的所有命令历史</span></span><br><span class="line"><span class="built_in">rm</span> .bash_history    <span class="comment"># 删除历史文件中的内容</span></span><br><span class="line">HISTZISE=0          <span class="comment"># 通过设置历史命令条数来清除所有历史记录</span></span><br></pre></td></tr></table></figure>
+<h2 id="0x02-Linux"><a href="#0x02-Linux" class="headerlink" title="0x02 Linux"></a>0x02 Linux</h2><h3 id="1-清除命令历史记录"><a href="#1-清除命令历史记录" class="headerlink" title="1. 清除命令历史记录"></a>1. 清除命令历史记录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">histroy -r          <span class="comment"># 删除当前会话历史记录</span></span><br><span class="line"><span class="built_in">history</span> -c          <span class="comment"># 删除内存中的所有命令历史</span></span><br><span class="line"><span class="built_in">rm</span> .bash_history    <span class="comment"># 删除历史文件中的内容</span></span><br><span class="line">HISTZISE=0          <span class="comment"># 通过设置历史命令条数来清除所有历史记录</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="在隐蔽的位置执行命令"><a href="#在隐蔽的位置执行命令" class="headerlink" title="在隐蔽的位置执行命令"></a>在隐蔽的位置执行命令</h3><p>使用vim打开文件执行命令</p>
+<h3 id="2-在隐蔽的位置执行命令"><a href="#2-在隐蔽的位置执行命令" class="headerlink" title="2. 在隐蔽的位置执行命令"></a>2. 在隐蔽的位置执行命令</h3><p>使用vim打开文件执行命令</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:<span class="built_in">set</span> <span class="built_in">history</span>=0</span><br><span class="line">:!<span class="built_in">command</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="linux日志文件"><a href="#linux日志文件" class="headerlink" title="linux日志文件"></a>linux日志文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/var/run/utmp       <span class="comment"># 记录现在登入的用户</span></span><br><span class="line">/var/log/wtmp       <span class="comment"># 记录用户所有的登入和登出</span></span><br><span class="line">/var/log/lastlog    <span class="comment"># 记录每一个用户最后登入时间</span></span><br><span class="line">/var/log/btmp       <span class="comment"># 记录错误的登入尝试</span></span><br><span class="line">/var/log/auth.log   <span class="comment"># 需要身份确认的操作</span></span><br><span class="line">/var/log/secure     <span class="comment"># 记录安全相关的日志信息</span></span><br><span class="line">/var/log/maillog    <span class="comment"># 记录邮件相关的日志信息</span></span><br><span class="line">/var/log/message    <span class="comment"># 记录系统启动后的信息和错误日志</span></span><br><span class="line">/var/log/cron       <span class="comment"># 记录定时任务相关的日志信息</span></span><br><span class="line">/var/log/spooler    <span class="comment"># 记录UUCP和news设备相关的日志信息</span></span><br><span class="line">/var/log/boot.log   <span class="comment"># 记录守护进程启动和停止相关的日志消息</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-linux日志文件"><a href="#3-linux日志文件" class="headerlink" title="3. linux日志文件"></a>3. linux日志文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/var/run/utmp       <span class="comment"># 记录现在登入的用户</span></span><br><span class="line">/var/log/wtmp       <span class="comment"># 记录用户所有的登入和登出</span></span><br><span class="line">/var/log/lastlog    <span class="comment"># 记录每一个用户最后登入时间</span></span><br><span class="line">/var/log/btmp       <span class="comment"># 记录错误的登入尝试</span></span><br><span class="line">/var/log/auth.log   <span class="comment"># 需要身份确认的操作</span></span><br><span class="line">/var/log/secure     <span class="comment"># 记录安全相关的日志信息</span></span><br><span class="line">/var/log/maillog    <span class="comment"># 记录邮件相关的日志信息</span></span><br><span class="line">/var/log/message    <span class="comment"># 记录系统启动后的信息和错误日志</span></span><br><span class="line">/var/log/cron       <span class="comment"># 记录定时任务相关的日志信息</span></span><br><span class="line">/var/log/spooler    <span class="comment"># 记录UUCP和news设备相关的日志信息</span></span><br><span class="line">/var/log/boot.log   <span class="comment"># 记录守护进程启动和停止相关的日志消息</span></span><br></pre></td></tr></table></figure>
 
 <p>完全删除日志文件：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /dev/null &gt; filename</span><br><span class="line">: &gt; filename</span><br><span class="line">&gt; filename</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;&quot;</span> &gt; filename</span><br><span class="line"><span class="built_in">echo</span> &gt; filename</span><br></pre></td></tr></table></figure>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="旧的笔记，以前存放的笔记软件停止运营了，重新迁移到博客上，删除和修改一些过时的内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="✅【Flask笔记】第一节：初识">
+<meta property="og:url" content="https://www.nohacker.me/2019/11/13/flask-note-1-environment/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="旧的笔记，以前存放的笔记软件停止运营了，重新迁移到博客上，删除和修改一些过时的内容。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-12-06-head_img.png">
+<meta property="article:published_time" content="2019-11-13T01:34:20.000Z">
+<meta property="article:modified_time" content="2023-12-07T11:14:04.590Z">
+<meta property="article:author" content="d4rk30">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="flask">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-12-06-head_img.png">
+
+
+<link rel="canonical" href="https://www.nohacker.me/2019/11/13/flask-note-1-environment/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2019/11/13/flask-note-1-environment/","path":"2019/11/13/flask-note-1-environment/","title":"✅【Flask笔记】第一节：初识"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>✅【Flask笔记】第一节：初识 | 黑客与产品</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">黑客与产品</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩上思考🤔️</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-text">0x00 搭建开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AE%89%E8%A3%85pip"><span class="nav-text">1. 安装pip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83"><span class="nav-text">2. 创建虚拟环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%AE%A1%E7%90%86%E4%BE%9D%E8%B5%96"><span class="nav-text">3. 管理依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%80%80%E5%87%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83"><span class="nav-text">4. 退出虚拟环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AE%89%E8%A3%85Flask"><span class="nav-text">5. 安装Flask</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-Hello-Flask"><span class="nav-text">0x01 Hello,Flask</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BA%E7%A8%8B%E5%BA%8F%E5%AE%9E%E4%BE%8B"><span class="nav-text">1. 创建程序实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E6%B3%A8%E5%86%8C%E8%B7%AF%E7%94%B1"><span class="nav-text">0x02 注册路由</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%BA%E8%A7%86%E5%9B%BE%E7%BB%91%E5%AE%9A%E5%A4%9A%E4%B8%AAURL"><span class="nav-text">1. 为视图绑定多个URL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%8A%A8%E6%80%81URL"><span class="nav-text">2. 动态URL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%90%AF%E5%8A%A8%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">0x03 启动开发服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Run%EF%BC%8CFlask%EF%BC%8CRun"><span class="nav-text">1. Run，Flask，Run</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%87%AA%E5%8F%91%E7%8E%B0%E7%A8%8B%E5%BA%8F%E5%AE%9E%E4%BE%8B"><span class="nav-text">2. 自发现程序实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%AE%A1%E7%90%86%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-text">3. 管理环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="nav-text">4. 运行参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%87%8D%E8%BD%BD%E5%99%A8"><span class="nav-text">5. 重载器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-Python-Shell"><span class="nav-text">0x04 Python Shell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-%E9%85%8D%E7%BD%AE"><span class="nav-text">0x05 配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x06-URL%E4%B8%8E%E7%AB%AF%E7%82%B9"><span class="nav-text">0x06 URL与端点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x07-Flask%E5%91%BD%E4%BB%A4"><span class="nav-text">0x07 Flask命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x08-Flask%E4%B8%8EMVC%E6%9E%B6%E6%9E%84"><span class="nav-text">0x08 Flask与MVC架构</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩上思考🤔️</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2019/11/13/flask-note-1-environment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+      <meta itemprop="description" content="站在巨人的肩上思考🤔️">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="✅【Flask笔记】第一节：初识 | 黑客与产品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ✅【Flask笔记】第一节：初识
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-13 09:34:20" itemprop="dateCreated datePublished" datetime="2019-11-13T09:34:20+08:00">2019-11-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-12-07 19:14:04" itemprop="dateModified" datetime="2023-12-07T19:14:04+08:00">2023-12-07</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/11/13/flask-note-1-environment/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/13/flask-note-1-environment/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-12-06-head_img.png" alt="img"></p>
+<blockquote>
+<p>旧的笔记，以前存放的笔记软件停止运营了，重新迁移到博客上，删除和修改一些过时的内容。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="0x00-搭建开发环境"><a href="#0x00-搭建开发环境" class="headerlink" title="0x00 搭建开发环境"></a>0x00 搭建开发环境</h2><h3 id="1-安装pip"><a href="#1-安装pip" class="headerlink" title="1. 安装pip"></a>1. 安装pip</h3><p>主流的Linux系统中已经集成Python3，目前最新版的Python是3.12，Ubuntu22.04内置的是3.10。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3-pip <span class="comment"># Ubuntu</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-创建虚拟环境"><a href="#2-创建虚拟环境" class="headerlink" title="2. 创建虚拟环境"></a>2. 创建虚拟环境</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3.10-venv <span class="comment">#Ubuntu 需要安全venv的依赖 当前使用版本是3.10</span></span><br><span class="line">python3 -m venv <span class="built_in">env</span></span><br></pre></td></tr></table></figure>
+
+<p>激活环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> <span class="built_in">env</span>/bin/activate</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-管理依赖"><a href="#3-管理依赖" class="headerlink" title="3. 管理依赖"></a>3. 管理依赖</h3><p>或者在虚拟环境下使用下面的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip list</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-退出虚拟环境"><a href="#4-退出虚拟环境" class="headerlink" title="4. 退出虚拟环境"></a>4. 退出虚拟环境</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-安装Flask"><a href="#5-安装Flask" class="headerlink" title="5. 安装Flask"></a>5. 安装Flask</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x01-Hello-Flask"><a href="#0x01-Hello-Flask" class="headerlink" title="0x01 Hello,Flask"></a>0x01 Hello,Flask</h2><h3 id="1-创建程序实例"><a href="#1-创建程序实例" class="headerlink" title="1. 创建程序实例"></a>1. 创建程序实例</h3><p>app.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Welcome to Flask!&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-注册路由"><a href="#0x02-注册路由" class="headerlink" title="0x02 注册路由"></a>0x02 注册路由</h2><h3 id="1-为视图绑定多个URL"><a href="#1-为视图绑定多个URL" class="headerlink" title="1. 为视图绑定多个URL"></a>1. 为视图绑定多个URL</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/hi&#x27;</span></span>)</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/hello&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">say_hello</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello,Flask&lt;h1&gt;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-动态URL"><a href="#2-动态URL" class="headerlink" title="2. 动态URL"></a>2. 动态URL</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/greet/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello,%s!&lt;/h1&gt;&#x27;</span> %name</span><br></pre></td></tr></table></figure>
+
+<p>设置访问的默认值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/greet&#x27;</span>,defaults=&#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;Programmer&#x27;</span>&#125;</span>)</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/greet/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello,%s!&lt;/h1&gt;&#x27;</span> %name</span><br></pre></td></tr></table></figure>
+
+<p>等同于</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/greet&#x27;</span></span>)</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/greet/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name=<span class="string">&#x27;Programmer&#x27;</span></span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Hello,%s!&lt;/h1&gt;&#x27;</span> %name</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x03-启动开发服务器"><a href="#0x03-启动开发服务器" class="headerlink" title="0x03 启动开发服务器"></a>0x03 启动开发服务器</h2><h3 id="1-Run，Flask，Run"><a href="#1-Run，Flask，Run" class="headerlink" title="1. Run，Flask，Run"></a>1. Run，Flask，Run</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flask run</span><br><span class="line">flask run --host=0.0.0.0 --port=8080</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-自发现程序实例"><a href="#2-自发现程序实例" class="headerlink" title="2. 自发现程序实例"></a>2. 自发现程序实例</h3><ol>
+<li>从当前目录寻找app.py和wsgi.py模块，并从中寻找名为app或application的程序实例。</li>
+<li>从环境变量FLASK_APP对应的模块名&#x2F;导入路径寻找名为app或application的程序实例。</li>
+</ol>
+<h3 id="3-管理环境变量"><a href="#3-管理环境变量" class="headerlink" title="3. 管理环境变量"></a>3. 管理环境变量</h3><p>如果安装了python-dotenv，那么使用<code>flask run</code>或其他命令时会使它自动从<code>.flaskenv</code>文件和<code>.env</code>文件中加载环境变量。</p>
+<blockquote>
+<p>当安装了python-dotenv时，Flask在加载环境变量的优先级是：手动设置&gt;.env中设置的&gt;.flaskenv中设置的。<br>安装python-dotenv：</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install python-dotenv</span><br></pre></td></tr></table></figure>
+
+<p>创建环境变量文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">touch</span> .<span class="built_in">env</span></span><br><span class="line"><span class="built_in">touch</span> .flaskenv</span><br></pre></td></tr></table></figure>
+
+<p><code>.flaskenv</code>用来存储和Flask相关的公开环境变量，而<code>.env</code>用来存储包含敏感信息的环境变量。</p>
+<blockquote>
+<p>可以添加<code>.flaskenv</code>和<code>.env</code>到<code>.gitignore</code>文件中，防止提交。</p>
+</blockquote>
+<h3 id="4-运行参数"><a href="#4-运行参数" class="headerlink" title="4. 运行参数"></a>4. 运行参数</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flask run --debug <span class="comment">#开启调试模式</span></span><br><span class="line">flask --app hello run <span class="comment">#当文件名不是app时候，是hellp.py时候可以使用--app指定程序实例</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-重载器"><a href="#5-重载器" class="headerlink" title="5. 重载器"></a>5. 重载器</h3><p>自动监测文件改动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install watchdog</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x04-Python-Shell"><a href="#0x04-Python-Shell" class="headerlink" title="0x04 Python Shell"></a>0x04 Python Shell</h2><p>在开发Flask程序时候，我们并不直接使用python命令启动Python Shell，而是使用<code>flask shell</code>命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask shell</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x05-配置"><a href="#0x05-配置" class="headerlink" title="0x05 配置"></a>0x05 配置</h2><p>一个项目中会用到很多配置：Flask提供的配置，扩展提供的配置，还有程序特定的配置。这些配置通过Flask对象的app.config属性做统一设置和获取。可以像在字典中添加一个键值方式设置一个配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.config[<span class="string">&#x27;ADMIN_NAME&#x27;</span>] = <span class="string">&#x27;Peter&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>使用<code>upload()</code>方法一次加载多个配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">app.config.update(</span><br><span class="line">    TESTING=<span class="literal">True</span>,</span><br><span class="line">    SECRET_KEY=<span class="string">&#x27;_5#yF4Q8z\n\xec/&#x27;</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x06-URL与端点"><a href="#0x06-URL与端点" class="headerlink" title="0x06 URL与端点"></a>0x06 URL与端点</h2><p>调用<code>url_for(endpoint)</code>获取URL，endpoint一般为视图函数的函数名，如果URL包含动态部分，那么我们需要在url_for()函数中传入相应的参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;hello/&lt;name&gt;&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">greet</span>(<span class="params">name</span>):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello %s!&#x27;</span> %name</span><br></pre></td></tr></table></figure>
+
+<p>这时使用<code>url_for(&#39;greet&#39;,name = &#39;Jack&#39;)</code>得到的URL为<code>/hello/Jack</code>。</p>
+<blockquote>
+<p>在使用<code>ulr_for()</code>函数时，将<code>_external</code>参数设置为True，这会产生完整的URL，<code>url_for(&#39;greet&#39;, _external = True)</code></p>
+</blockquote>
+<h2 id="0x07-Flask命令"><a href="#0x07-Flask命令" class="headerlink" title="0x07 Flask命令"></a>0x07 Flask命令</h2><p>通过创建任意一个函数，并为其添加<code>app.cli.command()</code>装饰器，我们就可以注册一个flask命令。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">import</span> click</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.cli.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Just say Hello&quot;&quot;&quot;</span></span><br><span class="line">    click.echo(<span class="string">&#x27;Hello,Human!&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Welcome to Flask!&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>函数的名称即为命令名称。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask hello</span><br></pre></td></tr></table></figure>
+
+<p>也可以在<code>@app.cli.command()</code>装饰器中传入参数来设置命令，比如<code>@app.cli.command(say-hello)</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask say-hello</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x08-Flask与MVC架构"><a href="#0x08-Flask与MVC架构" class="headerlink" title="0x08 Flask与MVC架构"></a>0x08 Flask与MVC架构</h2><p>最基本结构：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hello/</span><br><span class="line">    - templates/</span><br><span class="line">    - static/</span><br><span class="line">    - app.py</span><br></pre></td></tr></table></figure>
+
+<p>处理请求并生成响应的函数被成为“视图函数”（View function）其实并不合理，这个命名的约定来自Werkzeug，而Werkzeug的URL匹配主要参考了Routes，再往前追溯，Routes的实现又参考了Ruby on Rails。在Ruby on Rails中，术语views用来表示MVC架构中的View。在MVC架构中，程序被分为三个组件：数据处理（Model）、用户界面（View）、交互逻辑（Controller）。如果套用MVC架构的内容，那么Flask中视图函数名称其实不严谨，使用控制器函数（Controller function）更合适些。如果硬要套用MVC架构，那么视图函数可以作看控制器（Controller），而视图则是Jinja2渲染的HTML模版，模型则是SQLAlchemy来实现。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>d4rk30
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.nohacker.me/2019/11/13/flask-note-1-environment/" title="✅【Flask笔记】第一节：初识">https://www.nohacker.me/2019/11/13/flask-note-1-environment/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/13/flask-note-3-template/" rel="prev" title="✅【Flask笔记】第三节：模版">
+                  <i class="fa fa-angle-left"></i> ✅【Flask笔记】第三节：模版
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/01/yi-wen-kan-dong-lou-dong-guan-li-zhong-de-cpe/" rel="next" title="一文看懂漏洞管理中的CPE">
+                  一文看懂漏洞管理中的CPE <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">d4rk30</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"d4rk30","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
