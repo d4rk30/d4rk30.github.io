@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.nohacker.me","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.18.1","exturl":false,"sidebar":{"position":"right","display":"hide","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="旧的笔记，以前存放的笔记软件停止运营了，重新迁移到博客上，删除和修改一些过时的内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【Flask笔记】第五节：数据库">
+<meta property="og:url" content="https://www.nohacker.me/2019/11/13/flask-note-5-db/index.html">
+<meta property="og:site_name" content="黑客与产品">
+<meta property="og:description" content="旧的笔记，以前存放的笔记软件停止运营了，重新迁移到博客上，删除和修改一些过时的内容。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-12-08-head_img.png">
+<meta property="article:published_time" content="2019-11-13T01:34:25.000Z">
+<meta property="article:modified_time" content="2023-12-18T17:24:21.631Z">
+<meta property="article:author" content="d4rk30">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="flask">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-12-08-head_img.png">
+
+
+<link rel="canonical" href="https://www.nohacker.me/2019/11/13/flask-note-5-db/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.nohacker.me/2019/11/13/flask-note-5-db/","path":"2019/11/13/flask-note-5-db/","title":"【Flask笔记】第五节：数据库"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>【Flask笔记】第五节：数据库 | 黑客与产品</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">黑客与产品</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">站在巨人的肩上思考🤔️</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section">首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-%E4%BD%BF%E7%94%A8Flask-SQLAlchemy%E7%AE%A1%E7%90%86%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">0x00 使用Flask-SQLAlchemy管理数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93%E6%9C%8D%E5%8A%A1"><span class="nav-text">1. 连接数据库服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A8%A1%E5%9E%8B"><span class="nav-text">2. 定义数据库模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%92%8C%E8%A1%A8"><span class="nav-text">3. 创建数据库和表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-%E6%95%B0%E6%8D%AE%E5%BA%93%E6%93%8D%E4%BD%9C"><span class="nav-text">0x01 数据库操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Create"><span class="nav-text">1. Create</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Read"><span class="nav-text">2. Read</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Update"><span class="nav-text">3. Update</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Delete"><span class="nav-text">4. Delete</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-%E5%9C%A8%E8%A7%86%E5%9B%BE%E5%87%BD%E6%95%B0%E4%B8%AD%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">0x02 在视图函数中操作数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-%E5%AE%9A%E4%B9%89%E5%85%B3%E7%B3%BB"><span class="nav-text">0x03 定义关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%80%E5%AF%B9%E5%A4%9A"><span class="nav-text">1. 一对多</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-%E5%AE%9A%E4%B9%89%E5%A4%96%E9%94%AE"><span class="nav-text">1.1 定义外键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-%E5%AE%9A%E4%B9%89%E5%85%B3%E7%B3%BB%E5%B1%9E%E6%80%A7"><span class="nav-text">1.2 定义关系属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-%E5%BB%BA%E7%AB%8B%E5%85%B3%E7%B3%BB"><span class="nav-text">1.3 建立关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-%E5%BB%BA%E7%AB%8B%E5%8F%8C%E5%90%91%E5%85%B3%E7%B3%BB"><span class="nav-text">1.4 建立双向关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-%E4%BD%BF%E7%94%A8backref%E7%AE%80%E5%8C%96%E5%85%B3%E7%B3%BB%E5%AE%9A%E4%B9%89"><span class="nav-text">1.5 使用backref简化关系定义</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%A4%9A%E5%AF%B9%E4%B8%80"><span class="nav-text">2. 多对一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%80%E5%AF%B9%E4%B8%80"><span class="nav-text">3. 一对一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%AF%B9%E5%A4%9A"><span class="nav-text">多对多</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93%E8%A1%A8"><span class="nav-text">0x04 更新数据库表</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Flask-Migrate%E8%BF%81%E7%A7%BB%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">使用Flask-Migrate迁移数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%BF%81%E7%A7%BB%E7%8E%AF%E5%A2%83"><span class="nav-text">创建迁移环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E8%BF%81%E7%A7%BB%E8%84%9A%E6%9C%AC"><span class="nav-text">生成迁移脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">更新数据库</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9B%E9%98%B6%E5%AE%9E%E6%88%98"><span class="nav-text">0x05数据库进阶实战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A7%E8%81%94%E6%93%8D%E4%BD%9C"><span class="nav-text">级联操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#save-update"><span class="nav-text">save-update</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#delete"><span class="nav-text">delete</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#delete-orphan"><span class="nav-text">delete-orphan</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E7%9B%91%E5%90%AC"><span class="nav-text">事件监听</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-text"></span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">d4rk30</p>
+  <div class="site-description" itemprop="description">站在巨人的肩上思考🤔️</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.nohacker.me/2019/11/13/flask-note-5-db/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="d4rk30">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="黑客与产品">
+      <meta itemprop="description" content="站在巨人的肩上思考🤔️">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="【Flask笔记】第五节：数据库 | 黑客与产品">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          【Flask笔记】第五节：数据库
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-13 09:34:25" itemprop="dateCreated datePublished" datetime="2019-11-13T09:34:25+08:00">2019-11-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-12-19 01:24:21" itemprop="dateModified" datetime="2023-12-19T01:24:21+08:00">2023-12-19</time>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/11/13/flask-note-5-db/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/11/13/flask-note-5-db/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img data-src="https://blog-img-1256870184.cos.ap-beijing.myqcloud.com/2023-12-08-head_img.png" alt="img"></p>
+<blockquote>
+<p>旧的笔记，以前存放的笔记软件停止运营了，重新迁移到博客上，删除和修改一些过时的内容。</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="0x00-使用Flask-SQLAlchemy管理数据库"><a href="#0x00-使用Flask-SQLAlchemy管理数据库" class="headerlink" title="0x00 使用Flask-SQLAlchemy管理数据库"></a>0x00 使用Flask-SQLAlchemy管理数据库</h2><p>安装flask-sqlalchemy：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask-sqlalchemy</span><br></pre></td></tr></table></figure>
+
+<p>扩展初始化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask_sqlalchemy <span class="keyword">import</span> SQLAlchemy</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">db = SQLAlchemy(app)</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-连接数据库服务"><a href="#1-连接数据库服务" class="headerlink" title="1. 连接数据库服务"></a>1. 连接数据库服务</h3><p>常用的数据库URI格式：</p>
+<table>
+<thead>
+<tr>
+<th align="left">DBMS</th>
+<th align="left">URI</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">PostgreSQL</td>
+<td align="left">postgresql:&#x2F;&#x2F;username:password@host&#x2F;databasename</td>
+</tr>
+<tr>
+<td align="left">MySQL</td>
+<td align="left">mysql:&#x2F;&#x2F;username:password@host&#x2F;databasename</td>
+</tr>
+<tr>
+<td align="left">Oracle</td>
+<td align="left">oracle:&#x2F;&#x2F;username:password@host:port&#x2F;sidname</td>
+</tr>
+<tr>
+<td align="left">SQLite（unix）</td>
+<td align="left">sqlite:&#x2F;&#x2F;&#x2F;&#x2F;absolute&#x2F;path&#x2F;to&#x2F;foo.db</td>
+</tr>
+<tr>
+<td align="left">SQLite（Windows）</td>
+<td align="left">sqlite:&#x2F;&#x2F;&#x2F;absolute\path\to\foo.db 或 r’sqlite:&#x2F;&#x2F;&#x2F;absolute\path\to\foo.db’</td>
+</tr>
+<tr>
+<td align="left">SQLite（内存型）</td>
+<td align="left">sqlite:&#x2F;&#x2F;&#x2F; 或 sqlite:&#x2F;&#x2F;&#x2F;:memory:</td>
+</tr>
+</tbody></table>
+<p>开发过程使用SQLite，兼容Windos、Linux、MacOS的URI写法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os,sys</span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask_sqlalchemy <span class="keyword">import</span> SQLAlchemy</span><br><span class="line"></span><br><span class="line">WIN = sys.platform.startswith(<span class="string">&#x27;win&#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> WIN:</span><br><span class="line">    prefix = <span class="string">&#x27;sqlite:///&#x27;</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    prefix = <span class="string">&#x27;sqlite:////&#x27;</span></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.config[<span class="string">&#x27;SQLALCHEMY_DATABASE_URI&#x27;</span>] = prefix + os.path.join(app.root_path,<span class="string">&#x27;data.db&#x27;</span>)</span><br><span class="line">app.config[<span class="string">&#x27;SQLALCHEMY_TRACK_MODIFICATIONS&#x27;</span>] = <span class="literal">False</span> <span class="comment">#关闭对模型修改的监控</span></span><br><span class="line">db = SQLAlchemy(app)</span><br></pre></td></tr></table></figure>
+
+<p>从环境变量获取URI的写法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">app.config[<span class="string">&#x27;SQLALCHEMY_DATABASE_URI&#x27;</span>] = os.getenv(<span class="string">&#x27;DATABASE_URL&#x27;</span>,<span class="string">&#x27;sqlite:///&#x27;</span>+os.path.join(app.root_path,<span class="string">&#x27;data.db&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-定义数据库模型"><a href="#2-定义数据库模型" class="headerlink" title="2. 定义数据库模型"></a>2. 定义数据库模型</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Note</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    body = db.Column(db.Text)</span><br></pre></td></tr></table></figure>
+
+<p>SQLAlchemy常用字段类型：</p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Integer</td>
+<td align="left">整数</td>
+</tr>
+<tr>
+<td align="left">String</td>
+<td align="left">字符串，可选参数length可以用来设置最大长度</td>
+</tr>
+<tr>
+<td align="left">Text</td>
+<td align="left">较长的Unicode文本</td>
+</tr>
+<tr>
+<td align="left">Date</td>
+<td align="left">日期，存储Python的datetime.date对象</td>
+</tr>
+<tr>
+<td align="left">Time</td>
+<td align="left">时间，存储Python的datetime.time对象</td>
+</tr>
+<tr>
+<td align="left">DateTime</td>
+<td align="left">日期和时间，存储Python的datetime对象</td>
+</tr>
+<tr>
+<td align="left">Interval</td>
+<td align="left">时间间隔，存储Python的datetime.timedelta对象</td>
+</tr>
+<tr>
+<td align="left">Float</td>
+<td align="left">浮点数</td>
+</tr>
+<tr>
+<td align="left">Boolean</td>
+<td align="left">布尔值</td>
+</tr>
+<tr>
+<td align="left">PickleType</td>
+<td align="left">存储Pickle列化的Python对象</td>
+</tr>
+<tr>
+<td align="left">LargeBinary</td>
+<td align="left">存储任意二进制数据</td>
+</tr>
+</tbody></table>
+<p>一些既定的约束标准：</p>
+<blockquote>
+<p>英文姓名长度70个字符，中文姓名20个字符，电子邮件地址255字符，用户名36个字符。一般都不超过255。</p>
+</blockquote>
+<p>Flask-SQLAlchemy 生成表名字段名的规则：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Message --&gt; message <span class="comment">#单个单词转化为小写</span></span><br><span class="line">FooBar --&gt; foo_bar <span class="comment">#多个单词转换为小写并使用下划线分隔</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你想自己指定表名称，可以通过定义<code>__tablename__</code>属性来实现。字段名默认为类属性名，可以通过字段类的构造方法的第一个参数指定，或使用关键字<code>name</code>指定。</p>
+<p>除了<code>name</code>参数，实例化字段类时候常用的参数：</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数名</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">primary_key</td>
+<td align="left">设置是否为主键</td>
+</tr>
+<tr>
+<td align="left">unique</td>
+<td align="left">设置是否允许重复</td>
+</tr>
+<tr>
+<td align="left">index</td>
+<td align="left">设置是否创建索引</td>
+</tr>
+<tr>
+<td align="left">nullabel</td>
+<td align="left">设置是否可以为空</td>
+</tr>
+<tr>
+<td align="left">default</td>
+<td align="left">设置默认值</td>
+</tr>
+</tbody></table>
+<h3 id="3-创建数据库和表"><a href="#3-创建数据库和表" class="headerlink" title="3. 创建数据库和表"></a>3. 创建数据库和表</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">flask shell</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; from app import db</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">&gt;&gt; db.create_all()</span></span><br></pre></td></tr></table></figure>
+
+<p>数据库和表一旦创建之后，对模型的改动不会自动作用到实际的表中，再次调用<code>create_all()</code>也不会更新表结构。如果要使改动生效，最简单的方式是调用<code>db.drop_all()</code>删除数据库和表，然后再调用<code>create_all()</code>方法创建。</p>
+<p>实现创建数据库和表的flask命令</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> click</span><br><span class="line">...</span><br><span class="line"><span class="meta">@app.cli.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">initdb</span>():</span><br><span class="line">    db.create_all()</span><br><span class="line">    click.echo(<span class="string">&#x27;Initialized database.&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在命令行中使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask initdb</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x01-数据库操作"><a href="#0x01-数据库操作" class="headerlink" title="0x01 数据库操作"></a>0x01 数据库操作</h2><h3 id="1-Create"><a href="#1-Create" class="headerlink" title="1. Create"></a>1. Create</h3><ol>
+<li>创建Python对象</li>
+<li>添加新创建的记录到数据库会话</li>
+<li>提交数据库会话</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> app <span class="keyword">import</span> db,Note</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>note1 = Note(body = <span class="string">&#x27;remember Sammy Jankis&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>note2 = Note(body = <span class="string">&#x27;SHAVE&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>note3 = Note(body = <span class="string">&#x27;DON\&#x27;T BELIEVE HIS LIES,HE IS THE ONE,KILL HIM&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.add(note1)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.add(note2)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.add(note3)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.commit()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>除了依次调用<code>add()</code>方法添加多个记录，也可以使用<code>add_all()</code>一次添加包含所有记录对象的列表</p>
+</blockquote>
+<h3 id="2-Read"><a href="#2-Read" class="headerlink" title="2. Read"></a>2. Read</h3><p>一个完整的查询遵循下面的模式：</p>
+<p><code>&lt;模型类&gt;.query.&lt;过滤方法&gt;.&lt;查询方法&gt;</code></p>
+<p>常用的SQLAlchemy查询方法：</p>
+<table>
+<thead>
+<tr>
+<th align="left">查询方法</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">all()</td>
+<td align="left">返回包含所有查询记录的列表</td>
+</tr>
+<tr>
+<td align="left">first()</td>
+<td align="left">返回查询的第一条记录，如果未找到，则返回None</td>
+</tr>
+<tr>
+<td align="left">one()</td>
+<td align="left">返回第一条记录，且仅允许有一条记录，如果记录数量大于1或小于1，则抛出错误</td>
+</tr>
+<tr>
+<td align="left">get(id)</td>
+<td align="left">传入主键值作为参数，返回指定主键值的记录，如果未找到则返回None</td>
+</tr>
+<tr>
+<td align="left">count()</td>
+<td align="left">返回查询结果的数量</td>
+</tr>
+<tr>
+<td align="left">one_or_none()</td>
+<td align="left">类似one()，如果结果数量不是1，则返回None</td>
+</tr>
+<tr>
+<td align="left">first_or_404()</td>
+<td align="left">返回查询的第一条记录，如果未找到，则返回404错误响应</td>
+</tr>
+<tr>
+<td align="left">get_or_404(id)</td>
+<td align="left">传入主键值作为参数，返回指定主键值的记录，如果未找到则返回404错误响应</td>
+</tr>
+<tr>
+<td align="left">paginate()</td>
+<td align="left">返回一个Pagination对象，可以对记录进行分页处理</td>
+</tr>
+<tr>
+<td align="left">with_parent(instance)</td>
+<td align="left">传入模型类实例作为参数，返回和这个实例相关联的对象</td>
+</tr>
+</tbody></table>
+<p>查询例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Note.query.<span class="built_in">all</span>() <span class="comment">#返回所有记录</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>note1 = Note.query.first() <span class="comment">#返回第一条记录</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>note2 = Note.query.get(<span class="number">2</span>) <span class="comment">#返回指定主键值的记录</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Note.query.count() <span class="comment">#返回记录数量</span></span><br></pre></td></tr></table></figure>
+
+<p>常用的SQLAlchemy过滤方法：</p>
+<table>
+<thead>
+<tr>
+<th align="left">过滤方法</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">filter()</td>
+<td align="left">使用指定的规则过滤记录，返回新产生的查询对象</td>
+</tr>
+<tr>
+<td align="left">filter_by()</td>
+<td align="left">使用指定的规则过滤记录（以关键字表达式的形式），返回新产生的查询对象</td>
+</tr>
+<tr>
+<td align="left">order_by()</td>
+<td align="left">使用指定条件对记录进行排序，返回新产生的查询对象</td>
+</tr>
+<tr>
+<td align="left">limit(limit)</td>
+<td align="left">使用指定的值限制原查询返回记录的数量，返回新产生的查询对象</td>
+</tr>
+<tr>
+<td align="left">group_by()</td>
+<td align="left">根据指定条件对记录进行分组，返回新产生的查询对象</td>
+</tr>
+<tr>
+<td align="left">offset(offset)</td>
+<td align="left">使用指定的值偏移原查询结果，返回新产生的查询对象</td>
+</tr>
+</tbody></table>
+<p>过滤例子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Note.query.<span class="built_in">filter</span>(Note.body == <span class="string">&#x27;SHAVE&#x27;</span>).first()</span><br></pre></td></tr></table></figure>
+
+<p>在filter()方法中传入表达式时，除了<code>==</code>以及表示不等于的<code>!=</code>，其他常用查询操作符以及使用示例如下：</p>
+<p>LIKE</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">filter</span>(Note.body.like(<span class="string">&#x27;%foo%&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>IN</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">filter</span>(Note.body.in_([<span class="string">&#x27;foo&#x27;</span>,<span class="string">&#x27;bar&#x27;</span>,<span class="string">&#x27;baz&#x27;</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>NOT IN</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">filter</span>(~Note.body.in_([<span class="string">&#x27;foo&#x27;</span>,<span class="string">&#x27;bar&#x27;</span>,<span class="string">&#x27;baz&#x27;</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>AND</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#使用and_()</span></span><br><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> and_</span><br><span class="line"><span class="built_in">filter</span>(and_(Note.body == <span class="string">&#x27;foo&#x27;</span>,Note.title == <span class="string">&#x27;FooBar&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#或在filter()中加入多个表达式，使用逗号分隔</span></span><br><span class="line"><span class="built_in">filter</span>(Note.body == <span class="string">&#x27;foo&#x27;</span>,Note.title == <span class="string">&#x27;FooBar&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#或叠加调用多个filter()/filter_by()方法</span></span><br><span class="line"><span class="built_in">filter</span>(Note.body == <span class="string">&#x27;foo&#x27;</span>).<span class="built_in">filter</span>(Note.title == <span class="string">&#x27;FooBar&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>OR</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> or_</span><br><span class="line"><span class="built_in">filter</span>(or_(Note.body = <span class="string">&#x27;foo&#x27;</span>,Note.body == <span class="string">&#x27;bar&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><code>filter_by()</code>方法中，你可以使用关键词表达式来指定过滤规则，更方便的是你可以在这个过滤器中直接使用字段名称。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>Note.query.filter_by(body=<span class="string">&#x27;SHAVE&#x27;</span>).first()</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-Update"><a href="#3-Update" class="headerlink" title="3. Update"></a>3. Update</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>note = Note.query.get(<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>note.body = <span class="string">&#x27;SHAVE LEEF THIGH&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.commit()</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>只有插入新记录或者将现有记录添加到会话时才需要使用add()方法。</p>
+</blockquote>
+<h3 id="4-Delete"><a href="#4-Delete" class="headerlink" title="4. Delete"></a>4. Delete</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>note = Note.query.get(<span class="number">2</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.delete(note)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.commit()</span><br></pre></td></tr></table></figure>
+
+<h2 id="0x02-在视图函数中操作数据库"><a href="#0x02-在视图函数中操作数据库" class="headerlink" title="0x02 在视图函数中操作数据库"></a>0x02 在视图函数中操作数据库</h2><h2 id="0x03-定义关系"><a href="#0x03-定义关系" class="headerlink" title="0x03 定义关系"></a>0x03 定义关系</h2><p>在关系型数据库中，我们可以通过关系让不同表之间的字段建立联系。一般来说，定义关系需要两步，分别是创建外键和定义关系属性。在更复杂的多对多关系中，我们还需要定义关联表来管理关系。</p>
+<h3 id="1-一对多"><a href="#1-一对多" class="headerlink" title="1. 一对多"></a>1. 一对多</h3><p>以文章和作者来演示一对多关系：一个作者可以写多篇文章。</p>
+<p>先定义模型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Author</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">70</span>),unique = <span class="literal">True</span>)</span><br><span class="line">    phone = db.Column(db.String(<span class="number">20</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Article</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    title = db.Column(db.String(<span class="number">50</span>),index = <span class="literal">True</span>)</span><br><span class="line">    body = db.Column(db.Text)</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-1-定义外键"><a href="#1-1-定义外键" class="headerlink" title="1.1 定义外键"></a>1.1 定义外键</h4><p>外键总是在“多”这一侧定义。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Article</span>(db.Model):</span><br><span class="line">    ...</span><br><span class="line">    author_id = db.Column(db.Integer,db.ForeignKey(<span class="string">&#x27;author.id&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p><code>db.ForeignKey()</code>定义外键，传入关系另一侧的表名和主键字段名，即“author.id”。</p>
+<h4 id="1-2-定义关系属性"><a href="#1-2-定义关系属性" class="headerlink" title="1.2 定义关系属性"></a>1.2 定义关系属性</h4><p>关系属性在关系的出发侧定义，即一对多关系的“一”这一侧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Author</span>(db.Model):</span><br><span class="line">    articles = db.relationship(<span class="string">&quot;Article&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>db.relationship()</code>关系函数定义关系属性，函数的第一个参数为关系另一侧的模型名称。</p>
+<p>下面我们会在Python Shell中演示如何对实际的对象建立关系。我们先创建一个作者记录和两个文章记录，并添加到数据库会话中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>foo = Author(name = <span class="string">&#x27;Foo&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>spam = Article(title = <span class="string">&#x27;Spam&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ham = Article(title = <span class="string">&#x27;Ham&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.add(foo)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.add(spam)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.add(ham)</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-3-建立关系"><a href="#1-3-建立关系" class="headerlink" title="1.3 建立关系"></a>1.3 建立关系</h4><p>建立关系有两种方式，第一种方式是为外键字段赋值，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>spam.author_id = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>ham.author_id = <span class="number">1</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.commit()</span><br></pre></td></tr></table></figure>
+
+<p>我们将spam和ham对象的author_id字段的值设为1.这会和id字段为1的Author对象建立关系，在提交数据改动后，如果我们对id为1的foo对象调用articles关系属性，会看到spam和ham对象在返回的Article对象列表中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>foo.articles</span><br></pre></td></tr></table></figure>
+
+<p>另一种是通过操作关系属性，将关系属性赋给实际的对象即可建立关系。集合关系属性可以像列表一样操作，调用<code>append()</code>方法来与一个Article对象建立关系：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>foo.articles.append(spam)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>foo.articles.append(ham)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.commit()</span><br></pre></td></tr></table></figure>
+
+<p>对关系属性调用<code>remove()</code>方法可以与对应对<code>Article</code>对象解除关系：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>foo.articles.remove(spam)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.commit()</span><br></pre></td></tr></table></figure>
+
+<p>在关系函数中，有很多参数可以用来设置调用关系属性进行查询时的具体行为。常用的SQLAlchemy关系函数参数：</p>
+<table>
+<thead>
+<tr>
+<th align="left">参数名</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">back_populates</td>
+<td align="left">定义反向引用，用于建立双向关系，在关系的另一侧也必须显式定义关系属性</td>
+</tr>
+<tr>
+<td align="left">backref</td>
+<td align="left">定义反向引用，自动在另一侧建立关系属性，是back_populates的简化版</td>
+</tr>
+<tr>
+<td align="left">lazy</td>
+<td align="left">指定如何加载相关记录</td>
+</tr>
+<tr>
+<td align="left">uselist</td>
+<td align="left">指定是否使用列表形式的加载记录，设为False则使用标量（scalar）</td>
+</tr>
+<tr>
+<td align="left">cascade</td>
+<td align="left">设置级联操作</td>
+</tr>
+<tr>
+<td align="left">order_by</td>
+<td align="left">指定加载相关记录时的排序方式</td>
+</tr>
+<tr>
+<td align="left">secondary</td>
+<td align="left">在多对多关系中指定关联表</td>
+</tr>
+<tr>
+<td align="left">primaryjoin</td>
+<td align="left">指定多对多关系中的一级联结条件</td>
+</tr>
+<tr>
+<td align="left">secondaryjoin</td>
+<td align="left">指定多对多关系中的二级联结条件</td>
+</tr>
+</tbody></table>
+<p>加载方式Lazy参数的常用选项：</p>
+<table>
+<thead>
+<tr>
+<th align="left">关系加载方式</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">select</td>
+<td align="left">在必要时一次性加载记录，返回包含记录的列表（默认值），等同于Lazy&#x3D;True</td>
+</tr>
+<tr>
+<td align="left">joined</td>
+<td align="left">和父查询一样加载记录，但使用联结，等同于Lazy&#x3D;False</td>
+</tr>
+<tr>
+<td align="left">immediate</td>
+<td align="left">一旦父查询加载就加载</td>
+</tr>
+<tr>
+<td align="left">subquery</td>
+<td align="left">类似于joined，不过将使用子查询</td>
+</tr>
+<tr>
+<td align="left">dynamic</td>
+<td align="left">不直接加载记录，而是返回一个包含相关记录的query对象，以便再继续附加查询函数对结果进行过滤</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>dynamic选项仅用于集合关系属性，不可用于多对一，一对一或是在关系函数中将uselist参数设置为False的情况。</p>
+</blockquote>
+<h4 id="1-4-建立双向关系"><a href="#1-4-建立双向关系" class="headerlink" title="1.4 建立双向关系"></a>1.4 建立双向关系</h4><p>两侧都添加关系属性为双向关系，通过在关系另一侧也创建一个<code>relationship()</code>函数，我们就可以在两个表之间建立双向关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Writer</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">70</span>),unique = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    books = db.relatinoship(<span class="string">&#x27;Book&#x27;</span>,back_populates = <span class="string">&#x27;writer&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Book</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">50</span>),index = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    writer_id = db.Column(db.Integer,db.ForeignKey(<span class="string">&#x27;writer.id&#x27;</span>))</span><br><span class="line">    writer = db.relatinoship(<span class="string">&#x27;Writer&#x27;</span>,back_populates = <span class="string">&#x27;books&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><code>back_populates</code>参数的值需要设置为关系另一侧的关系属性名。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>king = Writer(name = <span class="string">&#x27;Stephen King&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>carrie = Book(name = <span class="string">&#x27;Carrie&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it = Book(name = <span class="string">&#x27;IT&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.add(king)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.add(carrie)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.add(it)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.commit()</span><br></pre></td></tr></table></figure>
+
+<p>设置双向关系后，除了通过集合属性<code>books</code>来操作关系，也可以使用标量属性<code>writer</code>来进行关系操作。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>carrie.writer = king</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>carrie.writer</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>king.books</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>it.writer = king</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>king.books</span><br></pre></td></tr></table></figure>
+
+<p>相对的，将某个<code>Book</code>的<code>writer</code>属性设置为<code>None</code>，就会解除与对应<code>Writer</code>对象的关系，并且我们只需要在关系的一侧操作关系：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>carrie.writer = <span class="literal">None</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>king.books</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>db.session.commit()</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-5-使用backref简化关系定义"><a href="#1-5-使用backref简化关系定义" class="headerlink" title="1.5 使用backref简化关系定义"></a>1.5 使用backref简化关系定义</h4><p>使用关系函数中的<code>backref</code>参数可以简化双向关系的定义。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singer</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">70</span>),unique = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    songs = db.relationship(<span class="string">&#x27;Song&#x27;</span>,backref=<span class="string">&#x27;singer&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Song</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">50</span>),index = <span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">    singer_id = db.Column(db.Integer,db.ForeignKey(<span class="string">&#x27;singer.id&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+<p>在定义集合属性<code>songs</code>的关系函数中，我们将<code>backref</code>参数设为<code>singer</code>，这会同时在<code>Song</code>类中添加一个<code>singer</code>标量属性。<br>需要注意的是，使用<code>backerf</code>允许我们仅在关系一侧定义另一侧的关系属性，但是某些情况下，我们希望可以对在关系另一侧的关系属性进行设置，这时就需要使用<code>db.backerf()</code>函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Singer</span>(db.Model):</span><br><span class="line">    ...</span><br><span class="line">    songs = db.relationship(<span class="string">&#x27;Song&#x27;</span>,backref = db.backref(<span class="string">&#x27;singer&#x27;</span>,uselist = <span class="literal">False</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-多对一"><a href="#2-多对一" class="headerlink" title="2. 多对一"></a>2. 多对一</h3><p>一对多关系反过来就是多对一关系，在下方示例程序中，<code>Citizen</code>类表示居民，<code>City</code>类表示城市：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Citizen</span>(db.Model): <span class="comment">#多</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">70</span>),unique = <span class="literal">True</span>)</span><br><span class="line">    city_id = db.Column(Integer,db.ForeignKey(<span class="string">&#x27;city.id&#x27;</span>))</span><br><span class="line">    city = db.relationship(<span class="string">&#x27;City&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">City</span>(db.Model): <span class="comment">#一</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">30</span>),unique = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在多对一关系中外键和关系属性都定义在“多”这一侧，这时定义的<code>city</code>关系属性是一个标量属性（返回单一数据）。</p>
+<h3 id="3-一对一"><a href="#3-一对一" class="headerlink" title="3. 一对一"></a>3. 一对一</h3><p>一对一关系实际上通过建立双向关系的一对多关系基础上转化而来。我们要确保关系两侧的关系属性都只返回单个值，所以要在定义集合属性的关系函数中将<code>uselist</code>参数设置为<code>False</code>，这时一对多关系将被转换为一对一关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Country</span>(db.Model): <span class="comment">#一</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">30</span>),unique = <span class="literal">True</span>)</span><br><span class="line">    capital = db.relationship(<span class="string">&#x27;Capital&#x27;</span>,uselist = <span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Capital</span>(db.Model): <span class="comment">#多</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">30</span>),unique = <span class="literal">True</span>)</span><br><span class="line">    country_id = db.Column(db.Integer,db.ForeignKey(<span class="string">&#x27;country.id&#x27;</span>))</span><br><span class="line">    country = db.relationship(<span class="string">&#x27;Country&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="多对多"><a href="#多对多" class="headerlink" title="多对多"></a>多对多</h3><p>在多对多关系中，每个记录都与关系另一侧的多个记录建立关系，除了关系两侧的模型外，我们还需要创建一个关联表。关联表不存储数据，只用来存储关系两侧模型的外键对应关系。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 关联表</span></span><br><span class="line">association_table = db.Table(</span><br><span class="line">    <span class="string">&#x27;association&#x27;</span>,</span><br><span class="line">    db.Column(<span class="string">&#x27;student_id&#x27;</span>,db.Integer,db.ForeignKey(<span class="string">&#x27;student.id&#x27;</span>)),</span><br><span class="line">    db.Column(<span class="string">&#x27;teacher_id&#x27;</span>,db.Integer,db.ForeignKey(<span class="string">&#x27;teacher.id&#x27;</span>))</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">70</span>),unique = <span class="literal">True</span>)</span><br><span class="line">    grade = db.Column(db.String(<span class="number">20</span>))</span><br><span class="line"></span><br><span class="line">    teachers = db.relationship(<span class="string">&#x27;Teacher&#x27;</span>,secondary = association_table,back_populates = <span class="string">&#x27;students&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Teacher</span>(db.Model):</span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer,primary_key = <span class="literal">True</span>)</span><br><span class="line">    name = db.Column(db.String(<span class="number">70</span>),unique = <span class="literal">True</span>)</span><br><span class="line">    office = db.Column(db.String(<span class="number">20</span>))</span><br><span class="line"></span><br><span class="line">    students = db.relationship(<span class="string">&#x27;Student&#x27;</span>,secondary = association_table,back_populates = <span class="string">&#x27;teachers&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>关联表使用<code>db.Table</code>来定义，第一个参数是关联表的名称。另外定义了两个外键，在<code>student_id</code>中存储了<code>Student</code>类的主键，<code>teacher_id</code>中存储了<code>Teacher</code>类的主键。<br>我们在Student类中定义了<code>teahcers</code>关系属性来获取老师的集合。在多对多关系中定义了关系函数，除了第一个参数是关系另一侧的模型名称外，我们还需要添加一个<code>secondary</code>参数，把这个值设为关联表名称。</p>
+<p>和其他关系属性一样，当需要添加数据的时候，对关系属性使用<code>append()</code>方法即可，如果想解除关系，那么使用<code>remove()</code>方法。</p>
+<h2 id="0x04-更新数据库表"><a href="#0x04-更新数据库表" class="headerlink" title="0x04 更新数据库表"></a>0x04 更新数据库表</h2><h3 id="使用Flask-Migrate迁移数据库"><a href="#使用Flask-Migrate迁移数据库" class="headerlink" title="使用Flask-Migrate迁移数据库"></a>使用Flask-Migrate迁移数据库</h3><p>安装依赖：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pipenv install flask-migrate</span><br></pre></td></tr></table></figure>
+<p>初始化操作：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask</span><br><span class="line">from flask_sqlalchemy import SQLAlchemy</span><br><span class="line">from flask_migrate import Migrate</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">db = SQLAlchemy(app)</span><br><span class="line"></span><br><span class="line">migrate = Migrate(app,db)</span><br></pre></td></tr></table></figure>
+<h4 id="创建迁移环境"><a href="#创建迁移环境" class="headerlink" title="创建迁移环境"></a>创建迁移环境</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flask db init</span><br></pre></td></tr></table></figure>
+<p>迁移环境只需要创建一次，这会在你的项目根目录下创建一个migrations文件夹，其中包含了自动生成的配置文件和迁移版本文件夹。</p>
+<h4 id="生成迁移脚本"><a href="#生成迁移脚本" class="headerlink" title="生成迁移脚本"></a>生成迁移脚本</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flask db migrate -m &quot;add note timestamp&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="更新数据库"><a href="#更新数据库" class="headerlink" title="更新数据库"></a>更新数据库</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ flask db upgrade</span><br></pre></td></tr></table></figure>
+<p>如果你想回滚迁移，那么可以使用<code>downgrade</code>命令，它会撤销最后一次迁移在数据库中的改动。</p>
+<h2 id="0x05数据库进阶实战"><a href="#0x05数据库进阶实战" class="headerlink" title="0x05数据库进阶实战"></a>0x05数据库进阶实战</h2><h3 id="级联操作"><a href="#级联操作" class="headerlink" title="级联操作"></a>级联操作</h3><p>Cascade意为“级联操作”，就是操作一个对象的同时，对相关的对象也执行某些操作。我们通过一个Post模型和Comment模型来演示级联操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Post(db.Model):</span><br><span class="line">    id = db.Column(db.Integer,primary_key = True)</span><br><span class="line">    title = db.Column(db.String(50),unique = True)</span><br><span class="line">    body = db.Column(db.Text)</span><br><span class="line"></span><br><span class="line">    comment = db.relationship(&#x27;Comment&#x27;,back_populates = &#x27;post&#x27;)</span><br><span class="line"></span><br><span class="line">class Comment(db.Model):</span><br><span class="line">    id = db.Column(db.Integer,primary_key = True)</span><br><span class="line">    body = db.Column(db.Text)</span><br><span class="line"></span><br><span class="line">    post_id = db.Column(db.Integer,db.ForeignKey(&#x27;post.id&#x27;)</span><br><span class="line">    post = db.relationship(&#x27;Post&#x27;,back_populates = &#x27;comments&#x27;)</span><br></pre></td></tr></table></figure>
+<p>级联行为通过关系函数<code>relationship()</code>的<code>cascade</code>参数设置，我们希望在操作Post对象时，处于附属地位的Comment对象也相应执行某些操作，这时应该在Post类的关系函数中定义级联参数。设置了<code>cascade</code>参数的一侧将被视为父对象，相关的对象则被视为子对象。<br>cascade通常使用多个组合值，级联值之间使用逗号分隔：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class Post(db.Model):</span><br><span class="line">    comment = relationship(&#x27;Comment&#x27;,cascade = &#x27;save-update,merge,delete&#x27;)</span><br></pre></td></tr></table></figure>
+<p>常用的配置组合如下所示：</p>
+<ul>
+<li>save-update,merge </li>
+<li>save-update,merge,delete </li>
+<li>all </li>
+<li>all,delete-orphan<br>当没有设置<code>cascade</code>参数时，会使用默认值<code>save-update,merge</code>。<code>all</code>等同于除了<code>delete-orphan</code>以外所有可用值的组合，即<code>save-update,merge,refresh-expire,expunge,delete</code>。</li>
+</ul>
+<h4 id="save-update"><a href="#save-update" class="headerlink" title="save-update"></a>save-update</h4><p>当cascade参数设为save-update时，如果使用db.session.add()方法将Post对象添加到数据库会话时，那么与Post相关的Comment对象也将被添加到数据库会话。</p>
+<p>首先创建一个Post对象和两个Comment对象：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; post1 = Post()</span><br><span class="line">&gt;&gt;&gt; comment1 = Comment()</span><br><span class="line">&gt;&gt;&gt; comment2 = Comment()</span><br></pre></td></tr></table></figure>
+<p>将post1添加到数据库会话后，只有post1在数据库会话中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; db.session.add(post1)</span><br><span class="line">&gt;&gt;&gt; post1 in db.session</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; comment1 in db.session</span><br><span class="line">False</span><br><span class="line">&gt;&gt;&gt; comment2 in db.session</span><br><span class="line">False</span><br></pre></td></tr></table></figure>
+<p>如果我们让post1与这两个Comment对象建立关系，那么这两个Comment对象也会自动被添加到数据库会话中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; post1.comments.append(comment1)</span><br><span class="line">&gt;&gt;&gt; post1.comments.append(comment2)</span><br><span class="line">&gt;&gt;&gt; comment1 in db.session</span><br><span class="line">True</span><br><span class="line">&gt;&gt;&gt; comment2 in db.session</span><br><span class="line">True</span><br></pre></td></tr></table></figure>
+<p>当调用<code>db.session.commit()</code>提交数据库会话时，这三个对象都会被提交到数据库中。</p>
+<h4 id="delete"><a href="#delete" class="headerlink" title="delete"></a>delete</h4><p>如果某个Post对象被删除，那么按照默认行为，该Post对象相关联的所有Comment对象都将与这个Post对象取消关联，外键字段的值会被清空。如果Post类的关系函数中<code>cascade</code>参数设为<code>delete</code>时，这些相关的Comment会在关联的Post对象删除时被一并删除。当需要设置<code>delete</code>级联时，我们会将级联值设为<code>all</code>或<code>save-update,merge,delete</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class Post(db.Model):</span><br><span class="line">    comments = relationship(&#x27;Comment&#x27;,cascade = &#x27;all&#x27;)</span><br></pre></td></tr></table></figure>
+<p>先创建一个文章对象和两个评论对象，并建立关系：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; post2 = Post()</span><br><span class="line">&gt;&gt;&gt; comment3 = Comment()</span><br><span class="line">&gt;&gt;&gt; comment4 = Comment()</span><br><span class="line">&gt;&gt;&gt; post2.comment.append(comment3)</span><br><span class="line">&gt;&gt;&gt; post2.comment.append(comment4)</span><br><span class="line">&gt;&gt;&gt; db.session.add(post2)</span><br><span class="line">&gt;&gt;&gt; db.session.commit()</span><br></pre></td></tr></table></figure>
+<p>现在共有两条Post记录和四条Comment记录：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; Post.query.all()</span><br><span class="line">[&lt;Post 1&gt;,&lt;Post 2&gt;]</span><br><span class="line">&gt;&gt;&gt; Comment.query.all()</span><br><span class="line">[&lt;Comment 1&gt;,&lt;Comment 2&gt;,&lt;Comment 3&gt;,&lt;Comment 4&gt;]</span><br></pre></td></tr></table></figure>
+<p>如果删除文章对象<code>post2</code>，那么对应的两个评论对象也会一并删除：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; post2 = Post.query.get(2)</span><br><span class="line">&gt;&gt;&gt; db.session.delete(post2)</span><br><span class="line">&gt;&gt;&gt; db.session.commit()</span><br><span class="line">&gt;&gt;&gt; Post.query.all()</span><br><span class="line">[&lt;Post 1&gt;]</span><br><span class="line">&gt;&gt;&gt; Comment.query.all()</span><br><span class="line">[&lt;Comment 1&gt;,&lt;Comment 2&gt;]</span><br></pre></td></tr></table></figure>
+<h4 id="delete-orphan"><a href="#delete-orphan" class="headerlink" title="delete-orphan"></a>delete-orphan</h4><h3 id="事件监听"><a href="#事件监听" class="headerlink" title="事件监听"></a>事件监听</h3><h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>d4rk30
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.nohacker.me/2019/11/13/flask-note-5-db/" title="【Flask笔记】第五节：数据库">https://www.nohacker.me/2019/11/13/flask-note-5-db/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/flask/" rel="tag"># flask</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/11/13/flask-note-3-template/" rel="prev" title="✅【Flask笔记】第三节：模版">
+                  <i class="fa fa-angle-left"></i> ✅【Flask笔记】第三节：模版
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/11/13/flask-note-4-form/" rel="next" title="【Flask笔记】第四节：表单">
+                  【Flask笔记】第四节：表单 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2018 – 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">d4rk30</span>
+  </div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"d4rk30","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script>
+
+</body>
+</html>
